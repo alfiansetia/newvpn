@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -21,6 +21,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'balance',
+        'router_limit',
+        'phone',
+        'address',
+        'role',
+        'avatar',
+        'last_login_at',
+        'last_login_ip',
+        'email_verified_at',
+        'status',
+        'gender',
+        'instagram',
+        'facebook',
+        'linkedin',
+        'github'
     ];
 
     /**
@@ -41,8 +56,67 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'id'        => 'integer',
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'  => 'hashed',
         ];
+    }
+    public function vpn()
+    {
+        return $this->hasMany(Vpn::class);
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if ($value && file_exists(public_path('/images/avatar/' . $value))) {
+            return url('/images/avatar/' . $value);
+        } else {
+            return url('/images/default/avatar-' . $this->gender . '.png');
+        }
+    }
+
+    public function is_verified()
+    {
+        return $this->email_verified_at != null ? 'verified' : 'unverified';
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotificationUser::class);
+    }
+
+    public function notification_unreads()
+    {
+        return $this->hasMany(NotificationUser::class)->where('is_read', 'no');
+    }
+
+    public function complete()
+    {
+        if (
+            empty($this->address) || empty($this->phone) || empty($this->phone) || empty($this->instagram)
+            || empty($this->facebook) || empty($this->linkedin) || empty($this->github)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function is_admin()
+    {
+        if ($this->role == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function is_not_admin()
+    {
+        if ($this->role != 'admin') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
