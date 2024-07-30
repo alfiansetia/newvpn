@@ -89,58 +89,47 @@ try {
           Total Orders | Options
       =============================
   */ 
-      var d_2options2 = {
-        chart: {
-          id: 'sparkline1',
-          group: 'sparklines',
-          type: 'area',
-          height: 295,
-          sparkline: {
-            enabled: true
-          },
-        },
-        stroke: {
-            curve: 'smooth',
-            width: 2
-        },
-        fill: {
-          opacity: 1,
-        },
-        series: [{
-          name: 'Sales',
-          data: [28, 40, 36, 52, 38, 60, 38, 52, 36, 40]
-        }],
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-        yaxis: {
-          min: 0
-        },
-        grid: {
-          padding: {
-            top: 125,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }, 
-        },
-        fill: {
-          type:"gradient",
-          gradient: {
-              type: "vertical",
-              shadeIntensity: 1,
-              inverseColors: !1,
-              opacityFrom: .40,
-              opacityTo: .05,
-              stops: [45, 100]
-          }
+  var d_2options2 = {
+    chart: {
+      id: 'sparkline1',
+      group: 'sparklines',
+      type: 'area',
+      height: 290,
+      sparkline: {
+        enabled: true
       },
-        tooltip: {
-          x: {
-            show: false,
-          },
-          theme: 'dark'
-        },
-        colors: ['#fff']
-      }
+    },
+    stroke: {
+        curve: 'smooth',
+        width: 2
+    },
+    fill: {
+      opacity: 1,
+    },
+    series: [{
+      name: 'Sales',
+      data: [28, 40, 36, 52, 38, 60, 38, 52, 36, 40]
+    }],
+    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    yaxis: {
+      min: 0
+    },
+    grid: {
+      padding: {
+        top: 125,
+        right: 0,
+        bottom: 0,
+        left: 0
+      }, 
+    },
+    tooltip: {
+      x: {
+        show: false,
+      },
+      theme: 'dark'
+    },
+    colors: ['#1abc9c']
+  }
 
   
   /*

@@ -30,17 +30,92 @@ var App = function() {
             search: '.search-overlay'
         }
     };
-    
+
+    var categoryScroll = {
+        scrollCat: function() {
+            var sidebarWrapper = document.querySelectorAll('.sidebar-wrapper [aria-expanded="true"]')[0];
+            if(sidebarWrapper){
+                var sidebarWrapperTop = sidebarWrapper.offsetTop - 20;
+                setTimeout(function(){ $('.menu-categories').animate({ scrollTop: sidebarWrapperTop }, 500); }, 500);
+            }
+        }
+    }
+
     var toggleFunction = {
         sidebar: function($recentSubmenu) {
             $('.sidebarCollapse').on('click', function (sidebar) {
                 sidebar.preventDefault();
+                getSidebar = $('.sidebar-wrapper');
+                    // console.log('drill 1')
+                if ($recentSubmenu === true) {
+                    // console.log('drill 2')
+                    if ($('.collapse.submenu').hasClass('show')) {
+                        // console.log('drill 3')
+                        $('.submenu.show').addClass('mini-recent-submenu');
+                        getSidebar.find('.collapse.submenu').removeClass('show');
+                        getSidebar.find('.collapse.submenu').removeClass('show');
+                        $('.collapse.submenu').parents('li.menu').find('.dropdown-toggle').attr('aria-expanded', 'false');
+                    } else {
+                        // console.log('drill 4')
+                        if ($(Selector.mainContainer).hasClass('sidebar-closed')) {
+                            // console.log('drill 5')
+                            if ($('.collapse.submenu').hasClass('recent-submenu')) {
+                                getSidebar.find('.collapse.submenu.recent-submenu').addClass('show');
+                                $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'true');
+                                $('.submenu').removeClass('mini-recent-submenu');
+                            // console.log('drill 6')
+
+                            } else {
+                                $('li.active .submenu').addClass('recent-submenu');
+                                getSidebar.find('.collapse.submenu.recent-submenu').addClass('show');
+                                $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'true');
+                                $('.submenu').removeClass('mini-recent-submenu');
+                            // console.log('drill 7')
+                            }
+                        }
+                    }
+                        // console.log('drill 2 end')
+                }
+                        // console.log('end drill')
                 $(Selector.mainContainer).toggleClass("sidebar-closed");
                 $(Selector.mainHeader).toggleClass('expand-header');
                 $(Selector.mainContainer).toggleClass("sbar-open");
                 $('.overlay').toggleClass('show');
                 $('html,body').toggleClass('sidebar-noneoverflow');
             });
+        },
+        onToggleSidebarSubmenu: function() {
+            $('.sidebar-wrapper').on('mouseenter mouseleave', function(event) {
+                event.preventDefault();
+                if ($('body').hasClass('alt-menu')) {
+                    if ($('.main-container').hasClass('sidebar-closed')) {
+                        if (event.type === 'mouseenter') {
+                            $('li .submenu').removeClass('show');
+                            $('li.active .submenu').addClass('recent-submenu');
+                            $('li.active').find('.collapse.submenu.recent-submenu').addClass('show');
+                            $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'true');
+                        } else if (event.type === 'mouseleave') {
+                            $('li').find('.collapse.submenu').removeClass('show');
+                            $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'false');
+                            $('.collapse.submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'false');
+                        }
+                    }
+                } else {
+                    if ($('.main-container').hasClass('sidebar-closed')) {
+                        if (event.type === 'mouseenter') {
+                            $(this).find('.submenu.recent-submenu').addClass('show');
+                            $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'true');
+                        } else if (event.type === 'mouseleave') {
+                            $(this).find('.submenu.recent-submenu').removeClass('show');
+                            $('.collapse.submenu.recent-submenu').parents('.menu').find('.dropdown-toggle').attr('aria-expanded', 'false');
+                        }
+                    }
+
+                }
+            })
+        },
+        offToggleSidebarSubmenu: function () {
+            $('.sidebar-wrapper').off('mouseenter mouseleave');
         },
         overlay: function() {
             $('#dismiss, .overlay, cs-overlay').on('click', function () {
@@ -74,8 +149,7 @@ var App = function() {
                 wheelSpeed:.5,
                 swipeEasing:!0,
                 minScrollbarLength:40,
-                maxScrollbarLength:300,
-                suppressScrollX : true
+                maxScrollbarLength:300
             });
         },
         preventScrollBody: function() {
@@ -95,64 +169,157 @@ var App = function() {
                 }
             });
         },
-        functionalDropdown: function() {
-            var getDropdownElement = document.querySelectorAll('.more-dropdown .dropdown-item');
+        languageDropdown: function() {
+            var getDropdownElement = document.querySelectorAll('.more-dropdown.language-dropdown .dropdown-item');
             for (var i = 0; i < getDropdownElement.length; i++) {
                 getDropdownElement[i].addEventListener('click', function() {
-                    document.querySelectorAll('.more-dropdown .dropdown-toggle > span')[0].innerText = this.getAttribute('data-value');
+                    document.querySelectorAll('.more-dropdown.language-dropdown .dropdown-toggle > span')[0].innerText = this.getAttribute('data-value');
+                    document.querySelectorAll('.more-dropdown .dropdown-toggle > img')[0].setAttribute('src', 'assets/img/' + this.getAttribute('data-img-value') + '.png' );
+                })
+            }
+        },
+        appsDropdown: function() {
+            var getDropdownElement = document.querySelectorAll('.more-dropdown.apps-dropdown .dropdown-item');
+            for (var i = 0; i < getDropdownElement.length; i++) {
+                getDropdownElement[i].addEventListener('click', function(e) {
+
+                    if (this.parentNode.classList.contains('dropdown-item-collapsable')) {
+                        // console.log('comnsos')
+                        e.stopPropagation();
+                        $('.custom-dropdown-icon .collapse').collapse('toggle')
+                        $('.custom-dropdown-icon .dropdown-item-collapsable').toggleClass('show')
+                    }
+                    
+                    document.querySelectorAll('.more-dropdown.apps-dropdown .dropdown-toggle > span')[0].innerText = this.getAttribute('data-value');
                 })
             }
         }
     }
 
+    /*
+        Production Functionality - Only for Online files not for user files
+    */
+    var productionFunctionality = {
+        createButtons: function() {
+            var form = [
+                {
+                    type: 'anchor',
+                    label: 'Buy Now',
+                    target: '_blank'
+                },
+                {
+                    type: 'button',
+                    label: ''
+                }
+            ];
+            
+            var element = document.createElement("div");
+            var wrapHtmlAttr = document.createAttribute("class");
+            wrapHtmlAttr.value = "online-actions";
+            element.style.cssText = "position: fixed;bottom: 43px;right: 21px;z-index: 1025;";
+            element.setAttributeNode(wrapHtmlAttr);
+            for (var i = 0; i < form.length; i++) {
+                var obj = form[i];
+                switch (obj.type) {
+                    case "button":
+                        var button = document.createElement('button');
+                        var textButton = document.createTextNode(obj.label);
+                        button.innerHTML = '<svg style="width: 15px; height: 15px; stroke-width: 2; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>';
+                        button.style.cssText = " margin-left: 6px;padding: 6px 9px; display: none; border: none;box-shadow: 0 10px 20px -10px #4801FF; background-image: linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%);";
+                        button.classList.add('btn', 'btn-secondary', 'scroll-top-btn');
+                        button.appendChild(textButton);
+                        element.appendChild(button);
+                        break;
+            
+                    case "anchor":
+                        var anchor = document.createElement('a');
+                        var textanchor = document.createTextNode(obj.label);
+                        anchor.setAttribute('href',"https://themeforest.net/item/cork-responsive-admin-dashboard-template/25582188");
+                        anchor.style.cssText = "border: none; background-image: linear-gradient(to right, #ff0844 20%, #ffb199 141%);box-shadow: 0 10px 20px -10px #ff0844;";
+                        anchor.classList.add('btn', 'btn-danger', 'buy-btn');
+                        anchor.target = obj.target;
+                        anchor.appendChild(textanchor);
+                        element.appendChild(anchor);
+                        break;
+                }
+                var div = document.querySelector("body");
+                div.appendChild(element);
+            }
+        },
+
+        scrollTop: function() {
+            $(document).on('click', '.scroll-top-btn', function(event) {
+                event.preventDefault();
+                var body = $("html, body");
+                body.stop().animate({scrollTop:0}, 500, 'swing');
+            });
+        },
+
+        checkScrollPosition: function() {
+            $(document).scroll(function(event) {
+                var lanWrapper = $('.layout-spacing');
+                var elementScrollToTop = $('.scroll-top-btn');
+                var windowScroll = $(window).scrollTop()
+                var elementoffset = lanWrapper.offset().top;
+            
+                // Check if window scroll > or == element offset?
+                if (windowScroll >= elementoffset) {
+                elementScrollToTop.addClass('d-inline-block');
+                } else if (windowScroll < elementoffset) {
+                elementScrollToTop.removeClass('d-inline-block');
+                }
+            });
+        }
+    }
+    
     var _mobileResolution = {
         onRefresh: function() {
             var windowWidth = window.innerWidth;
             if ( windowWidth <= MediaSize.md ) {
+                categoryScroll.scrollCat();
                 toggleFunction.sidebar();
             }
         },
-
-        // Note : -  _mobileResolution -> onResize | Uncomment it if need for onresize functions for MOBILE RESOLUTION i.e. below or equal to 991px |
-
-        /*
+        
         onResize: function() {
             $(window).on('resize', function(event) {
                 event.preventDefault();
                 var windowWidth = window.innerWidth;
                 if ( windowWidth <= MediaSize.md ) {
+                    toggleFunction.offToggleSidebarSubmenu();
                 }
             });
         }
-        */
+        
     }
 
     var _desktopResolution = {
         onRefresh: function() {
             var windowWidth = window.innerWidth;
             if ( windowWidth > MediaSize.md ) {
+                categoryScroll.scrollCat();
                 toggleFunction.sidebar(true);
+                toggleFunction.onToggleSidebarSubmenu();
             }
         },
-
-        // Note : -  _desktopResolution -> onResize | Uncomment it if need, for onresize functions for DESKTOP RESOLUTION i.e. above or equal to 991px |
-
-        /*
+        
         onResize: function() {
             $(window).on('resize', function(event) {
                 event.preventDefault();
                 var windowWidth = window.innerWidth;
                 if ( windowWidth > MediaSize.md ) {
+                    toggleFunction.onToggleSidebarSubmenu();
                 }
             });
         }
-        */
+        
     }
 
     function sidebarFunctionality() {
         function sidebarCloser() {
 
             if (window.innerWidth <= 991 ) {
+
 
                 if (!$('body').hasClass('alt-menu')) {
 
@@ -180,6 +347,7 @@ var App = function() {
                     $(".navbar").addClass("expand-header");
                     $('.overlay').addClass('show');
                     $('#container').addClass('sbar-open');
+                    $('.sidebar-wrapper [aria-expanded="true"]').parents('li.menu').find('.collapse').removeClass('show');
                 }
             }
 
@@ -214,24 +382,30 @@ var App = function() {
                 Desktop Resoltion fn
             */
             _desktopResolution.onRefresh();
-
-            // Note : -  _desktopResolution -> onResize | Uncomment it if need for onresize functions for MOBILE RESOLUTION i.e. above or equal to 991px |
-
-            // _desktopResolution.onResize();
+            _desktopResolution.onResize();
 
             /*
                 Mobile Resoltion fn
             */
-            _mobileResolution.onRefresh();
-
-            // Note : -  _mobileResolution -> onResize | Uncomment it if need for onresize functions for DESKTOP RESOLUTION i.e. below or equal to 991px |
-            
-            // _mobileResolution.onResize();
+            _mobileResolution.onRefresh();            
+            _mobileResolution.onResize();
 
             sidebarFunctionality();
+
+            /*
+                In Built Functionality fn
+            */
             inBuiltfunctionality.mainCatActivateScroll();
             inBuiltfunctionality.preventScrollBody();
-            inBuiltfunctionality.functionalDropdown();
+            inBuiltfunctionality.languageDropdown();
+            inBuiltfunctionality.appsDropdown();
+
+            /*
+                Production Functionality - Only for Online files not for user files
+            */
+            // productionFunctionality.createButtons();
+            // productionFunctionality.scrollTop();
+            // productionFunctionality.checkScrollPosition();
         }
     }
 

@@ -62,10 +62,17 @@
     position: relative;
     display: flex;
     border-radius: 6px;
+    background: #fff;
+    box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px, rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+}
+.mail-box-container {
+    position: relative;
+    display: flex;
+    border-radius: 6px;
     background-color: #fff;
     box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px, rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+    height: calc(100vh - 150px);
     margin-bottom: 10px;
-    height: calc(100vh - 179px);
 }
 .mail-box-container .avatar-sm {
     width: 2.5rem;
@@ -302,7 +309,6 @@
     box-shadow: 0px 5px 15px 1px rgba(113, 106, 202, 0.2);
     padding: 4px 16px;
 }
-
 /*
 =====================
     Mailbox Inbox
@@ -397,7 +403,7 @@
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    fill: rgb(238, 246, 255);
+    fill: #e0e6ed;
 }
 .mailbox-inbox .action-center .nav-link.label-group svg { margin-right: 12px; }
 .mailbox-inbox .action-center svg:not(:last-child) { margin-right: 12px; }
@@ -417,15 +423,15 @@
     margin: auto;
     width: 100%;
     overflow: auto;
-    height: calc(100vh - 284px);
+    height: calc(100vh - 255px);
 }
 .mailbox-inbox .mail-item[id*="unread-"] div.mail-item-heading {}
 .mailbox-inbox .mail-item[id*="unread-"] div.mail-item-heading .mail-item-inner .f-body .mail-title {
-    font-weight: 600;
+    font-weight: 700;
     color: #1b2e4b;
 }
 .mailbox-inbox .mail-item[id*="unread-"] div.mail-item-heading .mail-item-inner .f-body .user-email {
-    font-weight: 600;
+    font-weight: 700;
     color: #0e1726;
 }
 .mailbox-inbox .mail-item[id*="unread-"] div.mail-item-heading .mail-item-inner .mail-content-excerpt {
@@ -619,7 +625,7 @@
 }
 .mailbox-inbox .collapse {
     position: relative;
-    height: calc(100vh - 234px);
+    height: calc(100vh - 203px);
 }
 .mailbox-inbox .mail-content-container {
     position: relative;
@@ -931,7 +937,6 @@
         z-index: 4;
         left: -147px;
         width: 0;
-        background: #fff;
     }
     .tab-title.mail-menu-show {
         left: 0;
@@ -954,8 +959,8 @@
         padding: 14px 14px;
     }
     .mailbox-inbox .mail-item div.mail-item-heading:hover {
-        background: transparent;
-        border: none!important;
+        background: #ebedf2;
+        border: 1px solid rgb(27, 85, 226)!important;
     }
     .mailbox-inbox .mail-item div.mail-item-heading .mail-item-inner {
         padding-left: 14px;
