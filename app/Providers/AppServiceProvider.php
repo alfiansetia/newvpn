@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         View::composer(
-            '*',
+            ['*'],
             function ($view) {
                 $view->with('company', Company::first());
                 $view->with('user', User::with('notification_unreads')->withCount('notification_unreads')->find(auth()->id()));

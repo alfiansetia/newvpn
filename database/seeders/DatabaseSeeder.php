@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             // ServerSeeder::class,
             // VpnSeeder::class,
             // PortSeeder::class,
-            TestMigrateSeeder::class,
+            // TestMigrateSeeder::class,
             // RouterSeeder::class,
             // BankSeeder::class,
         ]);
