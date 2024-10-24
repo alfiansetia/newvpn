@@ -13,9 +13,12 @@ class Vpn extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'id'        => 'integer',
-        'user_id'   => 'integer',
-        'server_id' => 'integer',
+        'id'            => 'integer',
+        'user_id'       => 'integer',
+        'server_id'     => 'integer',
+        'is_active'     => 'boolean',
+        'is_trial'      => 'boolean',
+        'auto_renew'    => 'boolean',
     ];
 
     public function scopeFilter($query, array $filters)
@@ -26,17 +29,20 @@ class Vpn extends Model
         if (isset($filters['ip'])) {
             $query->where('ip', 'like', '%' . $filters['ip'] . '%');
         }
-        if (isset($filters['user_id'])) {
+        if (isset($filters['vpns.user_id'])) {
             $query->where('user_id', $filters['user_id']);
         }
         if (isset($filters['server_id'])) {
-            $query->where('server_id', $filters['server_id']);
+            $query->where('vpns.server_id', $filters['server_id']);
         }
         if (isset($filters['is_active'])) {
             $query->where('is_active', $filters['is_active']);
         }
         if (isset($filters['is_trial'])) {
             $query->where('is_trial', $filters['is_trial']);
+        }
+        if (isset($filters['dst'])) {
+            $query->whereRelation('port', 'dst', $filters['dst']);
         }
     }
 
@@ -50,7 +56,7 @@ class Vpn extends Model
         return $this->belongsTo(Server::class);
     }
 
-    public function port()
+    public function ports()
     {
         return $this->hasMany((Port::class));
     }

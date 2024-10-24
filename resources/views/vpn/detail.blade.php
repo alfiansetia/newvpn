@@ -275,16 +275,14 @@
                             aria-labelledby="profile-tab-icon" tabindex="0">
                             <div class="media">
                                 <div class="media-body">
-                                    <form id="formEdit" action="" method="POST">
-                                        {{ method_field('PUT') }}
+                                    <form class="was-validated" id="formEdit" action="" method="POST">
                                         <div class="row mb-2">
                                             <div class="form-group col-md-6 mb-2">
                                                 <label for="edit_email"><i class="far fa-envelope me-1 bs-tooltip"
                                                         title="Option Email User"></i>Email
                                                     :</label>
-                                                <select name="email" id="edit_email" class="form-control"
-                                                    style="width: 100%;" required>
-                                                    <option value="">Please Select Email</option>
+                                                <select name="email" id="edit_email"
+                                                    class="form-control-lg tomse-user" style="width: 100%;" required>
                                                 </select>
                                                 <span id="err_edit_email" class="error invalid-feedback"
                                                     style="display: hide;"></span>
@@ -292,9 +290,9 @@
                                             <div class="form-group col-md-6 mb-2">
                                                 <label for="edit_server"><i class="fas fa-server me-1 bs-tooltip"
                                                         title="Option Server"></i>Server :</label>
-                                                <select name="server" id="edit_server" class="form-control"
-                                                    style="width: 100%;" disabled readonly>
-                                                    <option value="">Please Select Server</option>
+                                                <select name="server" id="edit_server"
+                                                    class="form-control-lg tomse-server" style="width: 100%;" disabled
+                                                    readonly>
                                                 </select>
                                                 <span id="err_edit_server" class="error invalid-feedback"
                                                     style="display: hide;"></span>

@@ -16,17 +16,25 @@ class VpnResource extends JsonResource
     {
         return [
             'id'            => $this->id,
+            'DT_RowId'      => $this->id,
+            'user_id'       => $this->user_id,
+            'server_id'     => $this->server_id,
             'ip'            => $this->ip,
             'username'      => $this->username,
             'password'      => $this->password,
+            'auto_renew'    => $this->auto_renew,
+            'last_renew'    => $this->last_renew,
             'expired'       => $this->expired,
             'is_active'     => $this->is_active,
             'is_trial'      => $this->is_trial,
             'desc'          => $this->desc,
-            'port_count'    => $this->whenCounted('port'),
+            'last_send_notification'    => $this->last_send_notification,
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
+            'port_count'    => $this->whenCounted('ports'),
             'user'          => new UserResource($this->whenLoaded('user')),
             'server'        => new ServerResource($this->whenLoaded('server')),
-            'ports'         => PortResource::collection($this->whenLoaded('port')),
+            'ports'         => PortResource::collection($this->whenLoaded('ports')),
         ];
     }
 }

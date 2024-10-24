@@ -17,7 +17,7 @@ class CompanyController extends Controller
 
     public function __construct()
     {
-        $this->middleware('is.admin');
+        $this->middleware('role:admin');
     }
 
     public function general()

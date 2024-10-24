@@ -19,7 +19,7 @@ class TopupController extends Controller
     {
         $this->model = Topup::class;
         $this->with = ['user:id,name,email', 'bank:id,name,acc_name,acc_number'];
-        $this->middleware(['is.admin'])->only(['update', 'destroy']);
+        $this->middleware(['role:admin'])->only(['update', 'destroy']);
     }
     /**
      * Display a listing of the resource.

@@ -14,7 +14,7 @@ class VoucherTemplateController extends Controller
 
     public function __construct()
     {
-        $this->middleware('is.admin')->except(['index']);
+        $this->middleware('role:admin')->except(['index']);
         $this->model = VoucherTemplate::class;
         $this->transform = VoucherTemplateResource::class;
     }

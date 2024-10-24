@@ -17,16 +17,16 @@ class UserSeeder extends Seeder
         User::create([
             'name'      => 'Alfi',
             'email'     => 'admin@gmail.com',
-            'gender'    => 'Male',
+            'gender'    => 'male',
             'address'   => 'Bks',
             'phone'     => '085222555885',
             'role'      => 'admin',
-            'avatar'    => 'boy.png',
+            'avatar'    => null,
             'status'    => 'active',
             'password'  => Hash::make('admin12345'),
             'email_verified_at' => now(),
         ]);
 
-        User::factory(50)->create();
+        // User::factory(50)->create();
     }
 }

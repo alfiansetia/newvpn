@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('notification_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('is_read', ['yes', 'no'])->default('no');
-            $table->enum('is_send', ['yes', 'no'])->default('no');
+            $table->boolean('is_read')->default(false);
+            $table->boolean('is_send')->default(false);
             $table->timestamps();
             $table->foreign('notification_id')->references('id')->on('notifications')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();

@@ -90,10 +90,10 @@ function handleResponseCode(xhr) {
     } else if (code === 401) {
         Swal.fire({
             title: 'Failed!',
-            text: "Unauthenticate!",
+            text: "Unauthenticate Please Login!",
             icon: 'error',
         })
-        window.location.reload();
+        // window.location.reload();
     } else {
         Swal.fire({
             title: 'Failed!',
@@ -392,7 +392,8 @@ var o_lang = {
         sNext: '<i data-feather="arrow-right"></i>'
     },
     // "sInfo": "Showing page _PAGE_ of _PAGES_",
-    sSearch: '<i data-feather="search"></i>',
+    // sSearch: '<i data-feather="search"></i>',
+    sSearch: '',
     sSearchPlaceholder: "Search...",
     sLengthMenu: "Results :  _MENU_",
 }

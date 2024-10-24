@@ -204,7 +204,7 @@ class ServerApiServices
                 "?name" => $vpn->username,
             ));
             if (count($ppp) < 1) {
-                throw new Exception('Selected Server Error!', 500);
+                throw new Exception('Vpn Not Found on Server!', 500);
             }
             $active = $this->API->comm("/ppp/active/print", array(
                 "?name" => $vpn->username,
@@ -222,6 +222,18 @@ class ServerApiServices
             }
             $this->disconnect();
             return true;
+        } else {
+            throw new Exception('Selected Server Error!', 500);
+        }
+    }
+
+    public function get()
+    {
+        if ($this->connect()) {
+
+            $r = $this->API->comm("/ip/hotspot/user/print");
+            return $r;
+            $this->disconnect();
         } else {
             throw new Exception('Selected Server Error!', 500);
         }

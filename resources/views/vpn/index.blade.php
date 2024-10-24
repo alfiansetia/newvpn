@@ -1,23 +1,19 @@
 @extends('layouts.backend.template', ['title' => 'Data Vpn'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
-
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
-
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ asset('backend/src/plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/src/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
@@ -25,6 +21,12 @@
         type="text/css">
     <link href="{{ asset('backend/src/plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
         type="text/css">
+
+    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ asset('backend/src/plugins/css/light/clipboard/custom-clipboard.css') }}" rel="stylesheet"
         type="text/css">
@@ -35,6 +37,18 @@
     <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/components/accordions.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/components/accordions.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="{{ asset('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <!-- END THEME GLOBAL STYLES -->
 @endpush
 @push('css')
     <style>
@@ -68,19 +82,19 @@
             <div class="col-md-4">
                 <select class="form-control select2" name="status" id="select_status">
                     <option value="">All</option>
-                    <option value="yes">Active</option>
-                    <option value="no">Nonactive</option>
+                    <option value="1">Active</option>
+                    <option value="0">Nonactive</option>
                 </select>
             </div>
             <div class="col-md-4">
                 <select class="form-control select2" name="trial" id="select_trial">
                     <option value="">All</option>
-                    <option value="yes">Trial</option>
-                    <option value="no">Paid</option>
+                    <option value="1">Trial</option>
+                    <option value="0">Paid</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="number" class="form-control" name="search_port" id="search_port" min="0"
+                <input type="text" class="form-control mask_angka" name="search_port" id="search_port"
                     placeholder="DST Port">
             </div>
             <div class="col-md-2">
@@ -112,15 +126,12 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
+
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
 
     <!-- InputMask -->
     <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
@@ -130,13 +141,113 @@
     <script src="{{ asset('backend/src/plugins/moment/moment-with-locales.min.js') }}"></script>
 
     <script src="{{ asset('backend/src/plugins/src/clipboard/clipboard.min.js') }}"></script>
+
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
 
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
+        const url_index = "{{ route('vpns.index') }}"
+        const url_index_api = "{{ route('api.vpns.index') }}"
+        const url_index_api_temp = "{{ route('api.temporaryips.index') }}"
+        var id = 0
+        var perpage = 50
+
+        document.querySelectorAll('.tomse-server').forEach((el) => {
+            var tomse = new TomSelect(el, {
+                valueField: 'id',
+                labelField: 'name',
+                searchField: 'name',
+                preload: 'focus',
+                placeholder: "Please Select Server",
+                allowEmptyOption: true,
+                load: function(query, callback) {
+                    var url = '{{ route('api.servers.paginate') }}?limit=' + perpage + '&name=' +
+                        encodeURIComponent(
+                            query);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            callback(json.data);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+                render: {
+                    option: function(item, escape) {
+                        return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.name) }
+        						</span>
+        						<span class="text-muted">IP ${ escape(item.ip) }</span>
+        					</div>
+        			 		<div class="description">${ escape(item.domain) }</div>
+        				</div>
+        			</div>`;
+                    },
+                },
+            });
+        });
+
+        document.querySelectorAll('.tomse-user').forEach((el) => {
+            var tomse = new TomSelect(el, {
+                valueField: 'id',
+                labelField: 'email',
+                searchField: 'email',
+                preload: 'focus',
+                placeholder: "Please Select User",
+                allowEmptyOption: true,
+                load: function(query, callback) {
+                    var url = '{{ route('api.users.paginate') }}?limit=' + perpage + '&email=' +
+                        encodeURIComponent(
+                            query);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            callback(json.data);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+                render: {
+                    option: function(item, escape) {
+                        return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.email) }
+        						</span>
+        					</div>
+        			 		<div class="description">${ escape(item.name) }</div>
+        				</div>
+        			</div>`;
+                    },
+                },
+            });
+        });
+
+        $('#reset').click(function() {
+            document.getElementById('server').tomselect.clear()
+            document.getElementById('email').tomselect.clear()
+        })
+
+        $('.mask_angka').inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            autoGroup: true,
+            digits: 0,
+            rightAlign: false,
+            removeMaskOnSubmit: true,
+            autoUnmask: true,
+            min: 0,
+        });
+
         $('.close-detail').click(function() {
             hide_card_detail()
         })
@@ -270,67 +381,8 @@
 
         // $(document).ready(function() {
 
-        $('.select2').select2()
 
         $('[data-mask]').inputmask();
-        var perpage = 20;
-        $("#email, #edit_email").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('user.paginate') }}",
-                data: function(params) {
-                    return {
-                        email: params.term || '',
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: item.email,
-                                id: item.id,
-                                disabled: item.email_verified_at == null ? true : false,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
-        });
-
-        $("#server").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('server.paginate') }}",
-                data: function(params) {
-                    return {
-                        name: params.term,
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: item.name,
-                                id: item.id,
-                                disabled: item.is_active == 'no' ? true : false,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
-        });
 
         $('#home-tab-icon, #profile-tab-icon').click(function() {
             $('#edit_reset').click()
@@ -350,32 +402,59 @@
             serverSide: true,
             rowId: 'id',
             ajax: {
-                url: "{{ route('vpn.index') }}",
+                url: url_index_api,
                 data: function(d) {
-                    d.status = $('#select_status').val();
-                    d.trial = $('#select_trial').val();
+                    d.is_active = $('#select_status').val()
+                    d.is_trial = $('#select_trial').val()
                     d.dst = $('#search_port').val();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
+            }, ],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    show_card_add()
+                    input_focus('ip')
+                },
+            }, {
+                text: '<i class="fas fa-caret-down"></i>',
+                extend: 'collection',
+                className: 'btn btn-warning',
+                buttons: [{
+                    text: 'Delete Selected Data',
+                    action: function(e, dt, node, config) {
+                        delete_batch(url_index_api);
+                    }
+                }]
             }],
-            buttons: [],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 width: "30px",
                 title: 'Id',
                 data: 'id',
                 className: "",
-                orderable: !1,
+                orderable: false,
+                searchable: false,
                 render: function(data, type, row, meta) {
                     return `
                     <div class="form-check form-check-primary d-block new-control">
@@ -384,27 +463,21 @@
                 }
             }, {
                 title: "User",
-                data: 'user_id',
-                render: function(data, type, row, meta) {
-                    if (type == 'display' && data != null) {
-                        return row.user.email
-                    } else {
-                        return data
-                    }
-                }
+                orderable: false,
+                data: 'user.email',
             }, {
                 title: "Username",
                 data: 'username',
                 render: function(data, type, row, meta) {
-                    if (row.is_active === 'yes' && row.is_trial === 'yes') {
+                    if (row.is_active && row.is_trial) {
                         text =
                             `<i class="fas fa-circle text-warning bs-tooltip" title="Active Trial"></i> ${data}`;
-                    } else if (row.is_active === 'yes' && row.is_trial === 'no') {
+                    } else if (row.is_active && !row.is_trial) {
                         text =
                             `<i class="fas fa-circle text-success bs-tooltip" title="Active"></i> ${data}`;
                     } else {
                         text =
-                            `<i class="fas fa-circle text-danger bs-tooltip" title="Nonactive ${row.is_trial === 'yes' ? 'Trial': ''}"></i> ${data}`;
+                            `<i class="fas fa-circle text-danger bs-tooltip" title="Nonactive ${row.is_trial ? 'Trial': ''}"></i> ${data}`;
                     }
                     if (type === 'display') {
                         return text
@@ -414,12 +487,14 @@
                 }
             }, {
                 title: "Server",
+                orderable: false,
                 data: 'server.name',
             }, {
                 title: "IP",
                 data: 'ip',
             }, {
                 title: "Expired",
+                className: 'text-start',
                 data: 'expired',
             }, {
                 title: "Desc",
@@ -440,29 +515,12 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            show_card_add()
-            input_focus('username')
-        })
-
-        $('#btn_delete').click(function() {
-            delete_batch("{{ route('vpn.destroy.batch') }}")
-        })
-
         multiCheck(table);
-
-        var id;
-        var url_post = "{{ route('vpn.store') }}";
-        var url_put = "{{ route('vpn.update', '') }}/" + id;
-        var url_delete = "{{ route('vpn.destroy', '') }}/" + id;
-        var url_temp = "{{ route('vpn.destroy', '') }}/" + id;
 
         $('#share').click(function() {
             id = $(this).val();
             $.ajax({
-                url: "{{ route('vpn.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -507,7 +565,7 @@
         $('#wa').click(function() {
             // id = $(this).val();
             $.ajax({
-                url: "{{ route('vpn.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -533,17 +591,14 @@
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
-            url_put = "{{ route('vpn.update', '') }}/" + id;
-            url_delete = "{{ route('vpn.destroy', '') }}/" + id;
-            url_temp = "{{ route('vpn.destroy', '') }}/" + id + '/temporary';
-            id = table.row(this).id()
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit')
             $.ajax({
-                url: "{{ route('vpn.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -557,40 +612,28 @@
                     $('#edit_desc').val(result.data.desc);
 
                     f2.setDate(result.data.expired);
-                    if (result.data.user_id == null) {
-                        $('#edit_email').val('').trigger('change');
-                        $('#input_send_email').val('')
-                    } else {
-                        $('#input_send_email').val(result.data.user.email)
-                        let option1 = new Option(result.data.user.email, result.data.user_id,
-                            true, true);
-                        $('#edit_email').append(option1).trigger('change');
+                    let tom_user = document.getElementById('edit_email').tomselect
+                    let tom_server = document.getElementById('edit_server').tomselect
+                    tom_user.clear()
+                    tom_server.clear()
+                    if (result.data.user_id != null) {
+                        tom_user.addOption(result.data.user)
+                        tom_user.setValue(result.data.user_id)
                     }
-                    if (result.data.server_id == null) {
-                        $('#edit_server').val('').trigger('change');
-                    } else {
-                        let option2 = new Option(result.data.server.name, result.data.server_id,
-                            true, true);
-                        $('#edit_server').append(option2).trigger('change');
+                    if (result.data.server_id != null) {
+                        tom_server.addOption(result.data.server)
+                        tom_server.setValue(result.data.server_id)
                     }
-                    if (result.data.is_trial == 'yes') {
-                        $('#edit_is_trial').prop('checked', true).change();
-                    } else {
-                        $('#edit_is_trial').prop('checked', false).change();
-                    }
+                    $('#edit_is_trial').prop('checked', result.data.is_trial).change();
+                    $('#edit_is_active').prop('checked', result.data.is_active).change();
 
-                    if (result.data.is_active == 'yes') {
-                        $('#edit_is_active').prop('checked', true).change();
-                    } else {
-                        $('#edit_is_active').prop('checked', false).change();
-                    }
                     $('#edit_sync').prop('checked', true).change();
 
                     $('#detail_server_name').html(result.data.server.name);
                     $('#detail_server_ip').html(result.data.server.ip);
                     $('#detail_server_domain').html(result.data.server.domain);
                     $('#detail_server_netwatch').html(result.data.server.netwatch);
-                    if (result.data.server.is_active === 'yes') {
+                    if (result.data.server.is_active) {
                         $('#detail_server_status').html(
                             `<span class="badge badge-success">Active</span>`);
                     } else {
@@ -608,23 +651,23 @@
                     $('#detail_acc_expired').html(expired);
 
                     let status = $('#account_status');
-                    if (result.data.is_active == 'yes' && result.data.is_trial === 'no') {
+                    if (result.data.is_active && !result.data.is_trial) {
                         status.html('<span class="badge badge-success">Active</span>')
-                    } else if (result.data.is_active == 'yes' && result.data.is_trial === 'yes') {
+                    } else if (result.data.is_active && result.data.is_trial) {
                         status.html('<span class="badge badge-warning">Trial</span>')
                     } else {
                         status.html(
-                            `<span class="badge badge-danger">Nonactive ${result.data.is_trial == 'yes' ? 'Trial' : ''}</span>`
+                            `<span class="badge badge-danger">Nonactive ${result.data.is_trial ? 'Trial' : ''}</span>`
                         )
                     }
 
                     $('#table_port').html('');
-                    if (result.data.port.length > 0) {
+                    if (result.data.ports.length > 0) {
                         let a = '';
-                        for (let i = 0; i < result.data.port.length; i++) {
+                        for (let i = 0; i < result.data.ports.length; i++) {
                             a += '<li class="list-group-item border-0 pb-0">'
                             a +=
-                                `<span class="badge badge-success clipboard bs-tooltip me-1" id="detail_port_${i}" title="Click to copy!" data-clipboard-action="copy" data-clipboard-target="#detail_port_${i}">${result.data.server.domain}:${result.data.port[i].dst}</span><i class="fas fa-exchange-alt ms-1 me-1"></i><span class="badge badge-info">${result.data.port[i].to}</span>`;
+                                `<span class="badge badge-success clipboard bs-tooltip me-1" id="detail_port_${i}" title="Click to copy!" data-clipboard-action="copy" data-clipboard-target="#detail_port_${i}">${result.data.server.domain}:${result.data.ports[i].dst}</span><i class="fas fa-exchange-alt ms-1 me-1"></i><span class="badge badge-info">${result.data.ports[i].to}</span>`;
                             a += '</li>'
                         }
                         $('#table_port').html(a);
@@ -692,7 +735,7 @@
                     ajax_setup();
                     $.ajax({
                         type: 'POST',
-                        url: url_temp,
+                        url: url_api_temp,
                         beforeSend: function() {
                             block();
                         },
@@ -718,4 +761,5 @@
 
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

@@ -31,7 +31,7 @@ class MonitorExpiredVpn extends Command
     {
         $vpns = Vpn::query()
             ->with('server')
-            ->where('is_active', 'yes')
+            ->where('is_active', true)
             ->where('expired', '<=', date('Y-m-d'))
             ->get();
         try {

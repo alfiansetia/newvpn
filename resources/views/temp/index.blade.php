@@ -1,21 +1,31 @@
 @extends('layouts.backend.template', ['title' => 'Data Temporary IP'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+
+
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
@@ -37,68 +47,92 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
-
     <!-- InputMask -->
     <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
 
     <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
 
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
+
+        const url_index = "{{ route('temporaryip.index') }}"
+        const url_index_api = "{{ route('api.temporaryips.index') }}"
+        var id = 0
+        var perpage = 50
+
+        document.querySelectorAll('.tomse-server').forEach((el) => {
+            var tomse = new TomSelect(el, {
+                valueField: 'id',
+                labelField: 'name',
+                searchField: 'name',
+                preload: 'focus',
+                placeholder: "Please Select Server",
+                allowEmptyOption: true,
+                load: function(query, callback) {
+                    var url = '{{ route('api.servers.paginate') }}?limit=' + perpage + '&name=' +
+                        encodeURIComponent(
+                            query);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            callback(json.data);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+                render: {
+                    option: function(item, escape) {
+                        return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.name) }
+        						</span>
+        						<span class="text-muted">IP ${ escape(item.ip) }</span>
+        					</div>
+        			 		<div class="description">${ escape(item.domain) }</div>
+        				</div>
+        			</div>`;
+                    },
+                },
+            });
+        });
+
+        $('#reset').click(function() {
+            document.getElementById('server').tomselect.clear()
+        })
+
 
         $('.maxlength').maxlength({
             alwaysShow: true,
             placement: "top",
         });
 
-
         Inputmask("ip").mask($(".mask_ip"));
 
-        $(".select2").select2();
-
-        var perpage = 20;
-
-        $("#server, #edit_server").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('server.paginate') }}",
-                data: function(params) {
-                    return {
-                        name: params.term,
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: item.name,
-                                id: item.id,
-                                disabled: item.is_active == 'no' ? true : false,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
+        $('.mask_angka').inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            autoGroup: true,
+            digits: 0,
+            rightAlign: false,
+            removeMaskOnSubmit: true,
+            autoUnmask: true,
+            min: 0,
         });
 
         var table = $('#tableData').DataTable({
@@ -106,27 +140,54 @@
             serverSide: true,
             rowId: 'id',
             ajax: {
-                url: "{{ route('temporaryip.index') }}",
+                url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR.status)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    show_card_add()
+                    input_focus('ip')
+                },
+            }, {
+                text: '<i class="fas fa-caret-down"></i>',
+                extend: 'collection',
+                className: 'btn btn-warning',
+                buttons: [{
+                    text: 'Delete Selected Data',
+                    action: function(e, dt, node, config) {
+                        delete_batch(url_index_api);
+                    }
+                }]
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 width: "30px",
                 title: 'Id',
                 data: 'id',
                 className: "",
-                orderable: !1,
+                orderable: false,
+                searchable: false,
                 render: function(data, type, row, meta) {
                     return `
                     <div class="form-check form-check-primary d-block new-control">
@@ -135,26 +196,25 @@
                 }
             }, {
                 title: "Server",
-                data: 'server_id',
-                render: function(data, type, row, meta) {
-                    if (type == 'display') {
-                        return data == null ? '' : row.server.name
-                    } else {
-                        return data
-                    }
-                }
+                data: 'server.name',
+                orderable: false,
+                className: 'text-start',
             }, {
                 title: "IP",
                 data: 'ip',
+                className: 'text-start',
             }, {
                 title: "Web",
                 data: 'web',
+                className: 'text-start',
             }, {
                 title: "Api",
                 data: 'api',
+                className: 'text-start',
             }, {
                 title: "Win",
                 data: 'win',
+                className: 'text-start',
             }],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
@@ -171,36 +231,19 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            show_card_add()
-            input_focus('ip')
-        })
-
-        $('#btn_delete').click(function() {
-            delete_batch("{{ route('temporaryip.destroy.batch') }}")
-        })
 
         multiCheck(table);
 
-        var id;
-        var url_post = "{{ route('temporaryip.store') }}";
-        var url_put = "{{ route('temporaryip.update', '') }}/" + id;
-        var url_delete = "{{ route('temporaryip.destroy', '') }}/" + id;
-
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
-            url_put = "{{ route('temporaryip.update', '') }}/" + id;
-            url_delete = "{{ route('temporaryip.destroy', '') }}/" + id;
-            id = table.row(this).id()
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit')
             $.ajax({
-                url: "{{ route('temporaryip.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -208,12 +251,11 @@
                     $('#edit_web').val(result.data.web);
                     $('#edit_api').val(result.data.api);
                     $('#edit_win').val(result.data.win);
-                    if (result.data.server_id == null) {
-                        $('#edit_server').val('').trigger('change');
-                    } else {
-                        let option1 = new Option(result.data.server.name, result.data.server_id,
-                            true, true);
-                        $('#edit_server').append(option1).trigger('change');
+                    let tom = document.getElementById('edit_server').tomselect
+                    tom.clear()
+                    if (result.data.server_id != null) {
+                        tom.addOption(result.data.server)
+                        tom.setValue(result.data.server_id)
                     }
                     if (show) {
                         show_card_edit()
@@ -232,4 +274,5 @@
 
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

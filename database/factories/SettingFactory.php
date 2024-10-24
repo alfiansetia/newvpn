@@ -17,9 +17,8 @@ class SettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'telegram_token'    => encrypt(fake()->password()),
-            'telegram_bot_name' => fake()->userName(),
-            'telegram_group_id' => fake()->numberBetween(5674, 546456546),
+            'name'  => fake()->userName(),
+            'value' => fake()->numberBetween(5674, 546456546),
         ];
     }
 }

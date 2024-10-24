@@ -9,59 +9,43 @@ trait CrudTrait
     protected $model;
 
     public $with = [];
+    public $filters = [];
 
     public function paginate()
     {
-        $data = $this->model->paginate(10);
+        $data = $this->model->query()->filter($this->filters)->with($this->with)->paginate(10);
         return response()->json($data);
     }
 
     public function destroyBatch(Request $request)
     {
-        if ($request->ajax()) {
-            $this->validate($request, [
-                'id'    => 'required|array|min:1',
-                'id.*'  => 'required|integer|exists:' . $this->model . ',id',
-            ]);
-            $deleted = 0;
-            foreach ($request->id as $id) {
-                $model = $this->model::findOrFail($id);
-                $model->delete();
-                if ($model) {
-                    $deleted++;
-                }
-            }
-            $data = ['message' => 'Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted), 'data' => ''];
-            return response()->json($data);
-        } else {
-            abort(404);
-        }
+        $this->validate($request, [
+            'id'        => 'required|array|min:1',
+            'id.*'      => 'required|integer|exists:' . $this->model . ',id',
+        ]);
+        $ids = $request->id;
+        $deleted = $this->model::whereIn('id', $ids)->delete();
+        $total = (count($request->id) - $deleted);
+        $message = 'Success Delete : ' . $deleted . ' & Fail : ' . $total;
+        return $this->response($message, $deleted);
     }
 
     public function destroy(Request $request, string $id)
     {
-        if ($request->ajax()) {
-            $data = $this->model::find($id);
-            if (!$data) {
-                return response()->json(['message' => 'Data Not Found!'], 404);
-            }
-            $data->delete();
-            return response()->json(['message' => 'Success Delete Data']);
-        } else {
-            abort(404);
+        $data = $this->model::find($id);
+        if (!$data) {
+            return response()->json(['message' => 'Data Not Found!'], 404);
         }
+        $data->delete();
+        return response()->json(['message' => 'Success Delete Data']);
     }
 
     public function show(Request $request, string $id,)
     {
-        if ($request->ajax()) {
-            $data = $this->model::with($this->with)->find($id);
-            if (!$data) {
-                return response()->json(['message' => 'Data Not Found!'], 404);
-            }
-            return response()->json(['message' => '', 'data' => $data]);
-        } else {
-            abort(404);
+        $data = $this->model::with($this->with)->find($id);
+        if (!$data) {
+            return response()->json(['message' => 'Data Not Found!'], 404);
         }
+        return response()->json(['message' => '', 'data' => $data]);
     }
 }

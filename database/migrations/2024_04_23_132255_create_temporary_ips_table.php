@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('temporary_ips', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('server_id');
             $table->string('ip');
             $table->integer('web')->default(0);
             $table->integer('api')->default(0);
             $table->integer('win')->default(0);
             $table->timestamps();
+            $table->foreign('server_id')->references('id')->on('servers')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

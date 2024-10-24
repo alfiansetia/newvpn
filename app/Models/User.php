@@ -56,11 +56,29 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'id'        => 'integer',
+            'id'                => 'integer',
             'email_verified_at' => 'datetime',
-            'password'  => 'hashed',
+            'password'          => 'hashed',
+            'balance'           => 'integer',
+            'is_verified'       => 'boolean',
+            'is_complete'       => 'boolean',
+            'is_admin'          => 'boolean',
+            'is_active'         => 'boolean',
+            'router_limit'      => 'integer',
         ];
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        if (isset($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+        if (isset($filters['email'])) {
+            $query->where('email', 'like', '%' . $filters['email'] . '%');
+        }
+    }
+
+
     public function vpn()
     {
         return $this->hasMany(Vpn::class);
@@ -77,20 +95,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function is_verified()
     {
-        return $this->email_verified_at != null ? 'verified' : 'unverified';
+        return $this->email_verified_at != null;
     }
 
-    public function notifications()
-    {
-        return $this->hasMany(NotificationUser::class);
-    }
-
-    public function notification_unreads()
-    {
-        return $this->hasMany(NotificationUser::class)->where('is_read', 'no');
-    }
-
-    public function complete()
+    public function is_complete()
     {
         if (
             empty($this->address) || empty($this->phone) || empty($this->phone) || empty($this->instagram)
@@ -104,19 +112,26 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function is_admin()
     {
-        if ($this->role == 'admin') {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->role == 'admin';
+    }
+
+    public function is_active()
+    {
+        return $this->status == 'active';
     }
 
     public function is_not_admin()
     {
-        if ($this->role != 'admin') {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->role != 'admin';
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotificationUser::class);
+    }
+
+    public function notification_unreads()
+    {
+        return $this->hasMany(NotificationUser::class)->where('is_read', 'no');
     }
 }

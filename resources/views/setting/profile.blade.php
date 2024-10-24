@@ -20,7 +20,7 @@
 @endpush
 
 @section('content')
-    @if ($user->complete())
+    @if ($user->is_complete())
         <div class="alert alert-danger layout-top-spacing" role="alert">
             Click <a class="alert-link" href="{{ route('setting.profile.edit') }}">this</a> to Complete Your Profile
             Information!

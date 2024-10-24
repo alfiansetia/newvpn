@@ -14,11 +14,31 @@ class Router extends Model
     protected $casts = [
         'id'        => 'integer',
         'user_id'   => 'integer',
+        'port_id'   => 'integer',
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+        if (isset($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+        if (isset($filters['hsname'])) {
+            $query->where('hsname', 'like', '%' . $filters['hsname'] . '%');
+        }
+        if (isset($filters['dnsname'])) {
+            $query->where('dnsname', 'like', '%' . $filters['dnsname'] . '%');
+        }
+        if (isset($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
+        if (isset($filters['port_id'])) {
+            $query->where('port_id', $filters['port_id']);
+        }
+    }
 
     public function port()
     {

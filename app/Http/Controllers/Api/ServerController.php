@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ServerResource;
 use App\Models\Server;
-use App\Services\ServerApiServices;
+use App\Services\ServerServices;
 use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -70,10 +70,10 @@ class ServerController extends Controller
             'last_ip'       => $request->last_ip,
             'price'         => $request->price,
             'annual_price'  => $request->annual_price,
-            'is_active'     => $request->active ?? 'no',
-            'is_available'  => $request->available ?? 'no',
+            'is_active'     => $request->active == 'on',
+            'is_available'  => $request->available == 'on',
         ]);
-        return $this->send_response('Success Insert Data', new ServerResource($server));
+        return $this->send_response('Success Insert Data');
     }
 
     public function update(Request $request, Server $server)
@@ -106,8 +106,8 @@ class ServerController extends Controller
             'last_ip'       => $request->last_ip,
             'price'         => $request->price,
             'annual_price'  => $request->annual_price,
-            'is_active'     => $request->active ?? 'no',
-            'is_available'  => $request->available ?? 'no',
+            'is_active'     => $request->active == 'on',
+            'is_available'  => $request->available == 'on',
         ];
         if ($request->filled('password')) {
             $param['password'] = encrypt($request->password);
@@ -116,7 +116,7 @@ class ServerController extends Controller
             $param['username'] = $request->username;
         }
         $server->update($param);
-        return $this->send_response('Success Update Data', new ServerResource($server));
+        return $this->send_response('Success Update Data');
     }
 
     public function destroy(Server $server)
@@ -125,29 +125,23 @@ class ServerController extends Controller
         return $this->send_response('Success Delete Data!');
     }
 
-    public function destroy_batch(Request $request)
+    public function destroyBatch(Request $request)
     {
         $this->validate($request, [
-            'id'    => 'required|array|min:1',
-            'id.*'  => 'required|integer|exists:servers,id',
+            'id'        => 'required|array|min:1',
+            'id.*'      => 'integer|exists:servers,id',
         ]);
-        $deleted = 0;
-        foreach ($request->id as $id) {
-            $server = Server::find($id);
-            if ($server) {
-                $server->delete();
-                $deleted++;
-            }
-        }
-        return $this->send_response_not_found('Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted));
+        $ids = $request->id;
+        $deleted = Server::whereIn('id', $ids)->delete();
+        $message = 'Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted);
+        return $this->send_response($message);
     }
 
     public function ping(Server $server)
     {
-        $service  = new ServerApiServices($server);
         try {
-            $ping = $service->ping();
-            return $this->send_response('Connected!', $ping);
+            $ping  = ServerServices::server($server)->ping();
+            return $this->send_response('Server Connected!', $ping);
         } catch (Exception $e) {
             return $this->send_response($e->getMessage(), null, 500);
         }

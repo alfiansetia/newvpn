@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('telegram_token')->nullable();
-            $table->string('telegram_bot_name')->nullable();
-            $table->string('telegram_group_id')->nullable();
+            $table->string('name')->unique();
+            $table->string('value');
             $table->timestamps();
         });
     }

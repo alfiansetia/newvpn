@@ -22,6 +22,8 @@ class BankResource extends JsonResource
             'acc_name'      => $this->acc_name,
             'acc_number'    => $this->acc_number,
             'is_active'     => $this->is_active,
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
         ];
     }
 }

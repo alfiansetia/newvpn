@@ -32,6 +32,8 @@ class ServerResource extends JsonResource
                 'last_ip'   => $this->last_ip,
                 'username'  => $this->username,
             ]),
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
         ];
     }
 }

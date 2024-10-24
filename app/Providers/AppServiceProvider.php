@@ -18,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
             ['*'],
             function ($view) {
                 $view->with('company', Company::first());
-                $view->with('user', User::with('notification_unreads')->withCount('notification_unreads')->find(auth()->id()));
+                // $view->with('user', User::with('notification_unreads')->withCount('notification_unreads')->find(auth()->id()));
+                $view->with('user', auth()->user());
             }
         );
     }

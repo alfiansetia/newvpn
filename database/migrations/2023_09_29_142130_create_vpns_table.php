@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string('ip');
             $table->string('username');
             $table->string('password');
-            // $table->date('regist');
+            $table->boolean('auto_renew')->default(true);
             $table->dateTime('last_renew')->nullable();
             $table->date('expired');
-            $table->enum('is_active', ['yes', 'no'])->default('yes');
-            $table->enum('is_trial', ['yes', 'no'])->default('yes');
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_trial')->default(true);
             $table->string('desc')->nullable();
+            $table->dateTime('last_send_notification')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete()->cascadeOnUpdate();
             $table->foreign('server_id')->references('id')->on('servers')->cascadeOnDelete()->cascadeOnUpdate();

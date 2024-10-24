@@ -1,14 +1,16 @@
 @extends('layouts.backend.template', ['title' => 'Data Bank'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
 
     <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
@@ -35,26 +37,21 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
-    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
 
+    <!-- END PAGE LEVEL SCRIPTS -->
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
-
-    <!-- InputMask -->
-    {{-- <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script> --}}
 
     <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 @endpush
 
 
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
+
     <script>
         // $(document).ready(function() {
 
@@ -63,32 +60,64 @@
             placement: "top",
         });
 
+        const url_index = "{{ route('banks.index') }}"
+        const url_index_api = "{{ route('api.banks.index') }}"
+        var id = 0
+        var perpage = 50
+
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: true,
             rowId: 'id',
             ajax: {
-                url: "{{ route('bank.index') }}",
+                url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    show_card_add()
+                    input_focus('name')
+                },
+            }, {
+                text: '<i class="fas fa-caret-down"></i>',
+                extend: 'collection',
+                className: 'btn btn-warning',
+                buttons: [{
+                    text: 'Delete Selected Data',
+                    action: function(e, dt, node, config) {
+                        delete_batch(url_index_api);
+                    }
+                }]
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 width: "30px",
                 title: 'Id',
                 data: 'id',
                 className: "",
-                orderable: !1,
+                orderable: false,
+                searchable: false,
                 render: function(data, type, row, meta) {
                     return `
                     <div class="form-check form-check-primary d-block new-control">
@@ -103,6 +132,7 @@
                 data: 'acc_name',
             }, {
                 title: "Acc Number",
+                className: "text-start",
                 data: 'acc_number',
             }, {
                 title: "Active",
@@ -110,7 +140,7 @@
                 className: 'text-center',
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
-                        return `<span class="badge badge-${data == 'yes' ? 'success' : 'danger'}">${data == 'yes' ? 'active' : 'nonactive'}</span>`
+                        return `<span class="badge badge-${data ? 'success' : 'danger'}">${data ? 'active' : 'nonactive'}</span>`
                     } else {
                         return data
                     }
@@ -131,47 +161,25 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            show_card_add()
-            input_focus('name')
-        })
-
-        $('#btn_delete').click(function() {
-            delete_batch("{{ route('bank.destroy.batch') }}")
-        })
-
         multiCheck(table);
-
-        var id;
-        var url_post = "{{ route('bank.store') }}";
-        var url_put = "{{ route('bank.update', '') }}/" + id;
-        var url_delete = "{{ route('bank.destroy', '') }}/" + id;
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
-            url_put = "{{ route('bank.update', '') }}/" + id;
-            url_delete = "{{ route('bank.destroy', '') }}/" + id;
-            id = table.row(this).id()
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit')
             $.ajax({
-                url: "{{ route('bank.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
                     $('#edit_name').val(result.data.name);
                     $('#edit_acc_name').val(result.data.acc_name);
                     $('#edit_acc_number').val(result.data.acc_number);
-                    if (result.data.is_active == 'yes') {
-                        $('#edit_is_active').prop('checked', true).change();
-                    } else {
-                        $('#edit_is_active').prop('checked', false).change();
-                    }
+                    $('#edit_is_active').prop('checked', result.data.is_active).change();
                     if (show) {
                         show_card_edit()
                         input_focus('name')
@@ -189,4 +197,6 @@
 
         // });
     </script>
+
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

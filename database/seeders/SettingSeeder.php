@@ -13,8 +13,16 @@ class SettingSeeder extends Seeder
      */
     public function run(): void
     {
-        Setting::factory()->create([
-            'telegram_token' => env('TELEGRAM_BOT_TOKEN')
+        // Setting::factory()->create([
+        //     'telegram_token' => env('TELEGRAM_BOT_TOKEN')
+        // ]);
+        Setting::create([
+            'name' => 'telegram_token',
+            'value' => env('TELEGRAM_BOT_TOKEN'),
+        ]);
+        Setting::create([
+            'name' => 'telegram_group_id',
+            'value' => env('TELEGRAM_GROUP_ID'),
         ]);
     }
 }

@@ -1,13 +1,17 @@
 @extends('layouts.backend.template', ['title' => 'Data Server'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+
 
     <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
@@ -34,15 +38,11 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
 
     <!-- InputMask -->
     <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
@@ -52,20 +52,56 @@
 
 
 @push('js')
-    <script src="{{ asset('js/v1/initial.js') }}"></script>
-    <script src="{{ asset('js/v1/navigation.js') }}"></script>
-    <script src="{{ asset('js/v1/func.js') }}"></script>
-    <script src="{{ asset('js/v1/var.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
 
-        var url_index = "{{ route('api.servers.index') }}"
-        var url_id;
-        var id;
+        const url_index = "{{ route('servers.index') }}"
+        const url_index_api = "{{ route('api.servers.index') }}"
+        var id = 0
+        var perpage = 50
+
+        $('#edit_delete').after(
+            `<button type="button" class="btn btn-info ms-2 mb-2" id="edit_ping"><i class="fas fa-plug me-1 bs-tooltip" title="Ping"></i>Ping</button>`
+        )
+
+        $('#edit_ping').click(function() {
+            ajax_setup()
+            $.ajax({
+                url: `${url_index_api}/${id}/ping`,
+                method: 'GET',
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    block();
+                },
+                success: function(res) {
+                    unblock();
+                    show_alert(res.message, 'success')
+                },
+                error: function(xhr, status, error) {
+                    unblock();
+                    handleResponse(xhr)
+                }
+            })
+        })
 
         $('.maxlength').maxlength({
             alwaysShow: true,
             placement: "top",
+        });
+
+        $('.mask_angka').inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            autoGroup: true,
+            digits: 0,
+            rightAlign: false,
+            removeMaskOnSubmit: true,
+            autoUnmask: true,
+            min: 0,
         });
 
         Inputmask("ip").mask($(".mask_ip"));
@@ -75,27 +111,54 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: url_index,
+                url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    show_card_add()
+                    input_focus('name')
+                },
+            }, {
+                text: '<i class="fas fa-caret-down"></i>',
+                extend: 'collection',
+                className: 'btn btn-warning',
+                buttons: [{
+                    text: 'Delete Selected Data',
+                    action: function(e, dt, node, config) {
+                        delete_batch(url_index_api);
+                    }
+                }]
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 width: "30px",
                 title: 'Id',
                 data: 'id',
                 className: "",
-                orderable: !1,
+                orderable: false,
+                searchable: false,
                 render: function(data, type, row, meta) {
                     return `
                     <div class="form-check form-check-primary d-block new-control">
@@ -107,7 +170,7 @@
                 data: 'name',
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
-                        return `<i class="fas fa-circle bs-tooltip text-${row.is_active == 'yes' ? 'success' : 'danger'}" title="${row.is_active == 'yes' ? 'Active' : 'Nonactive'}"></i> ${data}`;
+                        return `<i class="fas fa-circle bs-tooltip text-${row.is_active ? 'success' : 'danger'}" title="${row.is_active ? 'Active' : 'Nonactive'}"></i> ${data}`;
                     } else {
                         return data
                     }
@@ -124,6 +187,7 @@
             }, {
                 title: "Price",
                 data: 'price',
+                className: 'text-center',
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return hrg(data)
@@ -137,9 +201,10 @@
             }, {
                 title: "Available",
                 data: 'is_available',
+                className: 'text-center',
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
-                        return `<span class="badge badge-${data == 'yes' ? 'success' : 'danger'}">${data == 'yes' ? 'Available' : 'Unvailable'}</span>`;
+                        return `<span class="badge badge-${data ? 'success' : 'danger'}">${data ? 'Available' : 'Unvailable'}</span>`;
                     } else {
                         return data
                     }
@@ -160,21 +225,18 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
         multiCheck(table);
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
-            url_id = url_index + "/" + id
-            $('#formEdit').attr('action', url_id)
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });
 
         function edit(show = false) {
             clear_validate('formEdit')
             $.ajax({
-                url: url_id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -191,16 +253,9 @@
                     $('#edit_price').val(result.data.price);
                     $('#edit_annual_price').val(result.data.annual_price);
                     $('#edit_last_ip').val(result.data.last_ip);
-                    if (result.data.is_active == 'yes') {
-                        $('#edit_active').prop('checked', true).change();
-                    } else {
-                        $('#edit_active').prop('checked', false).change();
-                    }
-                    if (result.data.is_available == 'yes') {
-                        $('#edit_available').prop('checked', true).change();
-                    } else {
-                        $('#edit_available').prop('checked', false).change();
-                    }
+                    $('#edit_active').prop('checked', result.data.is_active).change();
+                    $('#edit_available').prop('checked', result.data.is_available).change();
+
                     if (show) {
                         show_card_edit()
                         input_focus('name')
@@ -218,5 +273,5 @@
 
         // });
     </script>
-    <script src="{{ asset('js/v1/trigger.js') }}"></script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

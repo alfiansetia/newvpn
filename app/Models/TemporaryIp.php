@@ -13,7 +13,18 @@ class TemporaryIp extends Model
 
     protected $casts = [
         'id'        => 'integer',
+        'server_id' => 'integer',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+        if (isset($filters['ip'])) {
+            $query->where('ip', 'like', '%' . $filters['ip'] . '%');
+        }
+        if (isset($filters['server_id'])) {
+            $query->where('server_id', $filters['server_id']);
+        }
+    }
 
     public function server()
     {

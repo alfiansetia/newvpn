@@ -9,7 +9,6 @@ use App\Models\Server;
 use App\Models\TemporaryIp;
 use App\Models\Vpn;
 use App\Services\ServerApiServices;
-use App\Traits\CompanyTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -17,54 +16,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Throwable;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
 class VpnController extends Controller
 {
-    use CompanyTrait;
-
-    public function paginate(Request $request)
-    {
-        $perpage = 10;
-        if ($request->filled('perpage') && $request->perpage > 10 && is_numeric($request->perpage)) {
-            $perpage = $request->perpage;
-        }
-        $data = Vpn::query();
-        if ($request->filled('username')) {
-            $data->where('username', 'like', "%{$request->username}%");
-        }
-        $result = $data->with('server:id,name')->paginate($perpage);
-        return $result;
-    }
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Vpn::query();
-            if ($request->filled('username')) {
-                $data->where('username', 'like', "%{$request->username}%");
-            }
-            if ($request->filled('status')) {
-                $data->where('is_active', '=', $request->status);
-            }
-            if ($request->filled('trial')) {
-                $data->where('is_trial', '=', $request->trial);
-            }
-            if ($request->filled('dst') && is_numeric($request->dst) && $request->dst > 0) {
-                $data->whereRelation('port', 'dst', '=', $request->dst);
-            }
-            if (isAdmin()) {
-                $data->with('user', 'server');
-            } else {
-                $data->where('user_id', '=', auth()->id())->with('server:id,name,ip,domain,netwatch,location,price,is_active');
-            }
-            $result = $data->latest('id')->get();
-            return DataTables::of($result)->toJson();
-        }
         if (isAdmin()) {
             return view('vpn.index');
         } else {
@@ -181,202 +140,7 @@ class VpnController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'email'     => 'required|integer|exists:users,id',
-            'server'    => [
-                'required',
-                'integer',
-                'exists:servers,id',
-                function ($attribute, $value, $fail) {
-                    $server = Server::where('is_active', 'yes')->find($value);
-                    if (!$server) {
-                        $fail('The selected server is not active.');
-                    }
-                }
-            ],
-            'username'     => 'required|max:50|min:4|unique:vpns,username,' . $request->input('username') . ',id,server_id,' . $request->input('server'),
-            'password'     => 'required|max:50|min:4',
-            'ip'           => 'required|ip|unique:vpns,ip,' . $request->input('ip') . ',id,server_id,' . $request->input('server'),
-            'expired'      => 'required|date_format:Y-m-d',
-            'is_active'    => 'nullable|in:on',
-            'is_trial'     => 'nullable|in:on',
-            'sync'         => 'nullable|in:on',
-            'desc'         => 'nullable|max:200',
-        ]);
-        DB::beginTransaction();
-        try {
-            $expired = Carbon::parse($request->expired)->format('Y-m-d');
-            $param = [
-                'user_id'   => $request->input('email'),
-                'server_id' => $request->input('server'),
-                'username'  => $request->input('username'),
-                'password'  => $request->input('password'),
-                'ip'        => $request->input('ip'),
-                'expired'   => $expired,
-                'is_active' => $request->input('is_active') == 'on' ? 'yes' : 'no',
-                'is_trial'  => $request->input('is_trial') == 'on' ? 'yes' : 'no',
-                'desc'      => $request->input('desc'),
-            ];
-            if ($request->sync == 'on') {
-                $server = Server::find($request->input('server'));
-                $service = new ServerApiServices($server);
-                $service->store($param, []);
-            }
-            $vpn = Vpn::create($param);
-            DB::commit();
-            return response()->json(['message' => 'Success Insert Data', 'data' => $vpn]);
-        } catch (Throwable $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Failed Insert Data : ' . $e->getMessage(), 'data' => ''], 500);
-        }
-    }
-
-    public function show(Request $request, string $id)
-    {
-        $user = Auth::user();
-        if ($request->ajax()) {
-            if ($user->is_admin()) {
-                $vpn = Vpn::with('user', 'server', 'port')->find($id);
-            } else {
-                $vpn = Vpn::where('user_id', '=', $user->id)->with('server:id,name,ip,domain,netwatch,location,price,is_active', 'port')->find($id);
-            }
-            if (!$vpn) {
-                return response()->json([
-                    'data'      => null,
-                    'message'   => 'Data Not Found!'
-                ], 404);
-            }
-            return response()->json([
-                'data'      => $vpn,
-                'message'   => ''
-            ]);
-        } else {
-            abort(404);
-        }
-    }
-
-    public function update(Request $request, Vpn $vpn)
-    {
-        $this->validate($request, [
-            'email'     => 'required|integer|exists:users,id',
-            'username'      => 'required|max:50|min:4|unique:vpns,username,' . $vpn->id . ',id,server_id,' . $vpn->server_id,
-            'password'      => 'required|max:50|min:4',
-            'ip'            => 'required|ip|unique:vpns,ip,' . $vpn->id . ',id,server_id,' . $vpn->server_id,
-            'expired'       => 'required|date_format:Y-m-d',
-            'is_active'     => 'nullable|in:on',
-            'is_trial'      => 'nullable|in:on',
-            'sync'          => 'nullable|in:on',
-            'desc'          => 'nullable|max:200',
-        ]);
-        $expired = $request->input('expired');
-        try {
-            $param = [
-                'user_id'   => $request->input('email'),
-                'username'  => $request->input('username'),
-                'password'  => $request->input('password'),
-                'ip'        => $request->input('ip'),
-                'expired'   => $expired,
-                'is_active' => $request->input('is_active') == 'on' ? 'yes' : 'no',
-                'is_trial'  => $request->input('is_trial') == 'on' ? 'yes' : 'no',
-                'desc'      => $request->input('desc'),
-            ];
-            if ($request->sync == 'on') {
-                $service = $this->setServer($vpn);
-                $service->update($vpn, $param);
-            }
-            $vpn->update($param);
-            return response()->json(['message' => 'Success Update Data', 'data' => '']);
-        } catch (Throwable $e) {
-            return response()->json(['message' => 'Failed Update Data : ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function monitor(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Vpn::where('is_active', '=', 'yes')->where('expired', '<=', date('Y-m-d'))->get();
-            $api = ['message' => 'No VPN Expired', 'data' => ''];
-            foreach ($data as $d) {
-                $vpn = Vpn::with('server')->findOrFail($d->id);
-                $ip = ($vpn->server->ip . ($vpn->server->port != 0 ? (':' . $vpn->server->port) : ''));
-                $u = $vpn->server->username;
-                $p = decrypt($vpn->server->password);
-                $param = [
-                    'server'    => [
-                        'ip'    => $ip,
-                        'user'  => $u,
-                        'pass'  => $p,
-                    ],
-                    'data'      => [
-                        'user'      => $vpn->username,
-                        'pass'      => $vpn->password,
-                    ]
-                ];
-                $api = Vpn::disableApi($param);
-                if ($api['status'] == true) {
-                    $d->update([
-                        'is_active' => 0
-                    ]);
-                }
-            }
-            return response()->json($api);
-        } else {
-            abort(404);
-        }
-    }
-
-    public function destroy(Request $request, Vpn $vpn)
-    {
-        if ($request->ajax()) {
-            try {
-                $service = $this->setServer($vpn);
-                $service->destroy($vpn);
-                $vpn->delete();
-                $data = ['message' => 'Success Delete Data!', 'data' => ''];
-                return response()->json($data);
-            } catch (Exception $e) {
-                return response()->json(['message' => $e->getMessage()], 500);
-            }
-        } else {
-            abort(404);
-        }
-    }
-
-    public function destroyBatch(Request $request)
-    {
-        if ($request->ajax()) {
-            $this->validate($request, [
-                'id'    => 'required|array|min:1',
-                'id.*'  => 'required|integer|exists:' . Vpn::class . ',id',
-            ]);
-            // try {
-            $deleted = 0;
-            foreach ($request->id as $id) {
-                $vpn = Vpn::find($id);
-                if ($vpn) {
-                    if ($vpn->server->is_active === 'yes') {
-                        try {
-                            $service = new ServerApiServices($vpn->server);
-                            $service->destroy($vpn);
-                            $vpn->delete();
-                            $deleted++;
-                        } catch (Exception $e) {
-                            // return response()->json(['message' => $e->getMessage(), 500]);
-                        }
-                    }
-                }
-            }
-            $data = ['message' => 'Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted), 'data' => ''];
-            return response()->json($data);
-            // } catch (Exception $e) {
-            //     return response()->json(['message' => $e->getMessage()], 500);
-            // }
-        } else {
-            abort(404);
-        }
-    }
+   
 
     private function setServer(Vpn $vpn)
     {

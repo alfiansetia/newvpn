@@ -89,22 +89,22 @@
                 <ul class="collapse submenu list-unstyled {{ $title == 'Data Vpn' || $title == 'Order Vpn' || $title == 'Data Port' ? 'show' : '' }}"
                     id="vpn_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'Order Vpn' ? 'active' : '' }}">
-                        <a href="{{ route('vpn.create') }}"> Order Vpn </a>
+                        <a href="{{ route('vpns.create') }}"> Order Vpn </a>
                     </li>
                     <li class="{{ $title == 'Data Vpn' ? 'active' : '' }}">
-                        <a href="{{ route('vpn.index') }}"> List Vpn </a>
+                        <a href="{{ route('vpns.index') }}"> List Vpn </a>
                     </li>
                     @if (isAdmin())
                         <li class="{{ $title == 'Data Port' ? 'active' : '' }}">
-                            <a href="{{ route('port.index') }}"> List Port </a>
+                            <a href="{{ route('ports.index') }}"> List Port </a>
                         </li>
                     @endif
                 </ul>
             </li>
 
             <li class="menu {{ $title == 'Data Router' ? 'active' : '' }}">
-                <a href="{{ route('router.index') }}" aria-expanded="{{ $title == 'Data Router' ? 'true' : 'false' }}"
-                    class="dropdown-toggle">
+                <a href="{{ route('routers.index') }}"
+                    aria-expanded="{{ $title == 'Data Router' ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="cloud"></i>
                         <span>List Router</span>
@@ -127,7 +127,7 @@
                     <ul class="collapse submenu list-unstyled {{ $title == 'Data Server' ? 'show' : '' }}"
                         id="server_nav" data-bs-parent="#accordionExample">
                         <li class="{{ $title == 'Data Server' ? 'active' : '' }}">
-                            <a href="{{ url('server') }}"> List Server </a>
+                            <a href="{{ route('servers.index') }}"> List Server </a>
                         </li>
                     </ul>
                 </li>
@@ -186,10 +186,10 @@
                     <ul class="collapse submenu list-unstyled {{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' ? 'show' : '' }}"
                         id="invoice" data-bs-parent="#accordionExample">
                         <li class="{{ $title == 'Data Bank' ? 'active' : '' }}">
-                            <a href="{{ route('bank.index') }}"> Bank </a>
+                            <a href="{{ route('banks.index') }}"> Bank </a>
                         </li>
                         <li class="{{ $title == 'Data User' ? 'active' : '' }}">
-                            <a href="{{ route('user.index') }}"> User </a>
+                            <a href="{{ route('users.index') }}"> User </a>
                         </li>
                         <li class="{{ $title == 'Data Temporary IP' ? 'active' : '' }}">
                             <a href="{{ route('temporaryip.index') }}"> Temporary IP </a>

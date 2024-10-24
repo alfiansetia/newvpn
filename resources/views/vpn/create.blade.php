@@ -1,7 +1,7 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_add" style="display: none;">
     <div class="widget-content widget-content-area br-8">
 
-        <form id="form" action="" method="POST">
+        <form id="form" class="was-validated" action="{{ route('api.vpns.index') }}" method="POST">
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"
@@ -13,8 +13,8 @@
                             <label for="email"><i class="far fa-envelope me-1 bs-tooltip"
                                     title="Option Email User"></i>Email
                                 :</label>
-                            <select name="email" id="email" class="form-control" style="width: 100%;" required>
-                                <option value="">Please Select Email</option>
+                            <select name="email" id="email" class="form-control-lg tomse-user"
+                                style="width: 100%;" required>
                             </select>
                             <span id="err_email" class="error invalid-feedback" style="display: hide;"></span>
                         </div>
@@ -22,8 +22,8 @@
                             <label for="server"><i class="fas fa-server me-1 bs-tooltip"
                                     title="Option Server"></i>Server
                                 :</label>
-                            <select name="server" id="server" class="form-control" style="width: 100%;" required>
-                                <option value="">Please Select Server</option>
+                            <select name="server" id="server" class="form-control-lg tomse-server"
+                                style="width: 100%;" required>
                             </select>
                             <span id="err_server" class="error invalid-feedback" style="display: hide;"></span>
                         </div>

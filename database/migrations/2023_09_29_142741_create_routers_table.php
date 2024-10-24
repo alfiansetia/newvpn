@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('dnsname');
             $table->string('username');
             $table->string('password');
+            $table->string('contact')->nullable();
+            $table->string('url_logo')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('port_id')->references('id')->on('ports')->cascadeOnUpdate()->nullOnDelete();

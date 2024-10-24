@@ -16,9 +16,12 @@ class VoucherTemplateResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id'        => $this->id,
-            'html_vc'   => $this->html_vc,
-            'html_up'   => $this->html_up,
+            'id'            => $this->id,
+            'DT_RowId'      => $this->id,
+            'html_vc'       => $this->html_vc,
+            'html_up'       => $this->html_up,
+            'created_at'    => $this->created_at,
+            'updated_at'    => $this->updated_at,
         ];
     }
 }
