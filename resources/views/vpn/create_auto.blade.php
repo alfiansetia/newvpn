@@ -1,16 +1,17 @@
 @extends('layouts.backend.template', ['title' => 'Order Vpn'])
 @push('csslib')
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
-
     <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/pricing-table/css/component.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/dark/pricing-table/css/component.css') }}" rel="stylesheet"
         type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
 @endpush
 @section('content')
     <div class="middle-content container-xxl p-0">
@@ -88,125 +89,31 @@
                 </blockquote>
             </div>
 
-
-            <div class="col-lg-12 layout-spacing layout-top-spacing">
-                <div class="statbox widget box box-shadow">
-                    <div class="widget-content widget-content-area">
-
-                        <div class="pricing-table-2 ">
-
-                            <!-- Billing Cycle  -->
-                            <div class="billing-cycle-radios mt-5">
-
-                                <div
-                                    class="switch form-switch-custom switch-inline form-switch-primary form-switch-custom inner-label-toggle show">
-                                    <div class="input-checkbox">
-                                        <span class="switch-chk-label label-left">Monthly</span>
-                                        <input class="switch-input" type="checkbox" role="switch" id="toggle-1" checked
-                                            onchange="this.checked ? this.closest('.inner-label-toggle').classList.add('show') : this.closest('.inner-label-toggle').classList.remove('show')">
-                                        <span class="switch-chk-label label-right">Yearly</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- Pricing Plans Container -->
-                            <div class="pricing-plans-container mt-5 billed-yearly">
-                                <!-- Plan -->
-                                @foreach ($servers as $key => $item)
-                                    <div class="pricing-plan mb-5 me-3 {{ $key == 0 ? 'recommanded' : '' }}">
-                                        @php
-                                            $hargaAsli = $item->price * 12;
-                                            $hargaDiskon = $item->annual_price;
-                                            $diskon = ceil((($hargaAsli - $hargaDiskon) / $hargaAsli) * 100);
-                                        @endphp
-                                        <span class="badge badge-pill badge-warning show">{{ $diskon }}% Off</span>
-
-                                        <div class="pricing-header-section">
-                                            <div class="pricing-header">
-                                                <h3>{{ $item->name }}</h3>
-                                                <p>{{ $item->location }}</p>
-                                            </div>
-
-                                            <div class="pricing-header-pricing">
-                                                <p class="pricing monthly-pricing">
-                                                    {{ hrg($item->price) }}
-                                                    <br><span class="sub-title monthly-pricing-label">Per month</span>
-                                                </p>
-                                                <p class="pricing yearly-pricing">
-                                                    {{ hrg($item->annual_price) }}
-                                                    <br><span class="sub-title monthly-pricing-label">Per Year</span>
-                                                </p>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="pricing-plan-features mb-4">
-                                            <ul>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> 1 Day Trial
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> Custom Username
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> Custom Password
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> 3 Port (80, 8728, 8291)
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> Api APP
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> Speedtest Support
-                                                </li>
-                                                <li>
-                                                    <span><i data-feather="check"></i></span> Server
-                                                    {{ $item->location }}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <a href="javascript:void(0);" class="button btn btn-dark btn-block margin-top-20"
-                                            onclick="open_modal('{{ $key }}')">Select</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
+            <form id="form" class="was-validated" action="{{ route('api.vpns.autocreate') }}" method="POST">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="modal-title"><i class="fas fa-plus me-1 bs-tooltip" title="Create VPN"></i>Create VPN
+                        </h5>
                     </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <form id="formcreate" action="" method="POST">
-        <div class="modal animated fade fadeInDown" id="modalAdd" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"
-                                title="Add Data"></i>Create VPN Trial</h5>
-                        <button type="button" class="btn-close bs-tooltip" data-bs-dismiss="modal" aria-label="Close"
-                            title="Close">
-                            <i data-feather="x"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+                    <div class="card-body">
                         <div class="row mb-2">
                             <div class="form-group col-md-12">
                                 <label for="server"><i class="fas fa-server me-1 bs-tooltip" title="Server"></i>Server
                                     :</label>
-                                <select class="form-control" name="server" id="server" style="width: 100%" disabled
-                                    required>
-                                    <option value="">Select Server</option>
-                                    @foreach ($servers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }} {{ $item->location }}
-                                            ({{ $item->domain }})
-                                        </option>
-                                    @endforeach
+                                <select class="form-control-lg tomse-server" name="server" id="server"
+                                    style="width: 100%" required>
                                 </select>
-                                <span id="err_server" class="error invalid-feedback" style="display: hide;"></span>
+                                <span class="error invalid-feedback err_server" style="display: hide;"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="form-group col-md-12">
+                                <label for="qty"><i class="fas fa-dollar-sign me-1 bs-tooltip"
+                                        title="Qty Order"></i>Qty Order :</label>
+                                <select class="form-control" name="qty" id="qty" style="width: 100%" required>
+                                    <option value="0">1 Hari Trial (Rp. 0)</option>
+                                </select>
+                                <span class="error invalid-feedback err_qty" style="display: hide;"></span>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -217,9 +124,9 @@
                                     <input type="text" name="username" class="form-control maxlength" id="username"
                                         placeholder="Please Enter Username" minlength="4" maxlength="50"
                                         aria-describedby="sufiks" oninput="setLowercase()" required>
-                                    <span class="input-group-text" id="sufiks">@example.com</span>
+                                    <span class="input-group-text" id="sufiks">@kacangan.net</span>
                                 </div>
-                                <span id="err_username" class="error invalid-feedback" style="display: hide;"></span>
+                                <span class="error invalid-feedback err_username" style="display: hide;"></span>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -228,34 +135,45 @@
                                         title="Password Vpn"></i>Password Vpn :</label>
                                 <input type="text" name="password" class="form-control maxlength" id="password"
                                     placeholder="Please Enter Password" minlength="4" maxlength="50" required>
-                                <span id="err_password" class="error invalid-feedback" style="display: hide;"></span>
+                                <span class="error invalid-feedback err_password" style="display: hide;"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
-                                class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-1 bs-tooltip"
-                                title="Save"></i>Save</button>
+                    <div class="card-footer text-center">
+                        <div class="row">
+                            <div class="col-12">
+                                {{-- <button type="button" class="btn btn-secondary show-index"><i
+                                        class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button> --}}
+                                <button type="reset" id="reset" class="btn btn-warning"><i
+                                        class="fas fa-undo me-1 bs-tooltip" title="Reset"></i>Reset</button>
+                                <button type="submit" class="btn btn-primary"><i
+                                        class="fas fa-paper-plane me-1 bs-tooltip" title="Save"></i>Save</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
+            {{-- </div> --}}
+            {{-- </div> --}}
+
+
         </div>
-    </form>
+    </div>
 @endsection
 @push('jslib')
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
-
     <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
 
 @push('js')
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         function setLowercase() {
             var inputElement = document.getElementById('username');
@@ -267,90 +185,94 @@
             alwaysShow: true
         });
 
-        $("#server").select2({
-            dropdownParent: $("#modalAdd"),
+        const perpage = 50;
+
+        var tomse = new TomSelect('#server', {
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Please Select Server",
+            allowEmptyOption: true,
+            onChange: function(value) {
+                $('#qty').empty()
+                $("#qty").append(new Option(`1 Hari Trial (Rp. 0)`, 0));
+                if (value != '') {
+                    let js = tomse.options[value];
+                    $('#sufiks').text(js.sufiks)
+                    for (let i = 1; i <= 6; i++) {
+                        $("#qty").append(new Option(`${i} Bulan, (Rp. ${hrg(i*js.price)})`, i));
+                    }
+                    $("#qty").append(new Option(`1 Tahun Rp. ${hrg(js.annual_price)}`, 12));
+
+                } else {
+                    $('#sufiks').text('@kacangan.net')
+                }
+
+            },
+            load: function(query, callback) {
+                var url = '{{ route('api.servers.paginate') }}?is_available=1&limit=' + perpage +
+                    '&name=' +
+                    encodeURIComponent(
+                        query);
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => {
+                        callback(json.data);
+                    }).catch(() => {
+                        callback();
+                    });
+            },
+            render: {
+                option: function(item, escape) {
+                    return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.name) }
+        						</span>
+        						<span class="text-muted"> (${ escape(item.location) })</span>
+        					</div>
+        			 		<div class="description">${ escape(item.domain) } </div>
+        			 		<div class="description">
+                                (Rp. ${hrg(item.price)})
+                                <span class="badge badge-${item.is_available ? 'success': 'danger'}">${item.is_available ? 'available': 'unavailable'}</span>
+                                </div>
+        				</div>
+        			</div>`;
+                },
+                item: function(item, escape) {
+                    return `<span>${item.name} (${item.location})</span>`
+                }
+            },
         });
 
-        servers = @json($servers)
-
-        function open_modal(key) {
-            server = servers[key]
-            $('#server').val(server.id).change()
-            $('#sufiks').text(server.sufiks)
-            $('#modalAdd').modal('show')
-        }
 
         var getSwithchInput = document.querySelector('#toggle-1');
         var pricingContainer = document.querySelector('.pricing-plans-container')
 
-        getSwithchInput.addEventListener('change', function() {
-            var isChecked = getSwithchInput.checked;
-            if (isChecked) {
-                pricingContainer.classList.add('billed-yearly');
+        // getSwithchInput.addEventListener('change', function() {
+        //     var isChecked = getSwithchInput.checked;
+        //     if (isChecked) {
+        //         pricingContainer.classList.add('billed-yearly');
 
-                pricingContainer.querySelectorAll('.badge').forEach(element => {
-                    element.classList.add('show')
-                });
+        //         pricingContainer.querySelectorAll('.badge').forEach(element => {
+        //             element.classList.add('show')
+        //         });
 
-            } else {
-                pricingContainer.classList.remove('billed-yearly')
-                pricingContainer.querySelectorAll('.badge').forEach(element => {
-                    element.classList.remove('show')
-                });
-            }
+        //     } else {
+        //         pricingContainer.classList.remove('billed-yearly')
+        //         pricingContainer.querySelectorAll('.badge').forEach(element => {
+        //             element.classList.remove('show')
+        //         });
+        //     }
+        // })
+
+
+        $('#reset').click(function btn_reset() {
+            $("#qty").val(0).change()
+            document.getElementById('server').tomselect.clear()
         })
-
-        $('#formcreate').submit(function(event) {
-            event.preventDefault();
-        }).validate({
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-                $(element).addClass('is-valid');
-            },
-            submitHandler: function(form) {
-                ajax_setup();
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('vpn.autocreate') }}",
-                    data: {
-                        username: $('#username').val().toLowerCase(),
-                        password: $('#password').val().toLowerCase(),
-                        server: $('#server').val(),
-                    },
-                    beforeSend: function() {
-                        block();
-                        clear_validate($('#formcreate'))
-                    },
-                    success: function(res) {
-                        unblock();
-                        btn_reset();
-                        Swal.fire(
-                            'Success!',
-                            res.message,
-                            'success'
-                        )
-                    },
-                    error: function(xhr, status, error) {
-                        unblock();
-                        handleResponseForm(xhr)
-
-                    }
-                });
-            }
-        });
-
-        function btn_reset() {
-            clear_validate($('#formcreate'))
-            $('#username').val('')
-            $('#password').val('')
-        }
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

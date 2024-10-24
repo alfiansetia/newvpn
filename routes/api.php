@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('ports', [PortController::class, 'destroyBatch'])->name('api.ports.destroy.batch');
         Route::apiResource('ports', PortController::class)->names('api.ports');
 
+        Route::post('vpns-create', [VpnController::class, 'autoCreate'])->name('api.vpns.autocreate');
         Route::get('vpn-paginate-user', [VpnController::class, 'paginateUser'])->name('api.vpns.paginate.user');
         Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('api.vpns.paginate');
         Route::delete('vpns', [VpnController::class, 'destroyBatch'])->name('api.vpns.destroy.batch');

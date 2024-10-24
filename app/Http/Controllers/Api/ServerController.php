@@ -20,8 +20,9 @@ class ServerController extends Controller
 
     public function paginate(Request $request)
     {
+        $limit = $this->get_limit($request);
         $filters = $request->only(['name', 'ip', 'domain', 'is_active', 'is_available']);
-        $query = Server::query()->filter($filters)->paginate(intval($request->limit ?? 10));
+        $query = Server::query()->filter($filters)->paginate($limit);
         return ServerResource::collection($query);
     }
 

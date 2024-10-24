@@ -266,13 +266,11 @@ function send_ajax(formID, method) {
             refresh = true
             unblock();
             show_index()
-            table.ajax.reload();
+            if(typeof(table) != 'undefined'){
+                table.ajax.reload();
+            }
             reset();
-            Swal.fire(
-                'Success!',
-                res.message,
-                'success'
-            )
+            show_alert(res.message, 'success')
         },
         error: function (xhr, status, error) {
             unblock();

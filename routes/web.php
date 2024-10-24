@@ -110,57 +110,56 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('bank-paginate', [BankController::class, 'paginate'])->name('bank.paginate');
 
-        Route::group(['middleware' => ['role:admin']], function () {
+        // Route::group(['middleware' => ['role:admin']], function () {
 
-            Route::resource('invoice', InvoiceController::class)->only(['store', 'update', 'destroy',]);
+        Route::resource('invoice', InvoiceController::class)->only(['store', 'update', 'destroy',]);
 
-            Route::get('users', [UserController::class, 'index'])->name('users.index');
-            Route::get('banks', [BankController::class, 'index'])->name('banks.index');
-            Route::get('temporaryip', [TemporaryIpController::class, 'index'])->name('temporaryip.index');
-            Route::get('servers', [ServerController::class, 'index'])->name('servers.index');
-            Route::get('ports', [PortController::class, 'index'])->name('ports.index');
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('banks', [BankController::class, 'index'])->name('banks.index');
+        Route::get('temporaryip', [TemporaryIpController::class, 'index'])->name('temporaryip.index');
+        Route::get('servers', [ServerController::class, 'index'])->name('servers.index');
+        Route::get('ports', [PortController::class, 'index'])->name('ports.index');
 
-            Route::get('vpns-create', [VpnController::class, 'create'])->name('vpns.create');
-            Route::post('vpns-create', [VpnController::class, 'autocreate'])->name('vpns.autocreate');
-            Route::get('vpns', [VpnController::class, 'index'])->name('vpns.index');
-
+        Route::get('vpns-create', [VpnController::class, 'create'])->name('vpns.create');
+        Route::get('vpns', [VpnController::class, 'index'])->name('vpns.index');
 
 
 
-            Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('vpn.paginate');
-            Route::post('vpn/{vpn}/temporary', [VpnController::class, 'temporary'])->name('vpn.temporary');
-            Route::get('vpn/{vpn}/analyze', [VpnController::class, 'analyze'])->name('vpn.analyze');
-            Route::post('vpn/{vpn}/send-email', [VpnController::class, 'sendEmail'])->name('vpn.send.email');
-            Route::delete('vpn-batch', [VpnController::class, 'destroyBatch'])->name('vpn.destroy.batch');
-            Route::resource('vpn', VpnController::class)->only(['store', 'update', 'destroy']);
 
-            Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
-            Route::resource('template', VoucherTemplateController::class)->except(['create']);
+        Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('vpn.paginate');
+        Route::post('vpn/{vpn}/temporary', [VpnController::class, 'temporary'])->name('vpn.temporary');
+        Route::get('vpn/{vpn}/analyze', [VpnController::class, 'analyze'])->name('vpn.analyze');
+        Route::post('vpn/{vpn}/send-email', [VpnController::class, 'sendEmail'])->name('vpn.send.email');
+        Route::delete('vpn-batch', [VpnController::class, 'destroyBatch'])->name('vpn.destroy.batch');
+        Route::resource('vpn', VpnController::class)->only(['store', 'update', 'destroy']);
 
-            // Company
-            Route::get('setting/company/general', [CompanyController::class, 'general'])->name('setting.company.general');
-            Route::post('setting/company/general', [CompanyController::class, 'generalUpdate'])->name('setting.company.general.update');
+        Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
+        Route::resource('template', VoucherTemplateController::class)->except(['create']);
 
-            Route::get('setting/company/image', [CompanyController::class, 'image'])->name('setting.company.image');
-            Route::post('setting/company/image', [CompanyController::class, 'imageUpdate'])->name('setting.company.image.update');
+        // Company
+        Route::get('setting/company/general', [CompanyController::class, 'general'])->name('setting.company.general');
+        Route::post('setting/company/general', [CompanyController::class, 'generalUpdate'])->name('setting.company.general.update');
 
-            Route::get('setting/company/social', [CompanyController::class, 'social'])->name('setting.company.social');
-            Route::post('setting/company/social', [CompanyController::class, 'socialUpdate'])->name('setting.company.social.update');
+        Route::get('setting/company/image', [CompanyController::class, 'image'])->name('setting.company.image');
+        Route::post('setting/company/image', [CompanyController::class, 'imageUpdate'])->name('setting.company.image.update');
 
-            Route::get('setting/company/telegram', [SettingController::class, 'telegram'])->name('setting.company.telegram');
-            Route::post('setting/company/telegram', [SettingController::class, 'telegramUpdate'])->name('setting.company.telegram.update');
-            Route::put('setting/company/telegram', [SettingController::class, 'telegramSet'])->name('setting.company.telegram.set');
+        Route::get('setting/company/social', [CompanyController::class, 'social'])->name('setting.company.social');
+        Route::post('setting/company/social', [CompanyController::class, 'socialUpdate'])->name('setting.company.social.update');
 
-            Route::get('setting/company/backup', [SettingController::class, 'backup'])->name('setting.company.backup');
+        Route::get('setting/company/telegram', [SettingController::class, 'telegram'])->name('setting.company.telegram');
+        Route::post('setting/company/telegram', [SettingController::class, 'telegramUpdate'])->name('setting.company.telegram.update');
+        Route::put('setting/company/telegram', [SettingController::class, 'telegramSet'])->name('setting.company.telegram.set');
 
-            Route::delete('database-batch', [DatabaseBackupController::class, 'destroyBatch'])->name('database.destroy.batch');
-            Route::get('database-detail/{file}', [DatabaseBackupController::class, 'download'])->name('database.download');
-            Route::get('database', [DatabaseBackupController::class, 'index'])->name('database.index');
-            Route::post('database', [DatabaseBackupController::class, 'store'])->name('database.store');
-            Route::delete('database/{file}', [DatabaseBackupController::class, 'destroy'])->name('database.destroy');
+        Route::get('setting/company/backup', [SettingController::class, 'backup'])->name('setting.company.backup');
 
-            Route::get('tools/phpinfo', [ToolController::class, 'php_info'])->name('tool.phpinfo');
-        });
+        Route::delete('database-batch', [DatabaseBackupController::class, 'destroyBatch'])->name('database.destroy.batch');
+        Route::get('database-detail/{file}', [DatabaseBackupController::class, 'download'])->name('database.download');
+        Route::get('database', [DatabaseBackupController::class, 'index'])->name('database.index');
+        Route::post('database', [DatabaseBackupController::class, 'store'])->name('database.store');
+        Route::delete('database/{file}', [DatabaseBackupController::class, 'destroy'])->name('database.destroy');
+
+        Route::get('tools/phpinfo', [ToolController::class, 'php_info'])->name('tool.phpinfo');
+        // });
     });
 });
 
