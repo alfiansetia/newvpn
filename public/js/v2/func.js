@@ -279,6 +279,31 @@ function send_ajax(formID, method) {
     })
 }
 
+function send_ajax_only(formID, method) {
+    ajax_setup()
+    let data = new FormData($('#' + formID)[0])
+    data.append('_method', method)
+    $.ajax({
+        url: $('#' + formID).attr('action'),
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        data: data,
+        beforeSend: function () {
+            block();
+            clear_validate(formID)
+        },
+        success: function (res) {
+            unblock()
+            show_alert(res.message, 'success')
+        },
+        error: function (xhr, status, error) {
+            unblock();
+            handleResponseForm(xhr, formID)
+        }
+    })
+}
+
 // function send_delete(url) {
 //     ajax_setup()
 //     $.ajax({

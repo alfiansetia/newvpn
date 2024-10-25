@@ -283,22 +283,18 @@
                 ajax_setup()
                 $.ajax({
                     type: 'POST',
-                    url: "{{ url('vpn') }}/" + id + '/send-email',
+                    url: `${url_index_api}/${id}/send-email`,
                     data: $(form).serialize(),
                     beforeSend: function() {
                         block();
                     },
                     success: function(res) {
                         unblock();
-                        Swal.fire(
-                            'Success!',
-                            res.message,
-                            'success'
-                        )
+                        show_alert(res.message, 'success')
                     },
                     error: function(xhr, status, error) {
                         unblock();
-                        handleResponseForm(xhr, 'add')
+                        handleResponseForm(xhr, 'form_send_email')
                         Swal.fire(
                             'Failed!',
                             xhr.responseJSON.message,
@@ -592,6 +588,10 @@
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
             $('#formEdit').attr('action', url_index_api + "/" + id)
+            let data = table.row(this).data()
+            if (data.user != null) {
+                $('#input_send_email').val(data.user.email)
+            }
             edit(true)
         });
 
@@ -735,20 +735,16 @@
                     ajax_setup();
                     $.ajax({
                         type: 'POST',
-                        url: url_api_temp,
+                        url: `${url_index_api}/${id}/temporary`,
                         beforeSend: function() {
                             block();
                         },
                         success: function(res) {
                             refresh = true
-                            unblock();
-                            table.ajax.reload();
-                            Swal.fire(
-                                'Success!',
-                                res.message,
-                                'success'
-                            )
                             show_index()
+                            table.ajax.reload();
+                            show_alert(res.message, 'success')
+                            unblock();
                         },
                         error: function(xhr, status, error) {
                             unblock();

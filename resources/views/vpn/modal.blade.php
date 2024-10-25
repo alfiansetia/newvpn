@@ -1,4 +1,4 @@
-<form id="form_send_email" class="form-vertical" action="" method="POST">
+<form id="form_send_email" class="form-vertical was-validated" action="" method="POST">
     <div class="modal animated fade fadeInDown" id="modalSendEmail" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">

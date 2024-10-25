@@ -19,9 +19,11 @@ class BalanceHistory extends Model
         'after'     => 'integer',
     ];
 
-    public function bank()
+    public function scopeFilter($query, array $filters)
     {
-        return $this->belongsTo(Bank::class);
+        if (isset($filters['user_id'])) {
+            $query->where('user_id',  $filters['user_id']);
+        }
     }
 
     public function user()

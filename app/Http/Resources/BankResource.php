@@ -17,7 +17,7 @@ class BankResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id'            => $this->id,
-            'DT_RowId'      => $this->dst,
+            'DT_RowId'      => $this->id,
             'name'          => $this->name,
             'acc_name'      => $this->acc_name,
             'acc_number'    => $this->acc_number,

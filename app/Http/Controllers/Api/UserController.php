@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $filters = $request->only(['name', 'email']);
+        $filters = $request->only(['name', 'email']);
         $query = User::query()->filter($filters);
         return DataTables::eloquent($query)->setTransformer(function ($item) {
             return UserResource::make($item)->resolve();

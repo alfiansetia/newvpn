@@ -3,20 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BalanceHistoryResource;
 use App\Models\BalanceHistory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class BalanceHistoryController extends Controller
 {
+
     public function index(Request $request)
     {
-        $data = BalanceHistory::query()
-            ->where('user_id', auth()->id())->get();
-        if ($request->dt == 'on') {
-            return DataTables::of($data)->toJson();
-        } else {
-            return response()->json($data);
-        }
+        $filters['user_id'] = auth()->id();
+        $query = BalanceHistory::query()->with(['user'])->filter($filters);
+        return FacadesDataTables::eloquent($query)->setTransformer(function ($item) {
+            return BalanceHistoryResource::make($item)->resolve();
+        })->toJson();
+    }
+
+    public function show(BalanceHistory $balance_history)
+    {
+        return new BalanceHistoryResource($balance_history->load(['user']));
     }
 }

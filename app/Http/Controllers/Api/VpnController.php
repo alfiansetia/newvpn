@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VpnResource;
+use App\Mail\DetailVpnMail;
 use App\Models\BalanceHistory;
 use App\Models\Port;
 use App\Models\Server;
@@ -11,8 +12,11 @@ use App\Models\TemporaryIp;
 use App\Models\Vpn;
 use App\Services\VpnServices;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -271,6 +275,7 @@ class VpnController extends Controller
                 'ip'        => $jadi,
                 'expired'   => $exp,
                 'is_active' => 1,
+                'is_trial'  => intval($qty) == 0,
             ]);
             if ($temp) {
                 $temp->delete();
@@ -301,5 +306,125 @@ class VpnController extends Controller
             DB::rollBack();
             return $this->send_error($th->getMessage());
         }
+    }
+
+    public function temporary(Request $request, Vpn $vpn)
+    {
+        $vpn->load(['ports', 'server']);
+        $ports = $vpn->ports;
+        $count_port = count($ports ?? []);
+        if ($count_port != 3) {
+            return $this->send_response_unauthorize('Vpn Not Suitable for move to temporary : port available ' . $count_port);
+        }
+        DB::beginTransaction();
+        try {
+            TemporaryIp::create([
+                'server_id' => $vpn->server_id,
+                'ip'        => $vpn->ip,
+                'web'       => $ports[0]->dst,
+                'api'       => $ports[1]->dst,
+                'win'       => $ports[2]->dst,
+            ]);
+            $service = VpnServices::server($vpn->server)->destroy($vpn);
+            $vpn->delete();
+            DB::commit();
+            return $this->send_response('Success Move Vpn to Temporary!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return $this->send_error($th->getMessage());
+        }
+    }
+
+    public function sendEmail(Request $request, Vpn $vpn)
+    {
+        $this->validate($request, [
+            'email' => 'required|email:rfc,dns'
+        ]);
+        $to = $request->email;
+        try {
+            Mail::to($to)->queue(new DetailVpnMail($vpn));
+            $vpn->update(['last_email' => date('Y-m-d H:i:s')]);
+            return $this->send_response('Success Send Email to ' . $to);
+        } catch (\Throwable $th) {
+            return $this->send_error('Failed Send Email : ' . $th->getMessage());
+        }
+    }
+
+    public function extend(Request $request, Vpn $vpn)
+    {
+        $this->validate($request, [
+            'amount' => 'required|in:1,2,3,4,5,6,12'
+        ]);
+        $user = auth()->user();
+        if (!$user->is_admin() && $vpn->user_id != $user->id) {
+            return $this->send_response_unauthorize('This not your VPN!');
+        }
+        $vpn->load(['server', 'ports']);
+        $server = $vpn->server;
+        $user_balance = $user->balance;
+        $month = $request->amount;
+        $amount = $server->price * $month;
+        if ($month == 12) {
+            $amount = $server->annual_price * $amount;
+        }
+        if ($user_balance < $amount) {
+            return $this->send_response_unauthorize('Your Balance Not Enough, Please topup!');
+        }
+        DB::beginTransaction();
+        try {
+            $vpn_expired = $vpn->expired;
+
+            $new_expired = Carbon::parse($vpn_expired)->addMonths($month)->format('Y-m-d');
+            if ($vpn->is_expired()) {
+                $new_expired = Carbon::now()->addMonths($month)->format('Y-m-d');
+            }
+            $old = $vpn->toArray();
+            $vpn->update([
+                'expired'       => $new_expired,
+                'is_active'     => 1,
+                'is_trial'      => 0,
+                'last_renew'    => date('Y-m-d H:i:s'),
+            ]);
+            $new = $vpn->fresh();
+            $service = VpnServices::server($server)->update($old, $new);
+            $new_balance =  $user_balance - $amount;
+            $user->update([
+                'balance' => $new_balance,
+            ]);
+            BalanceHistory::create([
+                'date'      => date('Y-m-d H:i:s'),
+                'user_id'   => $user->id,
+                'amount'    => $amount,
+                'type'      => 'min',
+                'before'    => $user_balance,
+                'after'     => $new_balance,
+                'desc'      => 'Extend ' . $vpn->username . ' ' . $month . ' Month',
+            ]);
+            DB::commit();
+            return $this->send_response('Success Extend Vpn ' . $month . ' Month!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return $this->send_error('Failed Extend Vpn : ' . $th->getMessage());
+        }
+    }
+
+    public function download(Request $request, Vpn $vpn)
+    {
+        $path = storage_path('app/files/vpn');
+        $file_name = generateUsername($vpn->username) . '.rsc';
+        $content = "/interface sstp-client add";
+        $content .= " connect-to=\"" . $vpn->server->domain . "\" ";
+        $content .= " name=\"$vpn->username\" ";
+        $content .= " user=\"$vpn->username\" ";
+        $content .= " password=\"$vpn->username\" ";
+        $content .= " disabled=\"no\" ";
+        $content .= " comment=\"<<==" . $vpn->server->domain . "==>\"; ";
+        $content .= " /tool netwatch add host=\"192.168.168.1\"  ";
+        $content .= " comment=\"<<==" . $vpn->server->domain . "==>\"; ";
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 755, true);
+        }
+        File::put($path . '/' . $file_name, $content);
+        return response()->file($path . '/' . $file_name)->deleteFileAfterSend();
     }
 }

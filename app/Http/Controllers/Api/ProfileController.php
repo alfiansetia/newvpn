@@ -3,23 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
-    public function profile()
-    {
-        return new UserResource(auth()->user());
-    }
-
-    public function profileUpdate(Request $request)
+    public function general(Request $request)
     {
         $user = auth()->user();
         $this->validate($request, [
             'name'      => 'required|max:25|min:3',
-            'gender'    => 'in:Male,Female',
+            'gender'    => 'in:male,female',
             'phone'     => 'required|max:25|min:3',
             'address'   => 'required|max:100|min:3',
         ]);
@@ -29,27 +24,40 @@ class ProfileController extends Controller
             'phone'    => $request->phone,
             'address'  => $request->address,
         ]);
-        return response()->json(['message' => 'Success Update Profile!']);
+        return $this->send_response('Success Update Profile!');
     }
 
-    public function passwordUpdate(Request $request)
+    public function social(Request $request)
     {
         $user = auth()->user();
         $this->validate($request, [
-            'current_password'  => [
-                'required',
-                function ($attribute, $value, $fail) use ($request, $user) {
-                    if (!Hash::check($request->current_password, $user->password)) {
-                        $fail('Current password is incorrect.');
-                    }
-                }
-            ],
-            'new_password'      => 'required|min:6|confirmed',
+            'instagram' => 'required|max:30|min:3',
+            'facebook'  => 'required|max:30|min:3',
+            'linkedin'  => 'required|max:30|min:3',
+            'github'    => 'required|max:30|min:3',
         ]);
+        $user->Update([
+            'instagram' => $request->instagram,
+            'facebook'  => $request->facebook,
+            'linkedin'  => $request->linkedin,
+            'github'    => $request->github,
+        ]);
+        return $this->send_response('Success Update Profile!');
+    }
 
-        $user->update([
-            'password' => Hash::make($request->new_password),
+    public function password(Request $request)
+    {
+        $user = auth()->user();
+        $this->validate($request, [
+            'password'  => ['required', 'same:password_confirmation', Password::min(8)->numbers()],
+            'password_confirmation' => 'required',
         ]);
-        return response()->json(['message' => 'Password updated successfully.']);
+        if (Hash::check($request->password, $user->password)) {
+            return $this->send_response_unauthorize("Password can't be the same as before!");
+        }
+        $user = $user->Update([
+            'password'     => Hash::make($request->password),
+        ]);
+        return $this->send_response('Success Update Password!');
     }
 }

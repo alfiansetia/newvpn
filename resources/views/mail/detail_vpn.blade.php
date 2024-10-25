@@ -47,6 +47,7 @@
                                                         <br>Server Name : {{ $vpn->server->name }}
                                                         <br>Server IP : {{ $vpn->server->ip }}
                                                         <br>Server Domain : {{ $vpn->server->domain }}
+                                                        <br>Server Location : {{ $vpn->server->location }}
                                                     </p>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
@@ -54,14 +55,18 @@
                                                         <br>IP VPN : {{ $vpn->ip }}
                                                         <br>Username : {{ $vpn->username }}
                                                         <br>Password : {{ $vpn->password }}
-                                                        <br>Trial : {{ $vpn->is_trial }}
+                                                        @if ($vpn->is_trial)
+                                                            <br>Trial Status : Yes
+                                                        @endif
                                                         <br>Expired : {{ $vpn->expired }}
+                                                        <br>Monthly Price : Rp. {{ hrg($vpn->server->price) }}
+                                                        <br>Annual Price : Rp. {{ hrg($vpn->server->annual_price) }}
                                                     </p>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
                                                         <br><b>Detail PORT</b>
                                                     <ul>
-                                                        @foreach ($vpn->port as $item)
+                                                        @foreach ($vpn->ports as $item)
                                                             <li>{{ $vpn->server->domain }}:{{ $item->dst }} <==>
                                                                     {{ $item->to }} </li>
                                                         @endforeach

@@ -86,29 +86,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         // Profile
         Route::get('setting/profile', [ProfileController::class, 'profile'])->name('setting.profile');
-        Route::get('setting/profile/general', [ProfileController::class, 'profileEdit'])->name('setting.profile.edit');
-        Route::post('setting/profile/general', [ProfileController::class, 'profileUpdate'])->name('setting.profile.update');
-
-        Route::get('setting/profile/social/', [ProfileController::class, 'social'])->name('setting.profile.social');
-        Route::post('setting/profile/social/', [ProfileController::class, 'socialUpdate'])->name('setting.profile.social.update');
-
-        Route::get('setting/profile/password', [ProfileController::class, 'password'])->name('setting.profile.password');
-        Route::post('setting/profile/password', [ProfileController::class, 'passwordUpdate'])->name('setting.profile.password.update');
+        Route::get('setting/profile/edit', [ProfileController::class, 'profileEdit'])->name('setting.profile.edit');
 
 
-        Route::get('routers', [RouterController::class, 'index'])->name('routers.index');
-
-
-
-        // Route::post('vpn/{vpn}/extend', [VpnController::class, 'extend'])->name('vpn.extend');
-        // Route::get('vpn/{vpn}/download', [VpnController::class, 'download'])->name('vpn.download');
-        // Route::post('vpn-autocreate', [VpnController::class, 'autoCreate'])->name('vpn.autocreate');
-        // Route::get('port-getbyuser', [PortController::class, 'getByUser'])->name('port.getbyuser');
-        // Route::resource('vpn', VpnController::class)->only(['create', 'index', 'show']);
 
         Route::resource('invoice', InvoiceController::class)->only(['index', 'show']);
-
-        Route::get('bank-paginate', [BankController::class, 'paginate'])->name('bank.paginate');
 
         // Route::group(['middleware' => ['role:admin']], function () {
 
@@ -122,16 +104,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('vpns-create', [VpnController::class, 'create'])->name('vpns.create');
         Route::get('vpns', [VpnController::class, 'index'])->name('vpns.index');
+        Route::get('routers', [RouterController::class, 'index'])->name('routers.index');
 
 
-
-
-        Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('vpn.paginate');
-        Route::post('vpn/{vpn}/temporary', [VpnController::class, 'temporary'])->name('vpn.temporary');
-        Route::get('vpn/{vpn}/analyze', [VpnController::class, 'analyze'])->name('vpn.analyze');
-        Route::post('vpn/{vpn}/send-email', [VpnController::class, 'sendEmail'])->name('vpn.send.email');
-        Route::delete('vpn-batch', [VpnController::class, 'destroyBatch'])->name('vpn.destroy.batch');
-        Route::resource('vpn', VpnController::class)->only(['store', 'update', 'destroy']);
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
         Route::resource('template', VoucherTemplateController::class)->except(['create']);

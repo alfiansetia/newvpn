@@ -13,28 +13,24 @@ use Yajra\DataTables\Facades\DataTables;
 class InvoiceController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['role:admin']);
+    }
+
     public function paginate(Request $request)
     {
-        $user_id = auth()->id();
+        $limit = $this->get_limit($request);
         $filters = $request->only(['number', 'bank_id', 'user_id', 'status']);
         $query = Invoice::query()->with(['user', 'bank', 'vpn'])->filter($filters);
-        if (!isAdmin()) {
-            $query->whereRelation('vpn', 'user_id', $user_id);
-            $query->where('user_id', $user_id);
-        }
-        $data = $query->paginate(intval($request->limit ?? 10));
+        $data = $query->paginate($limit)->withQueryString();
         return InvoiceResource::collection($data);
     }
 
     public function index(Request $request)
     {
-        $user_id = auth()->id();
         $filters = $request->only(['number', 'bank_id', 'user_id', 'status']);
         $query = Invoice::query()->with(['user', 'bank', 'vpn'])->filter($filters);
-        if (!isAdmin()) {
-            $query->whereRelation('vpn', 'user_id', $user_id);
-            $query->where('user_id', $user_id);
-        }
         return DataTables::eloquent($query)->setTransformer(function ($item) {
             return InvoiceResource::make($item)->resolve();
         })->toJson();
@@ -42,9 +38,6 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
-        if (!isAdmin() && auth()->id != $invoice->user_id) {
-            return $this->send_response_unauthorize();
-        }
         return  new InvoiceResource($invoice->load(['user', 'bank', 'vpn']));
     }
 
@@ -85,7 +78,7 @@ class InvoiceController extends Controller
             'desc'      => $request->desc,
             'image'     => $img,
         ]);
-        return $this->send_response('Success Insert Data', new InvoiceResource($invoice));
+        return $this->send_response('Success Insert Data');
     }
 
     /**
@@ -142,7 +135,7 @@ class InvoiceController extends Controller
             ];
         }
         $invoice->update($param);
-        return $this->send_response('Success Update Data', new InvoiceResource($invoice));
+        return $this->send_response('Success Update Data');
     }
 
     public function destroy(Request $request, Invoice $invoice)
@@ -162,7 +155,6 @@ class InvoiceController extends Controller
         $invoice->update([
             'status' => $reqstatus,
         ]);
-
-        return $this->send_response('Success Update Status : ' . $invoice->number . ' to : ' . $reqstatus, new InvoiceResource($invoice));
+        return $this->send_response('Success Update Status : ' . $invoice->number . ' to : ' . $reqstatus);
     }
 }

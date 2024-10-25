@@ -1,11 +1,14 @@
-@extends('layouts.backend.template', ['title' => 'Setting Profile'])
+@extends('layouts.backend.template', ['title' => 'Profile'])
 
 @push('css')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
@@ -26,9 +29,9 @@
             Information!
         </div>
     @endif
-    <div class="row layout-spacing ">
+    <div class="row layout-top-spacing layout-spacing">
         <!-- Content -->
-        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12">
+        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 mb-2">
             <div class="user-profile">
                 <div class="widget-content widget-content-area p-3">
                     <div class="d-flex justify-content-between">
@@ -98,7 +101,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            <a href="{{ route('setting.profile.password') }}" class="btn btn-danger btn-block mt-2">
+                            <a href="{{ route('setting.profile.edit') }}" class="btn btn-danger btn-block mt-2">
                                 <i class="fas fa-fingerprint me-1 bs-tooltip" title="Change Password"></i>Change Password
                             </a>
                         </div>
@@ -107,42 +110,6 @@
             </div>
         </div>
         <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12">
-            {{-- <div class="payment-history layout-spacing ">
-                <div class="widget-content widget-content-area p-3">
-                    <h3 class="">Invoice History</h3>
-                    <div class="list-group">
-                        @forelse ($orders as $item)
-                            <div class="list-group-item d-flex justify-content-between align-items-start">
-                                <div class="me-auto">
-                                    <div class="fw-bold title">{{ $item->date }}</div>
-                                    <p class="sub-title mb-0">To {{ $item->bank->name ?? '' }}</p>
-                                </div>
-                                <span class="pay-pricing align-self-center me-3">{{ $item->total }}</span>
-                                <div class="btn-group dropstart align-self-center" role="group">
-                                    <a id="paymentHistory1" href="javascript:void(0);" class="dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i data-feather="more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="paymentHistory1">
-                                        <a class="dropdown-item" href="javascript:void(0);">View Invoice</a>
-                                        <a class="dropdown-item" href="javascript:void(0);">Download Invoice</a>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4"
-                                role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    <i data-feather="x" class="close"></i>
-                                </button>
-                                <strong>Empty Order!</strong> </button>
-                            </div>
-                        @endforelse
-                    </div>
-
-                </div>
-            </div> --}}
-
             <div class="payment-history layout-spacing ">
                 <div class="widget-content widget-content-area p-3 text-center">
                     <h3 class="mb-0 text-start">Total Balance</h3>
@@ -168,8 +135,7 @@
 @endsection
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
@@ -181,21 +147,15 @@
 @endpush
 
 @push('js')
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
 
     <script>
         $(document).ready(function() {
             $('#edit_profile_btn').click(function() {
                 $('#name').focus();
             });
-
-            var old = $('#gender').val()
-
-            $('#gender').select2();
-
-            $('#reset').click(function() {
-                $('#gender').val(old).change()
-            })
 
             $('.maxlength').maxlength({
                 placement: "top",
@@ -252,9 +212,11 @@
                 columns: [{
                     title: "Date",
                     data: 'date',
+                    className: 'text-start',
                 }, {
                     title: "Amount",
                     data: 'amount',
+                    className: 'text-start',
                     render: function(data, type, row, meta) {
                         let plus = `<span class="badge badge-success">+</span>`;
                         let min = `<span class="badge badge-danger">-</span>`;
@@ -267,6 +229,7 @@
                 }, {
                     title: "Desc",
                     data: 'desc',
+                    className: 'text-start',
                 }, ],
                 headerCallback: function(e, a, t, n, s) {},
                 drawCallback: function(settings) {
@@ -279,4 +242,5 @@
             });
         })
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

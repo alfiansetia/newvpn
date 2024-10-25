@@ -207,9 +207,10 @@
                     <span>SETTING</span>
                 </div>
             </li>
-            <li class="menu {{ $title == 'Setting Company' || $title == 'Setting Profile' ? 'active' : '' }}">
+            <li
+                class="menu {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'active' : '' }}">
                 <a href="#setting_nav" data-bs-toggle="collapse"
-                    aria-expanded="{{ $title == 'Setting Company' || $title == 'Setting Profile' ? 'true' : 'false' }}"
+                    aria-expanded="{{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="settings"></i>
@@ -219,8 +220,11 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'Setting Company' || $title == 'Setting Profile' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'show' : '' }}"
                     id="setting_nav" data-bs-parent="#accordionExample">
+                    <li class="{{ $title == 'Profile' ? 'active' : '' }}">
+                        <a href="{{ route('setting.profile') }}"> Profile </a>
+                    </li>
                     <li class="{{ $title == 'Setting Profile' ? 'active' : '' }}">
                         <a href="{{ route('setting.profile.edit') }}"> Account </a>
                     </li>

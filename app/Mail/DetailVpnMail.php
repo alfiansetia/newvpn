@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\Company;
 use App\Models\Vpn;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -58,10 +57,12 @@ class DetailVpnMail extends Mailable
     public function build()
     {
         $company = Company::first();
-        $vpn = $this->vpn->load('server', 'port');
-        return $this->view('mail.monitor')
+        $vpn = $this->vpn->load(['server', 'ports']);
+        $from = config('mail.from.address');
+        return $this->from($from, $company->name)->view('mail.monitor')
             ->with([
-                'company' => $company, 'vpn' => $vpn
+                'company'   => $company,
+                'vpn'       => $vpn
             ]);
     }
 }

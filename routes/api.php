@@ -51,10 +51,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('profile', [ProfileController::class, 'profile']);
-    Route::put('profile', [ProfileController::class, 'profileUpdate']);
-    Route::put('password', [ProfileController::class, 'passwordUpdate']);
+    // Route::put('profile', [ProfileController::class, 'profileUpdate']);
+    // Route::put('password', [ProfileController::class, 'passwordUpdate']);
 
     Route::group(['middleware' => ['verified']], function () {
+        Route::post('profile/general', [ProfileController::class, 'general'])->name('api.profile.update.general');
+        Route::post('profile/social', [ProfileController::class, 'social'])->name('api.profile.update.social');
+        Route::post('profile/password', [ProfileController::class, 'password'])->name('api.profile.update.password');
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('api.template.destroy.batch');
         Route::apiResource('template', VoucherTemplateController::class)->names('api.template');
@@ -90,6 +93,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('vpns-create', [VpnController::class, 'autoCreate'])->name('api.vpns.autocreate');
         Route::get('vpn-paginate-user', [VpnController::class, 'paginateUser'])->name('api.vpns.paginate.user');
         Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('api.vpns.paginate');
+        Route::post('vpns/{vpn}/send-email', [VpnController::class, 'sendEmail'])->name('api.vpns.send.email');
+        Route::post('vpns/{vpn}/temporary', [VpnController::class, 'temporary'])->name('api.vpns.temporary');
         Route::delete('vpns', [VpnController::class, 'destroyBatch'])->name('api.vpns.destroy.batch');
         Route::apiResource('vpns', VpnController::class)->names('api.vpns');
 
