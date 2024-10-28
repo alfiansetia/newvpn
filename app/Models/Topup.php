@@ -14,6 +14,25 @@ class Topup extends Model
         return $this->belongsTo(Bank::class);
     }
 
+    public function scopeFilter($query, array $filters)
+    {
+        if (isset($filters['desc'])) {
+            $query->where('desc', 'like', '%' . $filters['desc'] . '%');
+        }
+        if (isset($filters['number'])) {
+            $query->where('number', 'like', '%' . $filters['number'] . '%');
+        }
+        if (isset($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
+        if (isset($filters['bank_id'])) {
+            $query->where('bank_id', $filters['bank_id']);
+        }
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

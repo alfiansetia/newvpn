@@ -113,7 +113,7 @@
         $("#vpn, #edit_vpn").select2({
             ajax: {
                 delay: 1000,
-                url: "{{ route('vpn.paginate') }}",
+                url: "{{ route('api.vpns.paginate') }}",
                 data: function(params) {
                     return {
                         username: params.term || '',
@@ -141,7 +141,7 @@
         $("#user, #edit_user").select2({
             ajax: {
                 delay: 1000,
-                url: "{{ route('user.paginate') }}",
+                url: "{{ route('api.users.paginate') }}",
                 data: function(params) {
                     return {
                         name: params.term || '',
@@ -170,7 +170,7 @@
         $("#bank, #edit_bank").select2({
             ajax: {
                 delay: 1000,
-                url: "{{ route('bank.paginate') }}",
+                url: "{{ route('api.banks.paginate') }}",
                 data: function(params) {
                     return {
                         name: params.term || '',

@@ -1,10 +1,13 @@
 @extends('layouts.backend.template', ['title' => 'Data Topup'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
@@ -17,7 +20,13 @@
     <link href="{{ asset('backend/src/plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
         type="text/css">
 
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
 
     <style>
         .flatpickr-calendar {
@@ -62,8 +71,8 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
+
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
@@ -73,14 +82,16 @@
     <script src="{{ asset('backend/src/plugins/src/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/moment/moment-with-locales.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
+    <!-- InputMask -->
+    <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
-
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         $('.maxlength').maxlength({
             alwaysShow: true,
@@ -89,94 +100,242 @@
 
 
         // $(document).ready(function() {
-        var perpage = 20;
+        const url_index = "{{ route('topups.index') }}"
+        const url_index_api = "{{ route('api.topups.index') }}"
+        var id = 0
+        var perpage = 50
 
-        $("#user, #edit_user").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('user.paginate') }}",
-                data: function(params) {
-                    return {
-                        name: params.term || '',
-                        email: params.term || '',
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: `${item.name} (${item.email})`,
-                                id: item.id,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
+        $('.mask_angka').inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            autoGroup: true,
+            digits: 0,
+            rightAlign: false,
+            removeMaskOnSubmit: true,
+            autoUnmask: true,
+            min: 0,
         });
 
-        $("#bank, #edit_bank").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('bank.paginate') }}",
-                data: function(params) {
-                    return {
-                        name: params.term || '',
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: `${item.name} (${item.acc_name})`,
-                                id: item.id,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
+        // $("#user, #edit_user").select2({
+        //     ajax: {
+        //         delay: 1000,
+        //         url: "{{ route('api.users.paginate') }}",
+        //         data: function(params) {
+        //             return {
+        //                 name: params.term || '',
+        //                 email: params.term || '',
+        //                 page: params.page || 1,
+        //                 perpage: perpage,
+        //             };
+        //         },
+        //         processResults: function(data, params) {
+        //             params.page = params.page || 1;
+        //             return {
+        //                 results: $.map(data.data, function(item) {
+        //                     return {
+        //                         text: `${item.name} (${item.email})`,
+        //                         id: item.id,
+        //                     }
+        //                 }),
+        //                 pagination: {
+        //                     more: (params.page * perpage) < data.total
+        //                 }
+        //             };
+        //         },
+        //     }
+        // });
+
+        // $("#bank, #edit_bank").select2({
+        //     ajax: {
+        //         delay: 1000,
+        //         url: "{{ route('api.banks.paginate') }}",
+        //         data: function(params) {
+        //             return {
+        //                 name: params.term || '',
+        //                 page: params.page || 1,
+        //                 perpage: perpage,
+        //             };
+        //         },
+        //         processResults: function(data, params) {
+        //             params.page = params.page || 1;
+        //             return {
+        //                 results: $.map(data.data, function(item) {
+        //                     return {
+        //                         text: `${item.name} (${item.acc_name})`,
+        //                         id: item.id,
+        //                     }
+        //                 }),
+        //                 pagination: {
+        //                     more: (params.page * perpage) < data.total
+        //                 }
+        //             };
+        //         },
+        //     }
+        // });
+
+        if ($('.tomse-user').length > 0) {
+            document.querySelectorAll('.tomse-user').forEach((el) => {
+                var tomse = new TomSelect(el, {
+                    valueField: 'id',
+                    labelField: 'email',
+                    searchField: 'email',
+                    preload: 'focus',
+                    placeholder: "Please Select User",
+                    allowEmptyOption: true,
+                    load: function(query, callback) {
+                        var url = '{{ route('api.users.paginate') }}?limit=' + perpage + '&email=' +
+                            encodeURIComponent(
+                                query);
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(json => {
+                                callback(json.data);
+                            }).catch(() => {
+                                callback();
+                            });
+                    },
+                    render: {
+                        option: function(item, escape) {
+                            return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.email) }
+        						</span>
+        					</div>
+        			 		<div class="description">${ escape(item.name) }</div>
+        				</div>
+        			</div>`;
+                        },
+                    },
+                });
+            });
+        }
+
+        if ($('.tomse-bank').length > 0) {
+            document.querySelectorAll('.tomse-bank').forEach((el) => {
+                var tomse = new TomSelect(el, {
+                    valueField: 'id',
+                    labelField: 'name',
+                    searchField: 'name',
+                    preload: 'focus',
+                    placeholder: "Please Select User",
+                    allowEmptyOption: true,
+                    load: function(query, callback) {
+                        var url = '{{ route('api.banks.paginate') }}?limit=' + perpage + '&name=' +
+                            encodeURIComponent(
+                                query);
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(json => {
+                                callback(json.data);
+                            }).catch(() => {
+                                callback();
+                            });
+                    },
+                    render: {
+                        option: function(item, escape) {
+                            return `<div class="py-2 d-flex">
+        				<div>
+        					<div class="mb-1">
+        						<span class="h4">
+        							${ escape(item.name) } (${item.acc_number})
+        						</span>
+        					</div>
+        			 		<div class="description">${ escape(item.acc_name) }</div>
+        				</div>
+        			</div>`;
+                        },
+                    },
+                });
+            });
+        }
+
+        document.querySelectorAll('.tomse-amount').forEach((el) => {
+            new TomSelect(el, {
+                valueField: 'id',
+                labelField: 'title',
+                searchField: 'title',
+                preload: 'focus',
+                placeholder: "Please Select Amount",
+                options: [{
+                        id: 10000,
+                        title: 'Rp. 10.000',
+                        url: 'http://en.wikipedia.org/wiki/Spectrometers'
+                    },
+                    {
+                        id: 50000,
+                        title: 'Rp. 50.000',
+                    },
+                    {
+                        id: 100000,
+                        title: 'Rp. 100.000',
+                    },
+                    {
+                        id: 200000,
+                        title: 'Rp. 200.000',
+                    },
+                    {
+                        id: 300000,
+                        title: 'Rp. 300.000',
+                    },
+                    {
+                        id: 500000,
+                        title: 'Rp. 500.000',
+                    }
+                ],
+                create: false
+            });
         });
+
 
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: true,
-            rowId: 'id',
             ajax: {
-                url: "{{ route('topup.index') }}",
+                url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    show_card_add()
+                    input_focus('name')
+                },
+            }, ],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 title: "Date",
                 data: 'date',
+                className: "text-start",
             }, {
                 title: "Number",
                 data: 'number',
+                className: "text-start",
             }, {
                 title: "Amount",
                 data: 'amount',
+                className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return hrg(data)
@@ -198,6 +357,7 @@
             }, {
                 title: "Desc",
                 data: 'desc',
+                className: "text-start",
             }, ],
             headerCallback: function(e, a, t, n, s) {},
             drawCallback: function(settings) {
@@ -209,35 +369,21 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            show_card_add()
-            input_focus('amount')
-        })
-
         $('#btn_delete').remove()
         $('#edit_delete').remove()
 
         multiCheck(table);
 
-        var id;
-        var url_post = "{{ route('topup.store') }}";
-        var url_put = "{{ route('topup.update', '') }}/" + id;
-        var url_delete = "{{ route('topup.destroy', '') }}/" + id;
-
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
-            url_put = "{{ route('topup.update', '') }}/" + id;
-            url_delete = "{{ route('topup.destroy', '') }}/" + id;
-            id = table.row(this).id()
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit')
             $.ajax({
-                url: "{{ route('topup.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -314,7 +460,7 @@
                     ajax_setup();
                     $.ajax({
                         type: 'DELETE',
-                        url: url_put,
+                        url: url_index_api + "/" + id,
                         data: {
                             status: status
                         },
@@ -347,4 +493,5 @@
 
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

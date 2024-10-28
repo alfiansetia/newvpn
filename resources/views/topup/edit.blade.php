@@ -2,7 +2,6 @@
     <div class="widget-content widget-content-area br-8">
 
         <form id="formEdit" class="fofrm-vertical" action="" method="POST">
-            {{ method_field('PUT') }}
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title" id="titleEdit"><i class="fas fa-edit me-1 bs-tooltip"
@@ -12,32 +11,32 @@
                     <div class="form-group mb-2">
                         <label for="edit_user"><i class="far fa-envelope me-1 bs-tooltip" title="Option User"></i>User
                             :</label>
-                        <select name="user" id="edit_user" class="form-control" style="width: 100%;" required>
-                            <option value="">Please Select User</option>
+                        <select name="user" id="edit_user" class="form-control-lg tomse-users" style="width: 100%;" required>
                         </select>
-                        <span id="err_edit_user" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_user" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
                         <label for="edit_bank"><i class="fas fa-university me-1 bs-tooltip" title="Option Bank"></i>Bank
                             :</label>
-                        <select name="bank" id="edit_bank" class="form-control" style="width: 100%;" required>
-                            <option value="">Please Select Bank</option>
+                        <select name="bank" id="edit_bank" class="form-control-lg tomse-bank" style="width: 100%;"
+                            required>
                         </select>
-                        <span id="err_edit_bank" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_bank" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
                         <label for="edit_amount"><i class="fas fa-dollar-sign me-1 bs-tooltip" title="amount"></i>Amount
                             :</label>
-                        <input type="number" id="edit_amount" name="amount" class="form-control form-control-solid"
-                            placeholder="Input Amount" value="0" min="1" required>
-                        <span id="err_edit_amount" class="error invalid-feedback" style="display: hide;"></span>
+                        <select name="amount" id="edit_amount" class="form-control-lg tomse-amount"
+                            style="width: 100%;" required>
+                        </select>
+                        <span class="error invalid-feedback err_amount" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
                         <label class="control-label" for="edit_desc"><i class="fas fa-map-marker me-1 bs-tooltip"
                                 title="desc User"></i>Description :</label>
                         <textarea name="desc" class="form-control maxlength" id="edit_desc" placeholder="Please Enter Description"
                             minlength="0" maxlength="100"></textarea>
-                        <span id="err_edit_desc" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_desc" style="display: hide;"></span>
                     </div>
                 </div>
                 <div class="card-footer text-center">

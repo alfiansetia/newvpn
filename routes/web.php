@@ -54,7 +54,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::group(['middleware' => ['active']], function () {
 
-        Route::resource('topup', TopupController::class);
 
         Route::get('page/contact', [PageController::class, 'contact'])->name('page.contact');
 
@@ -90,11 +89,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
 
-        Route::resource('invoice', InvoiceController::class)->only(['index', 'show']);
+        Route::resource('invoice', InvoiceController::class)->only(['index', 'show', 'store', 'update', 'destroy',]);
 
         // Route::group(['middleware' => ['role:admin']], function () {
-
-        Route::resource('invoice', InvoiceController::class)->only(['store', 'update', 'destroy',]);
 
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('banks', [BankController::class, 'index'])->name('banks.index');
@@ -106,6 +103,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('vpns', [VpnController::class, 'index'])->name('vpns.index');
         Route::get('routers', [RouterController::class, 'index'])->name('routers.index');
 
+        Route::get('topups', [TopupController::class, 'index'])->name('topups.index');
 
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');

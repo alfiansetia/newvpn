@@ -153,7 +153,7 @@
                         </li>
                     @endif
                     <li class="{{ $title == 'Data Topup' ? 'active' : '' }}">
-                        <a href="{{ route('topup.index') }}"> List Topup </a>
+                        <a href="{{ route('topups.index') }}"> List Topup </a>
                     </li>
                 </ul>
             </li>

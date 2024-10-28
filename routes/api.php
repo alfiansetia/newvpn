@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RouterController;
 use App\Http\Controllers\Api\ServerController;
 use App\Http\Controllers\Api\TemporaryIpController;
+use App\Http\Controllers\Api\TopupController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoucherTemplateController;
 use App\Http\Controllers\Api\VpnController;
@@ -97,6 +98,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('vpns/{vpn}/temporary', [VpnController::class, 'temporary'])->name('api.vpns.temporary');
         Route::delete('vpns', [VpnController::class, 'destroyBatch'])->name('api.vpns.destroy.batch');
         Route::apiResource('vpns', VpnController::class)->names('api.vpns');
+
+        Route::get('topup-paginate', [TopupController::class, 'paginate'])->name('api.topups.paginate');
+        Route::delete('topups', [TopupController::class, 'destroyBatch'])->name('api.topups.destroy.batch');
+        Route::apiResource('topups', TopupController::class)->names('api.topups');
 
 
         Route::get('mikapi/dashboard/get-data', [DashboardController::class, 'get'])->name('api.mikapi.dashboard.get');
