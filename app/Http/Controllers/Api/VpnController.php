@@ -202,7 +202,7 @@ class VpnController extends Controller
                 return $this->send_response_unauthorize('Trial Sudah Ada, Silahkan Selesaikan Pembayaran Dahulu Untuk membuat Trial Lagi!');
             }
         } elseif ($qty == 12) {
-            $total = $server->annual_price * $qty;
+            $total = $server->annual_price;
         } else {
             $total = $server->price * $qty;
         }

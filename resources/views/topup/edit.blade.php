@@ -11,7 +11,8 @@
                     <div class="form-group mb-2">
                         <label for="edit_user"><i class="far fa-envelope me-1 bs-tooltip" title="Option User"></i>User
                             :</label>
-                        <select name="user" id="edit_user" class="form-control-lg tomse-users" style="width: 100%;" required>
+                        <select name="user" id="edit_user" class="form-control-lg tomse-user" style="width: 100%;"
+                            required>
                         </select>
                         <span class="error invalid-feedback err_user" style="display: hide;"></span>
                     </div>
@@ -45,7 +46,7 @@
 
                             @include('components.form.button_edit')
                             @if (auth()->user()->is_admin())
-                                <div class="btn-group me-4" role="group">
+                                <div class="btn-group me-4 mb-2" role="group">
                                     <button id="btn_action" type="button"
                                         class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">Status
@@ -61,7 +62,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <button type="button" class="btn btn-info ms-1 me-1" id="btn_pay"><i
+                            <button type="button" class="btn btn-info ms-1 me-1 mb-2" id="btn_pay"><i
                                     class="fas fa-paper-plane"></i> Bayar</button>
                         </div>
                     </div>

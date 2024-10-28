@@ -219,7 +219,7 @@
                     labelField: 'name',
                     searchField: 'name',
                     preload: 'focus',
-                    placeholder: "Please Select User",
+                    placeholder: "Please Select Bank",
                     allowEmptyOption: true,
                     load: function(query, callback) {
                         var url = '{{ route('api.banks.paginate') }}?limit=' + perpage + '&name=' +
@@ -251,42 +251,47 @@
             });
         }
 
-        document.querySelectorAll('.tomse-amount').forEach((el) => {
-            new TomSelect(el, {
-                valueField: 'id',
-                labelField: 'title',
-                searchField: 'title',
-                preload: 'focus',
-                placeholder: "Please Select Amount",
-                options: [{
-                        id: 10000,
-                        title: 'Rp. 10.000',
-                        url: 'http://en.wikipedia.org/wiki/Spectrometers'
-                    },
-                    {
-                        id: 50000,
-                        title: 'Rp. 50.000',
-                    },
-                    {
-                        id: 100000,
-                        title: 'Rp. 100.000',
-                    },
-                    {
-                        id: 200000,
-                        title: 'Rp. 200.000',
-                    },
-                    {
-                        id: 300000,
-                        title: 'Rp. 300.000',
-                    },
-                    {
-                        id: 500000,
-                        title: 'Rp. 500.000',
-                    }
-                ],
-                create: false
+        if ($('.tomse-amount').length > 0) {
+            document.querySelectorAll('.tomse-amount').forEach((el) => {
+                new TomSelect(el, {
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: 'title',
+                    preload: 'focus',
+                    placeholder: "Please Select Amount",
+                    options: [{
+                            id: 10000,
+                            title: 'Rp. 10.000',
+                        },
+                        {
+                            id: 20000,
+                            title: 'Rp. 20.000',
+                        }, ,
+                        {
+                            id: 50000,
+                            title: 'Rp. 50.000',
+                        },
+                        {
+                            id: 100000,
+                            title: 'Rp. 100.000',
+                        },
+                        {
+                            id: 200000,
+                            title: 'Rp. 200.000',
+                        },
+                        {
+                            id: 300000,
+                            title: 'Rp. 300.000',
+                        },
+                        {
+                            id: 500000,
+                            title: 'Rp. 500.000',
+                        }
+                    ],
+                    create: false
+                });
             });
-        });
+        }
 
 
         var table = $('#tableData').DataTable({
@@ -315,7 +320,7 @@
                 className: 'btn btn-primary',
                 action: function(e, dt, node, config) {
                     show_card_add()
-                    input_focus('name')
+                    input_focus('desc')
                 },
             }, ],
             dom: dom,
@@ -327,6 +332,16 @@
             columns: [{
                 title: "Date",
                 data: 'date',
+                className: "text-start",
+            }, {
+                title: "User",
+                data: 'user.email',
+                orderable: false,
+                className: "text-start",
+            }, {
+                title: "Bank",
+                data: 'bank.name',
+                orderable: false,
                 className: "text-start",
             }, {
                 title: "Number",
@@ -391,41 +406,40 @@
                     $('#edit_desc').val(result.data.desc);
                     $('#titleEdit2').html(`<b>${result.data.number}</b> (${result.data.status})`);
 
-                    if (result.data.bank_id == null) {
-                        $('#edit_bank').val('').trigger('change')
-                    } else {
-                        let option_bank = new Option(`${result.data.bank.name} (${result.data.bank.acc_name})`,
-                            result.data.bank_id,
-                            true, true);
-                        $('#edit_bank').append(option_bank).trigger('change')
+                    let tom_bank = document.getElementById('edit_bank').tomselect
+                    let tom_user = document.getElementById('edit_user').tomselect
+                    let tom_amount = document.getElementById('edit_amount').tomselect
+                    tom_amount.setValue(result.data.amount)
+                    tom_bank.clear()
+                    tom_user.clear()
+                    if (result.data.bank != null) {
+                        tom_bank.addOption(result.data.bank)
+                        tom_bank.setValue(result.data.bank_id)
                     }
-                    if (result.data.user_id == null) {
-                        $('#edit_user').val('').trigger('change')
-                    } else {
-                        let option_user = new Option(
-                            `${result.data.user.name} (${result.data.user.email})`,
-                            result.data.user_id,
-                            true, true);
-                        $('#edit_user').append(option_user).trigger('change')
+                    if (result.data.user != null) {
+                        tom_user.addOption(result.data.user)
+                        tom_user.setValue(result.data.user_id)
                     }
-                    let element = ['edit_amount', 'edit_bank', 'edit_from', 'edit_to',
-                        'edit_delete', 'edit_user', 'btn_done', 'btn_cancel'
-                    ];
-                    if (result.data.status == 'pending') {
-                        element.forEach(item => {
-                            $(`#${item}`).prop('disabled', false);
-                        });
+
+                    let element = ['edit_delete', 'btn_done', 'btn_cancel'];
+                    element.forEach(item => {
+                        $(`#${item}`).prop('disabled', result.data.status != 'pending');
+                    });
+                    if (result.data.status != 'pending') {
+                        tom_bank.disable()
+                        tom_user.disable()
+                        tom_amount.disable()
                     } else {
-                        element.forEach(item => {
-                            $(`#${item}`).prop('disabled', true);
-                        });
+                        tom_bank.enable()
+                        tom_user.enable()
+                        tom_amount.enable()
                     }
                     if (result.data.status == 'done') {
                         $('#btn_cancel').prop('disabled', false);
                     }
                     if (show) {
                         show_card_edit()
-                        input_focus('amount')
+                        input_focus('desc')
                     }
                 },
                 beforeSend: function() {
