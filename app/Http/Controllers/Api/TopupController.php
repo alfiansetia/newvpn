@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
 use App\Models\BalanceHistory;
 use App\Models\Topup;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,7 @@ class TopupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:admin'])->only(['update', 'destroy']);
+        $this->middleware(['role:admin']);
     }
 
     public function paginate(Request $request)
@@ -46,37 +45,24 @@ class TopupController extends Controller
      */
     public function store(Request $request)
     {
-        $user = auth()->user();
-        $validate  = [
+        $this->validate($request, [
+            'user'      => 'required|exists:users,id',
             'bank'      => 'required|exists:banks,id',
             'amount'    => 'required|integer|gt:0|lte:500000',
             'desc'      => 'nullable|max:200',
-        ];
-        if ($user->is_admin()) {
-            $validate['user'] = 'required|exists:users,id';
-        } else {
-            $current = Topup::query()->where('user_id', $user->id)->where('status', 'pending')->count() ?? 0;
-            if ($current > 0) {
-                return $this->send_response_unauthorize($current . ' Pending Topup already exists!');
-            }
-        }
-        $this->validate($request, $validate);
+        ]);
         $date = date('Y-m-d');
         $date_parse = Carbon::parse($date);
         $count = Topup::whereDate('date', $date_parse)->count() ?? 0;
         $number = 'INV' . date('ymd', strtotime($date)) . str_pad(($count + 1), 3, 0, STR_PAD_LEFT);
-        $param = [
+        Topup::create([
             'number'    => $number,
             'date'      => date('Y-m-d H:i:s'),
-            'user_id'   => $user->id,
+            'user_id'   => $request->user,
             'bank_id'   => $request->bank,
             'amount'    => $request->amount,
             'desc'      => $request->desc,
-        ];
-        if ($user->is_admin()) {
-            $param['user_id'] = $request->user;
-        }
-        Topup::create($param);
+        ]);
         return $this->send_response('Success Insert Data');
     }
 
@@ -86,27 +72,26 @@ class TopupController extends Controller
      */
     public function update(Request $request, Topup $topup)
     {
-        $validate = [
-            'user'      => 'required|exists:users,id',
-            'bank'      => 'required|exists:banks,id',
-            'amount'    => 'required|integer|gt:0|lte:500000',
-            'desc'      => 'nullable|max:200',
-        ];
-        if ($topup->status != 'pending') {
-            $validate = [
+
+        if ($topup->status == 'pending') {
+            $this->validate($request, [
                 'desc'  => 'nullable|max:200',
-            ];
-        }
-        $this->validate($request, $validate);
-        $param  = [
-            'user_id'   => $request->user,
-            'bank_id'   => $request->bank,
-            'amount'    => $request->amount,
-            'desc'      => $request->desc,
-        ];
-        if ($topup->status != 'pending') {
+            ]);
             $param = [
                 'desc'  => $request->desc,
+            ];
+        } else {
+            $this->validate($request, [
+                'user'      => 'required|exists:users,id',
+                'bank'      => 'required|exists:banks,id',
+                'amount'    => 'required|integer|gt:0|lte:500000',
+                'desc'      => 'nullable|max:200',
+            ]);
+            $param  = [
+                'user_id'   => $request->user,
+                'bank_id'   => $request->bank,
+                'amount'    => $request->amount,
+                'desc'      => $request->desc,
             ];
         }
         $topup->update($param);

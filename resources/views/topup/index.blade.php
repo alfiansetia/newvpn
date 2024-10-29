@@ -116,63 +116,6 @@
             min: 0,
         });
 
-        // $("#user, #edit_user").select2({
-        //     ajax: {
-        //         delay: 1000,
-        //         url: "{{ route('api.users.paginate') }}",
-        //         data: function(params) {
-        //             return {
-        //                 name: params.term || '',
-        //                 email: params.term || '',
-        //                 page: params.page || 1,
-        //                 perpage: perpage,
-        //             };
-        //         },
-        //         processResults: function(data, params) {
-        //             params.page = params.page || 1;
-        //             return {
-        //                 results: $.map(data.data, function(item) {
-        //                     return {
-        //                         text: `${item.name} (${item.email})`,
-        //                         id: item.id,
-        //                     }
-        //                 }),
-        //                 pagination: {
-        //                     more: (params.page * perpage) < data.total
-        //                 }
-        //             };
-        //         },
-        //     }
-        // });
-
-        // $("#bank, #edit_bank").select2({
-        //     ajax: {
-        //         delay: 1000,
-        //         url: "{{ route('api.banks.paginate') }}",
-        //         data: function(params) {
-        //             return {
-        //                 name: params.term || '',
-        //                 page: params.page || 1,
-        //                 perpage: perpage,
-        //             };
-        //         },
-        //         processResults: function(data, params) {
-        //             params.page = params.page || 1;
-        //             return {
-        //                 results: $.map(data.data, function(item) {
-        //                     return {
-        //                         text: `${item.name} (${item.acc_name})`,
-        //                         id: item.id,
-        //                     }
-        //                 }),
-        //                 pagination: {
-        //                     more: (params.page * perpage) < data.total
-        //                 }
-        //             };
-        //         },
-        //     }
-        // });
-
         if ($('.tomse-user').length > 0) {
             document.querySelectorAll('.tomse-user').forEach((el) => {
                 var tomse = new TomSelect(el, {
@@ -292,6 +235,12 @@
                 });
             });
         }
+
+        $('#reset').click(function() {
+            document.getElementById('user').tomselect.clear()
+            document.getElementById('bank').tomselect.clear()
+            document.getElementById('amount').tomselect.clear()
+        })
 
 
         var table = $('#tableData').DataTable({

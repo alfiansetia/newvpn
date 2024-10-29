@@ -147,14 +147,14 @@
                 </a>
                 <ul class="collapse submenu list-unstyled {{ $title == 'Data Invoice' || $title == 'Data Topup' ? 'show' : '' }}"
                     id="billing_nav" data-bs-parent="#accordionExample">
+                    <li class="{{ $title == 'Data Topup' ? 'active' : '' }}">
+                        <a href="{{ route('topups.index') }}"> List Topup </a>
+                    </li>
                     @if ($user->is_admin())
                         <li class="{{ $title == 'Data Invoice' ? 'active' : '' }}">
                             <a href="{{ route('invoice.index') }}"> List Invoice </a>
                         </li>
                     @endif
-                    <li class="{{ $title == 'Data Topup' ? 'active' : '' }}">
-                        <a href="{{ route('topups.index') }}"> List Topup </a>
-                    </li>
                 </ul>
             </li>
 

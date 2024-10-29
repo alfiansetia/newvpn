@@ -1,52 +1,66 @@
 @extends('layouts.backend.template', ['title' => 'Data Topup'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 
-
-    <link href="{{ asset('backend/src/plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/src/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
         type="text/css">
-
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
-
-    <style>
-        .flatpickr-calendar {
-            z-index: 1056 !important;
-        }
-
-        .tba {
-            width: 35%;
-            word-wrap: break-word;
-            white-space: normal;
-            text-align: left;
-        }
-
-        .tbb {
-            width: 65%;
-            word-wrap: break-word;
-            white-space: normal;
-            text-align: left;
-        }
-
-        .tbb::before {
-            content: ": ";
-        }
-    </style>
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_add" style="display: none">
+            <div class="widget-content widget-content-area br-8">
+                <form id="form" action="{{ route('api.topups.user.store') }}" method="POST">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"
+                                    title="Add Data"></i>Add Data</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-2">
+                                <label for="bank"><i class="fas fa-university me-1 bs-tooltip"
+                                        title="Option Bank"></i>Bank
+                                    :</label>
+                                <select name="bank" id="bank" class="form-control-lg tomse-bank"
+                                    style="width: 100%;" required>
+                                </select>
+                                <span class="error invalid-feedback err_bank" style="display: hide;"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="amount"><i class="fas fa-dollar-sign me-1 bs-tooltip"
+                                        title="amount"></i>Amount
+                                    :</label>
+                                <select name="amount" id="amount" class="form-control-lg tomse-amount"
+                                    style="width: 100%;" required>
+                                </select>
+                                <span class="error invalid-feedback err_amount" style="display: hide;"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <div class="row">
+                                <div class="col-12">
+                                    @include('components.form.button_add')
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
@@ -59,97 +73,244 @@
                 </form>
             </div>
         </div>
-        @include('topup.add')
-        @include('topup.edit')
+
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_edit" style="display: none;">
+            <div class="widget-content widget-content-area br-8">
+
+                <form id="formEdit" class="fofrm-vertical" action="" method="POST">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title" id="titleEdit"><i class="fas fa-info me-1 bs-tooltip"
+                                    title="Detail Data"></i>Detail Data <span id="titleEdit2"></span></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-2">
+                                <label for="edit_user"><i class="far fa-envelope me-1 bs-tooltip"
+                                        title="Option User"></i>User
+                                    :</label>
+                                <select name="user" id="edit_user" class="form-control-lg tomse-user"
+                                    style="width: 100%;" required>
+                                </select>
+                                <span class="error invalid-feedback err_user" style="display: hide;"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="edit_bank"><i class="fas fa-university me-1 bs-tooltip"
+                                        title="Option Bank"></i>Bank
+                                    :</label>
+                                <select name="bank" id="edit_bank" class="form-control-lg tomse-bank"
+                                    style="width: 100%;" required>
+                                </select>
+                                <span class="error invalid-feedback err_bank" style="display: hide;"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="edit_amount"><i class="fas fa-dollar-sign me-1 bs-tooltip"
+                                        title="amount"></i>Amount
+                                    :</label>
+                                <select name="amount" id="edit_amount" class="form-control-lg tomse-amount"
+                                    style="width: 100%;" required>
+                                </select>
+                                <span class="error invalid-feedback err_amount" style="display: hide;"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="control-label" for="edit_desc"><i class="fas fa-map-marker me-1 bs-tooltip"
+                                        title="desc User"></i>Description :</label>
+                                <textarea name="desc" class="form-control maxlength" id="edit_desc" placeholder="Please Enter Description"
+                                    minlength="0" maxlength="100"></textarea>
+                                <span class="error invalid-feedback err_desc" style="display: hide;"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <button type="button" class="btn btn-secondary show-index mb-2">
+                                        <i class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
+                                    <button type="button" id="edit_reset" class="btn btn-warning mb-2">
+                                        <i class="fas fa-undo me-1 bs-tooltip" title="Refresh Data"></i>Refresh
+                                    </button>
+                                    <button type="button" id="edit_delete" class="btn btn-danger mb-2">
+                                        <i class="fas fa-trash me-1 bs-tooltip" title="Cancel"></i>Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-info ms-1 me-1 mb-2" id="btn_pay"><i
+                                            class="fab fa-whatsapp"></i> Confirm Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    @include('topup.modal')
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
+
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
     <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/moment/moment-with-locales.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
+    <!-- InputMask -->
+    {{-- <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script> --}}
+
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
-
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         $('.maxlength').maxlength({
             alwaysShow: true,
             placement: "top",
         });
 
-        var perpage = 20;
 
-        $("#bank, #edit_bank").select2({
-            ajax: {
-                delay: 1000,
-                url: "{{ route('bank.paginate') }}",
-                data: function(params) {
-                    return {
-                        name: params.term || '',
-                        page: params.page || 1,
-                        perpage: perpage,
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: $.map(data.data, function(item) {
-                            return {
-                                text: `${item.name} (${item.acc_name})`,
-                                id: item.id,
-                            }
-                        }),
-                        pagination: {
-                            more: (params.page * perpage) < data.total
-                        }
-                    };
-                },
-            }
-        });
         // $(document).ready(function() {
+        const url_index = "{{ route('topups.index') }}"
+        const url_index_api = "{{ route('api.topups.user.index') }}"
+        var id = 0
+        var perpage = 50
+
+        if ($('.tomse-bank').length > 0) {
+            document.querySelectorAll('.tomse-bank').forEach((el) => {
+                var tomse = new TomSelect(el, {
+                    valueField: 'id',
+                    labelField: 'name',
+                    searchField: 'name',
+                    preload: 'focus',
+                    placeholder: "Please Select Bank",
+                    allowEmptyOption: true,
+                    load: function(query, callback) {
+                        var url = '{{ route('api.banks.paginate') }}?limit=' + perpage + '&name=' +
+                            encodeURIComponent(
+                                query);
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(json => {
+                                callback(json.data);
+                            }).catch(() => {
+                                callback();
+                            });
+                    },
+                    render: {
+                        option: function(item, escape) {
+                            return `<div class="py-2 d-flex">
+                                <div>
+                                    <div class="mb-1">
+                                        <span class="h4">
+                                            ${ escape(item.name) } (${item.acc_number})
+                                        </span>
+                                    </div>
+                                    <div class="description">${ escape(item.acc_name) }</div>
+                                </div>
+                            </div>`;
+                        },
+                        item: function(item, escape) {
+                            return `<div>${item.name} (${item.acc_number})</div>`
+                        }
+                    },
+                });
+            });
+        }
+
+        if ($('.tomse-amount').length > 0) {
+            document.querySelectorAll('.tomse-amount').forEach((el) => {
+                new TomSelect(el, {
+                    valueField: 'id',
+                    labelField: 'title',
+                    searchField: 'title',
+                    preload: 'focus',
+                    placeholder: "Please Select Amount",
+                    options: [{
+                            id: 10000,
+                            title: 'Rp. 10.000',
+                        },
+                        {
+                            id: 20000,
+                            title: 'Rp. 20.000',
+                        }, ,
+                        {
+                            id: 50000,
+                            title: 'Rp. 50.000',
+                        },
+                        {
+                            id: 100000,
+                            title: 'Rp. 100.000',
+                        },
+                        {
+                            id: 200000,
+                            title: 'Rp. 200.000',
+                        },
+                        {
+                            id: 300000,
+                            title: 'Rp. 300.000',
+                        },
+                        {
+                            id: 500000,
+                            title: 'Rp. 500.000',
+                        }
+                    ],
+                    create: false
+                });
+            });
+        }
+
+        $('#reset').click(function() {
+            document.getElementById('bank').tomselect.clear()
+            document.getElementById('amount').tomselect.clear()
+        })
+
 
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: true,
-            rowId: 'id',
             ajax: {
-                url: "{{ route('topup.index') }}",
+                url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    $('#card_add').show()
+                },
+            }, ],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 title: "Date",
                 data: 'date',
+                className: "text-start",
             }, {
                 title: "Number",
                 data: 'number',
+                className: "text-start",
             }, {
                 title: "Amount",
                 data: 'amount',
+                className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return hrg(data)
@@ -168,9 +329,6 @@
                         return data
                     }
                 }
-            }, {
-                title: "Desc",
-                data: 'desc',
             }, ],
             headerCallback: function(e, a, t, n, s) {},
             drawCallback: function(settings) {
@@ -182,45 +340,16 @@
             }
         });
 
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            show_card_add()
-            input_focus('amount')
-        })
-
-        $('#btn_pay').click(function() {
-            $('#modal_pay').modal('show')
-        })
-
-
-        $('#btn_delete').remove()
-        $('#edit_delete').remove()
-
-        multiCheck(table);
-
-        var id;
-        var url_post = "{{ route('topup.store') }}";
-        var url_put = "{{ route('topup.update', '') }}/" + id;
-        var url_delete = "{{ route('topup.destroy', '') }}/" + id;
-        var url_wa = ''
-
-        $('#btn_modal_confirm').click(function() {
-            window.open(url_wa, '_blank')
-        })
-
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
-            url_put = "{{ route('topup.update', '') }}/" + id;
-            url_delete = "{{ route('topup.destroy', '') }}/" + id;
-            id = table.row(this).id()
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit')
             $.ajax({
-                url: "{{ route('topup.show', '') }}/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -228,41 +357,17 @@
                     $('#edit_desc').val(result.data.desc);
                     $('#titleEdit2').html(`<b>${result.data.number}</b> (${result.data.status})`);
 
-                    if (result.data.bank_id == null) {
-                        $('#edit_bank').val('').trigger('change')
-                    } else {
-                        let option_bank = new Option(`${result.data.bank.name} (${result.data.bank.acc_name})`,
-                            result.data.bank_id,
-                            true, true);
-                        $('#edit_bank').append(option_bank).trigger('change')
-                    }
-                    if (result.data.user_id == null) {
-                        $('#edit_user').val('').trigger('change')
-                    } else {
-                        let option_user = new Option(
-                            `${result.data.user.name} (${result.data.user.email})`,
-                            result.data.user_id,
-                            true, true);
-                        $('#edit_user').append(option_user).trigger('change')
-                    }
-                    let element = ['edit_amount', 'edit_save', 'edit_bank', 'edit_from', 'edit_to',
-                        'edit_delete', 'edit_user', 'btn_done', 'btn_cancel', 'edit_desc'
-                    ];
+                    let element = ['edit_delete', 'btn_pay'];
                     element.forEach(item => {
-                        $(`#${item}`).prop('disabled', true);
+                        $(`#${item}`).prop('disabled', result.data.status != 'pending');
                     });
 
-                    $('#btn_pay').prop('disabled', !(result.data.status == 'pending'));
-
-                    $('.modal_amount').text(hrg(result.data.amount))
-                    $('.modal_bank_name').text(result.data.bank.name || '')
-                    $('.modal_acc_name').text(result.data.bank.acc_name || '')
-                    $('.modal_acc_number').text(result.data.bank.acc_number || '')
-                    url_wa =
-                        `https://api.whatsapp.com/send?phone=6282324129752&text=Halo,%20Saya%20dengan%20email%20${result.data.user.email}%20ingin%20konfirmasi%20Topup%20Saldo%20sebesar%20RP. ${hrg(result.data.amount)}%20melalui%20${result.data.bank.name}%20${result.data.bank.acc_name} (${result.data.bank.acc_number})`
+                    if (result.data.status == 'done') {
+                        $('#btn_cancel').prop('disabled', false);
+                    }
                     if (show) {
                         show_card_edit()
-                        input_focus('amount')
+                        input_focus('desc')
                     }
                 },
                 beforeSend: function() {
@@ -275,6 +380,8 @@
             });
         }
 
+
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

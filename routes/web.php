@@ -105,7 +105,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('topups', [TopupController::class, 'index'])->name('topups.index');
 
-
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
         Route::resource('template', VoucherTemplateController::class)->except(['create']);
 
