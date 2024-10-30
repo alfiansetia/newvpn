@@ -57,6 +57,6 @@ final class RouterServices
         if (empty(self::$client)) {
             throw new Exception('Router Not Found!');
         }
-        return self::$client->read();
+        return self::$client;
     }
 }
