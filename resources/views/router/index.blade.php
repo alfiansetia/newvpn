@@ -197,8 +197,9 @@
                 }
             }, {
                 title: "VPN",
-                data: 'port_id',
+                data: 'port.vpn.username',
                 className: 'text-start',
+                orderable: false,
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         if (data != null) {
