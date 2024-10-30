@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\BalanceHistory;
 use App\Models\Bank;
 use App\Models\Company;
-use App\Models\Invoice;
 use App\Models\Port;
 use App\Models\Server;
 use App\Models\TemporaryIp;
@@ -147,30 +146,6 @@ class TestMigrateSeeder extends Seeder
             }
         }
 
-        // invoice
-        foreach ($db as $data) {
-            if ($data['type'] == 'table' && $data['name'] == 'invoices') {
-                foreach ($data['data'] as $item) {
-                    $param_inv = [
-                        'id'            => $item['id'],
-                        'user_id'       => $item['user_id'],
-                        'bank_id'       => $item['bank_id'],
-                        'vpn_id'        => $item['vpn_id'],
-                        'date'          => $item['date'],
-                        'number'        => $item['number'],
-                        'total'         => $item['total'],
-                        'from'          => $item['from'],
-                        'to'            => $item['to'],
-                        'status'        => $item['status'],
-                        'image'         => $item['image'],
-                        'desc'          => $item['desc'],
-                        'created_at'    => $item['created_at'],
-                        'updated_at'    => $item['updated_at'],
-                    ];
-                    Invoice::create($param_inv);
-                }
-            }
-        }
 
         // temporary ips
         foreach ($db as $data) {

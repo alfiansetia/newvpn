@@ -1,14 +1,18 @@
 @extends('layouts.backend.template', ['title' => 'Setting Company'])
 
 @push('css')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
 
@@ -57,7 +61,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="animated-underline-database-tab"
-                                onclick="redirect('{{ route('database.index') }}')">
+                                onclick="redirect('{{ route('setting.database.index') }}')">
                                 <i data-feather="database"></i> Database
                             </button>
                         </li>
@@ -70,18 +74,18 @@
                     <form id="info" class="section general-info" action="" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-                        <div class="info">
-                            <h6 class="">Backup Database</h6>
-                            <div class="row">
-                                <div class=" col-lg-12 col-md-12 mt-md-0 mt-4">
-                                    <table id="tableData" class="table dt-table-hover table-hover"
-                                        style="width:100%; cursor: pointer;">
-                                        <thead>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="info pb-1">
+                            <h6 class="mb-1">Backup Database</h6>
+                        </div>
+                        <div class="row">
+                            <div class=" col-lg-12 col-md-12 mt-md-0 mt-4">
+                                <table id="tableData" class="table dt-table-hover table-hover"
+                                    style="width:100%; cursor: pointer;">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </form>
@@ -91,11 +95,13 @@
         </div>
 
     </div>
+    <form id="form" style="display: none" action="{{ route('api.setting.databases.store') }}"></form>
+    <form id="form_delete" style="display: none" action="{{ route('api.setting.databases.destroy.batch') }}"></form>
 @endsection
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
+
     <!-- END PAGE LEVEL SCRIPTS -->
 
     <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
@@ -115,9 +121,16 @@
 @endpush
 
 @push('js')
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
+
+        const url_index = "{{ route('setting.database.index') }}"
+        const url_index_api = "{{ route('api.setting.databases.index') }}"
+        var id = ''
+        var perpage = 50
 
         $('.maxlength').maxlength({
             alwaysShow: true,
@@ -129,21 +142,46 @@
             serverSide: true,
             rowId: 'id',
             ajax: {
-                url: "{{ route('database.index') }}",
+                url: "{{ route('api.setting.databases.index') }}",
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR, textStatus, errorThrown)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
                 defaultContent: '',
                 targets: "_all"
             }],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-plus"></i> Add Backup',
+                className: 'btn btn-primary',
+                action: function(e, dt, node, config) {
+                    send_ajax('form', 'POST')
+                },
+            }, {
+                text: '<i class="fas fa-caret-down"></i>',
+                extend: 'collection',
+                className: 'btn btn-warning',
+                buttons: [{
+                    text: 'Delete All Data',
+                    action: function(e, dt, node, config) {
+                        send_ajax('form_delete', 'DELETE')
+                    }
+                }]
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 title: 'Name',
                 data: 'name',
@@ -175,8 +213,8 @@
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return `
-                        <button type="button" id="download" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></button>
-                        <button type="button" id="delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                        <button type="button" class="btn btn-sm btn-primary btn-download"><i class="fas fa-download"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger btn-delete"><i class="fas fa-trash"></i></button>
                         `
                     } else {
                         return data
@@ -192,163 +230,29 @@
             }
         });
 
-        var btn_element = `<div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Action
-                        <i data-feather="chevron-down"></i> 
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <li><button id="btn_add" type="button" class="dropdown-item bs-tooltip" title="Add Data">Create Backup File</button></li>
-                        <li><button id="btn_delete" type="button" class="dropdown-item bs-tooltip" title="Delete Selected Data">Delete All File</button></li>
-                    </ul>
-                </div>`
-
-
-        $("div.toolbar").html(btn_element);
-
-        $('#btn_add').click(function() {
-            ajax_backup('POST', "{{ route('database.store') }}")
-        })
-
         $('#btn_delete').click(function() {
-            ajax_backup('DELETE', "{{ route('database.destroy.batch') }}")
+            ajax_backup('DELETE', "")
         })
 
-        $('#tableData tbody').on('click', '#delete', function() {
-            $('#formEdit .error.invalid-feedback').each(function(i) {
-                $(this).hide();
-            });
-            $('#formEdit input.is-invalid').each(function(i) {
-                $(this).removeClass('is-invalid');
-            });
+        $('#tableData tbody').on('click', '.btn-delete', function() {
             let row = $(this).parents('tr')[0];
-            file = table.row(row).data()
-            delete_file(file.name)
+            data = table.row(row).data()
+            id = data.name
+            delete_data()
         });
 
-        $('#tableData tbody').on('click', '#download', function() {
-            $('#formEdit .error.invalid-feedback').each(function(i) {
-                $(this).hide();
-            });
-            $('#formEdit input.is-invalid').each(function(i) {
-                $(this).removeClass('is-invalid');
-            });
+        $('#tableData tbody').on('click', '.btn-download', function() {
             let row = $(this).parents('tr')[0];
-            file = table.row(row).data()
-            download(file.name)
+            data = table.row(row).data()
+            download(data.name)
         });
 
         function download(file_name) {
-            window.open("{{ route('database.download', '') }}/" + file_name, '_blank')
+            window.open(url_index_api + "/" + file_name, '_blank')
         }
 
-        function delete_file(file_name) {
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Delete file Backup?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Yes!',
-                confirmButtonAriaLabel: 'Thumbs up, Yes!',
-                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No',
-                cancelButtonAriaLabel: 'Thumbs down',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                padding: '2em',
-                customClass: 'animated tada',
-                showClass: {
-                    popup: `animated tada`
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    ajax_setup()
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{ route('database.destroy', '') }}/" + file_name,
-                        data: {
-                            _method: 'DELETE'
-                        },
-                        beforeSend: function() {
-                            block();
-                            $('#form .error.invalid-feedback').each(function(i) {
-                                $(this).hide();
-                            });
-                            $('#form input.is-invalid').each(function(i) {
-                                $(this).removeClass('is-invalid');
-                            });
-                        },
-                        success: function(res) {
-                            unblock();
-                            table.ajax.reload();
-                            Swal.fire(
-                                'Success!',
-                                res.message,
-                                'success'
-                            )
-                        },
-                        error: function(xhr, status, error) {
-                            unblock();
-                            handleResponse(xhr)
-                        }
-                    });
-                }
-            })
-
-        }
-
-        function ajax_backup(type, url) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Create new Backup?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Yes!',
-                confirmButtonAriaLabel: 'Thumbs up, Yes!',
-                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No',
-                cancelButtonAriaLabel: 'Thumbs down',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                padding: '2em',
-                customClass: 'animated tada',
-                showClass: {
-                    popup: `animated tada`
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    ajax_setup()
-                    $.ajax({
-                        type: type,
-                        url: url,
-                        data: {},
-                        beforeSend: function() {
-                            block();
-                            $('#form .error.invalid-feedback').each(function(i) {
-                                $(this).hide();
-                            });
-                            $('#form input.is-invalid').each(function(i) {
-                                $(this).removeClass('is-invalid');
-                            });
-                        },
-                        success: function(res) {
-                            unblock();
-                            table.ajax.reload();
-                            Swal.fire(
-                                'Success!',
-                                res.message,
-                                'success'
-                            )
-
-                        },
-                        error: function(xhr, status, error) {
-                            unblock();
-                            handleResponse(xhr)
-                        }
-                    });
-                }
-            })
-        }
 
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

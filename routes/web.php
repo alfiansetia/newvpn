@@ -5,7 +5,6 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DatabaseBackupController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Mikapi\DashboardController;
 use App\Http\Controllers\Mikapi\DHCPController;
 use App\Http\Controllers\Mikapi\HotspotController;
@@ -89,8 +88,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
 
-        Route::resource('invoice', InvoiceController::class)->only(['index', 'show', 'store', 'update', 'destroy',]);
-
         // Route::group(['middleware' => ['role:admin']], function () {
 
         Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -124,11 +121,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('setting/company/backup', [SettingController::class, 'backup'])->name('setting.company.backup');
 
-        Route::delete('database-batch', [DatabaseBackupController::class, 'destroyBatch'])->name('database.destroy.batch');
-        Route::get('database-detail/{file}', [DatabaseBackupController::class, 'download'])->name('database.download');
-        Route::get('database', [DatabaseBackupController::class, 'index'])->name('database.index');
-        Route::post('database', [DatabaseBackupController::class, 'store'])->name('database.store');
-        Route::delete('database/{file}', [DatabaseBackupController::class, 'destroy'])->name('database.destroy');
+        Route::get('database', [DatabaseBackupController::class, 'index'])->name('setting.database.index');
 
         Route::get('tools/phpinfo', [ToolController::class, 'php_info'])->name('tool.phpinfo');
         // });

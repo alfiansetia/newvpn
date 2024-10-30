@@ -150,24 +150,8 @@
                     <li class="{{ $title == 'Data Topup' ? 'active' : '' }}">
                         <a href="{{ route('topups.index') }}"> List Topup </a>
                     </li>
-                    @if ($user->is_admin())
-                        <li class="{{ $title == 'Data Invoice' ? 'active' : '' }}">
-                            <a href="{{ route('invoice.index') }}"> List Invoice </a>
-                        </li>
-                    @endif
                 </ul>
             </li>
-
-            {{-- 
-            <li class="menu {{ $title == 'Data Invoice' ? 'active' : '' }}">
-                <a href="{{ route('invoice.index') }}"
-                    aria-expanded="{{ $title == 'Data Invoice' ? 'true' : 'false' }}" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="shopping-cart"></i>
-                        <span>List Invoice</span>
-                    </div>
-                </a>
-            </li> --}}
 
             @if ($user->is_admin())
                 <li

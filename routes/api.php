@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BalanceHistoryController;
 use App\Http\Controllers\Api\BankController;
+use App\Http\Controllers\Api\DatabaseBackupController;
 use App\Http\Controllers\Api\Mikapi\DashboardController;
 use App\Http\Controllers\Api\Mikapi\DHCP\LeasesController as DHCPLeasesController;
 use App\Http\Controllers\Api\Mikapi\Hotspot\ActiveController as HotspotActiveController;
@@ -104,6 +105,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::apiResource('topups', TopupController::class)->names('api.topups');
         Route::apiResource('topup-user', TopupUserController::class)->names('api.topups.user')->only(['index', 'show', 'store', 'destroy']);
+
+
+
+        Route::delete('setting/databases', [DatabaseBackupController::class, 'destroyBatch'])->name('api.setting.databases.destroy.batch');
+        Route::apiResource('setting/databases', DatabaseBackupController::class)->names('api.setting.databases')->except(['update']);
+
 
         Route::get('mikapi/dashboard/get-data', [DashboardController::class, 'get'])->name('api.mikapi.dashboard.get');
 

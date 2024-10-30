@@ -54,7 +54,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="animated-underline-database-tab"
-                                onclick="redirect('{{ route('database.index') }}')">
+                                onclick="redirect('{{ route('setting.database.index') }}')">
                                 <i data-feather="database"></i> Database
                             </button>
                         </li>
