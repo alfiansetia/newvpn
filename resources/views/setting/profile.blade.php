@@ -117,8 +117,8 @@
                         <span style="font-size: 38px;font-weight: 600; color: #191e3a">Rp.
                             {{ hrg($user->balance) }}</span>
                     </div>
-                    <a href="{{ route('topup.index') }}" class="btn btn-primary"><i data-feather="plus-circle"></i>
-                        TopUp</a>
+                    <a href="{{ route('topups.index') }}" class="btn btn-primary"><i data-feather="dollar-sign"></i>
+                        TopUp Account</a>
                 </div>
             </div>
 

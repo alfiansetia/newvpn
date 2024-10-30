@@ -296,7 +296,7 @@ class VpnController extends Controller
                     'type'      => 'min',
                     'before'    => $user_balance,
                     'after'     => $user_balance - $total,
-                    'desc'      => 'Order ' . $vpn->username . ' ' . $qty . ' Month',
+                    'desc'      => 'Order VPN ' . $vpn->username . ' ' . $qty . ' Month',
                 ]);
             }
             $service = VpnServices::server($server)->store($vpn->fresh());
@@ -398,7 +398,7 @@ class VpnController extends Controller
                 'type'      => 'min',
                 'before'    => $user_balance,
                 'after'     => $new_balance,
-                'desc'      => 'Extend ' . $vpn->username . ' ' . $month . ' Month',
+                'desc'      => 'Extend VPN ' . $vpn->username . ' ' . $month . ' Month',
             ]);
             DB::commit();
             return $this->send_response('Success Extend Vpn ' . $month . ' Month!');

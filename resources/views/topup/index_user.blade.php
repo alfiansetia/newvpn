@@ -18,6 +18,10 @@
         type="text/css">
     <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
         type="text/css">
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{{ asset('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
@@ -76,68 +80,64 @@
 
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_edit" style="display: none;">
             <div class="widget-content widget-content-area br-8">
-
-                <form id="formEdit" class="fofrm-vertical" action="" method="POST">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title" id="titleEdit"><i class="fas fa-info me-1 bs-tooltip"
-                                    title="Detail Data"></i>Detail Data <span id="titleEdit2"></span></h5>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title" id="titleEdit"><i class="fas fa-info me-1 bs-tooltip"
+                                title="Detail Data"></i>Detail Data <span id="titleEdit2"></span></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-arrow-left alert-icon-left alert-light-warning alert-dismissible fade show mb-4"
+                            role="alert" id="edit_alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <i data-feather="x"></i></button>
+                            <i data-feather="bell"></i>
+                            <strong>Warning!</strong> <span id="edit_warning"></span>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group mb-2">
-                                <label for="edit_user"><i class="far fa-envelope me-1 bs-tooltip"
-                                        title="Option User"></i>User
-                                    :</label>
-                                <select name="user" id="edit_user" class="form-control-lg tomse-user"
-                                    style="width: 100%;" required>
-                                </select>
-                                <span class="error invalid-feedback err_user" style="display: hide;"></span>
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="edit_bank"><i class="fas fa-university me-1 bs-tooltip"
-                                        title="Option Bank"></i>Bank
-                                    :</label>
-                                <select name="bank" id="edit_bank" class="form-control-lg tomse-bank"
-                                    style="width: 100%;" required>
-                                </select>
-                                <span class="error invalid-feedback err_bank" style="display: hide;"></span>
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="edit_amount"><i class="fas fa-dollar-sign me-1 bs-tooltip"
-                                        title="amount"></i>Amount
-                                    :</label>
-                                <select name="amount" id="edit_amount" class="form-control-lg tomse-amount"
-                                    style="width: 100%;" required>
-                                </select>
-                                <span class="error invalid-feedback err_amount" style="display: hide;"></span>
-                            </div>
-                            <div class="form-group mb-2">
-                                <label class="control-label" for="edit_desc"><i class="fas fa-map-marker me-1 bs-tooltip"
-                                        title="desc User"></i>Description :</label>
-                                <textarea name="desc" class="form-control maxlength" id="edit_desc" placeholder="Please Enter Description"
-                                    minlength="0" maxlength="100"></textarea>
-                                <span class="error invalid-feedback err_desc" style="display: hide;"></span>
-                            </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_number">Number TRX :</label>
+                            <input type="text" id="edit_number" class="form-control" placeholder="No Number"
+                                disabled>
                         </div>
-                        <div class="card-footer text-center">
-                            <div class="row">
-                                <div class="col-12">
-
-                                    <button type="button" class="btn btn-secondary show-index mb-2">
-                                        <i class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
-                                    <button type="button" id="edit_reset" class="btn btn-warning mb-2">
-                                        <i class="fas fa-undo me-1 bs-tooltip" title="Refresh Data"></i>Refresh
-                                    </button>
-                                    <button type="button" id="edit_delete" class="btn btn-danger mb-2">
-                                        <i class="fas fa-trash me-1 bs-tooltip" title="Cancel"></i>Cancel
-                                    </button>
-                                    <button type="button" class="btn btn-info ms-1 me-1 mb-2" id="btn_pay"><i
-                                            class="fab fa-whatsapp"></i> Confirm Payment</button>
-                                </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_date">Date Topup :</label>
+                            <input type="text" id="edit_date" class="form-control" placeholder="No Date" disabled>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_bank">Bank :</label>
+                            <textarea class="form-control" rows="3" id="edit_bank" placeholder="No Bank" disabled></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_amount">Amount :</label>
+                            <input type="text" id="edit_amount" class="form-control" placeholder="No Amount"
+                                disabled>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_status">Status :</label>
+                            <input type="text" id="edit_status" class="form-control" placeholder="No Status"
+                                disabled>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_desc">Description :</label>
+                            <textarea class="form-control" id="edit_desc" placeholder="No Description" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-secondary show-index mb-2">
+                                    <i class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
+                                <button type="button" id="edit_reset" class="btn btn-warning mb-2">
+                                    <i class="fas fa-undo me-1 bs-tooltip" title="Refresh Data"></i>Refresh
+                                </button>
+                                <button type="button" id="edit_delete" class="btn btn-danger mb-2">
+                                    <i class="fas fa-trash me-1 bs-tooltip" title="Cancel"></i>Cancel
+                                </button>
+                                <a href="#" class="btn btn-info ms-1 me-1 mb-2" id="btn_pay" target="_blank"><i
+                                        class="fab fa-whatsapp"></i> Confirm Payment</a>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -287,10 +287,12 @@
                 },
                 className: 'btn btn-sm btn-info'
             }, {
-                text: '<i class="fas fa-plus"></i> Add',
+                text: '<i class="fas fa-dollar-sign"></i> Topup Account',
                 className: 'btn btn-primary',
                 action: function(e, dt, node, config) {
                     $('#card_add').show()
+                    document.getElementById('bank').tomselect.focus()
+                    document.getElementById('bank').tomselect.open()
                 },
             }, ],
             dom: dom,
@@ -340,7 +342,7 @@
             }
         });
 
-        $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
+        $('#tableData tbody').on('click', 'tr td', function() {
             id = table.row(this).id()
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
@@ -357,6 +359,26 @@
                     $('#edit_desc').val(result.data.desc);
                     $('#titleEdit2').html(`<b>${result.data.number}</b> (${result.data.status})`);
 
+                    $('#edit_number').val(result.data.number)
+                    $('#edit_date').val(result.data.date)
+                    if (result.data.bank != null) {
+                        $('#edit_bank').val(
+                            `${result.data.bank.name} \n${result.data.bank.acc_number} \n(${result.data.bank.acc_name})`
+                        )
+                    } else {
+                        $('#edit_bank').val('')
+                    }
+                    $('#edit_amount').val(hrg(result.data.amount))
+                    $('#edit_status').val(result.data.status)
+                    $('#edit_desc').val(result.data.desc)
+                    $('#edit_warning').html(result.data.message)
+                    if (result.data.status == 'pending') {
+                        $('#edit_alert').show();
+                    } else {
+                        $('#edit_alert').hide();
+                    }
+
+                    $('#btn_pay').attr('href', result.data.confirm_url)
                     let element = ['edit_delete', 'btn_pay'];
                     element.forEach(item => {
                         $(`#${item}`).prop('disabled', result.data.status != 'pending');

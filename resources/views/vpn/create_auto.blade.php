@@ -233,11 +233,13 @@
         						</span>
         						<span class="text-muted"> (${ escape(item.location) })</span>
         					</div>
-        			 		<div class="description">${ escape(item.domain) } </div>
+        			 		<div class="description">${ escape(item.domain) } <span class="badge badge-${item.is_available ? 'success': 'danger'}">${item.is_available ? 'available': 'unavailable'}</span></div>
         			 		<div class="description">
-                                (Rp. ${hrg(item.price)})
-                                <span class="badge badge-${item.is_available ? 'success': 'danger'}">${item.is_available ? 'available': 'unavailable'}</span>
-                                </div>
+                                Rp. ${hrg(item.price)} / Months
+                            </div>
+                            <div class="description">
+                                Rp. ${hrg(item.annual_price)} / Years
+                            </div>
         				</div>
         			</div>`;
                 },
