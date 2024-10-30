@@ -156,7 +156,7 @@ class RouterController extends Controller
             $ping  = RouterServices::router($router)->ping();
             return $this->send_response('Router Connected!');
         } catch (Exception $e) {
-            return $this->send_response($e->getMessage(), null, 500);
+            return $this->send_response('Router Not Connect : ' . $e->getMessage(), null, 500);
         }
     }
 

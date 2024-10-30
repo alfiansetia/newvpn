@@ -79,25 +79,25 @@
     <div class="row" id="cancel-row">
 
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
-            <div class="col-md-4">
-                <select class="form-control select2" name="status" id="select_status">
+            <div class="col-md-4 mb-2">
+                <select class="form-control" name="status" id="select_status">
                     <option value="">All</option>
                     <option value="1">Active</option>
                     <option value="0">Nonactive</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <select class="form-control select2" name="trial" id="select_trial">
+            <div class="col-md-4 mb-2">
+                <select class="form-control" name="trial" id="select_trial">
                     <option value="">All</option>
                     <option value="1">Trial</option>
                     <option value="0">Paid</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mb-2">
                 <input type="text" class="form-control mask_angka" name="search_port" id="search_port"
                     placeholder="DST Port">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mb-2">
                 <button type="button" class="btn btn-block btn-primary" id="btn_filter">
                     <i class="fas fa-filter me-1"></i>Filter
                 </button>
@@ -156,6 +156,7 @@
         const url_index_api_temp = "{{ route('api.temporaryips.index') }}"
         var id = 0
         var perpage = 50
+        var text = ''
 
         document.querySelectorAll('.tomse-server').forEach((el) => {
             var tomse = new TomSelect(el, {
@@ -305,29 +306,6 @@
             }
         });
 
-        $('#analyze').click(function() {
-            $.ajax({
-                url: "{{ url('vpn') }}/" + id + '/analyze',
-                method: 'GET',
-                success: function(result) {
-                    unblock();
-                    // $('#share').val(result.data.id);
-                    console.log(result);
-                },
-                beforeSend: function() {
-                    block();
-                },
-                error: function(xhr, status, error) {
-                    unblock();
-                    handleResponse(xhr)
-                }
-            });
-        })
-
-        $('#download').click(function() {
-            window.open("{{ url('vpn') }}/" + id + '/download', '_blank')
-        })
-
         // $(document).ready(function() {
         var f1 = flatpickr(document.getElementById('expired'), {
             defaultDate: "today",
@@ -349,17 +327,18 @@
             text += `Password : ${data.password}\n`;
             text += `IP       : ${data.ip}\n`;
             text += `------------------------------------------------\n`;
-            text += `Server Name    : ${data.server.name}\n`;
-            text += `Server Domain  : ${data.server.domain}\n`;
-            text += `Server IP      : ${data.server.ip}\n`;
+            text += `Server Name     : ${data.server.name}\n`;
+            text += `Server Domain   : ${data.server.domain}\n`;
+            text += `Server IP       : ${data.server.ip}\n`;
+            text += `Server Location : ${data.server.location}\n`;
             text += `------------------------------------------------\n`;
             text += `Created At : ${moment.utc(data.created_at, "YYYY-MM-DD\THH:mm:ss\Z").format('DD MMM YYYY')}\n`;
             text +=
-                `Status     : ${data.is_active == 'yes'  ? 'Active': 'Nonactive' + (data.is_trial == 'yes' ? ' Trial' : '')}\n`;
+                `Status     : ${data.is_active  ? 'Active': 'Nonactive' + (data.is_trial ? ' Trial' : '')}\n`;
             text += `Expired    : ${moment(data.expired).format('DD MMM YYYY')}\n`;
             text += `------------------------------------------------\n`;
-            for (let i = 0; i < data.port.length; i++) {
-                text += `Port ${data.port[i].to} <=> ${data.server.domain}:${data.port[i].dst}\n`;
+            for (let i = 0; i < data.ports.length; i++) {
+                text += `Port ${data.ports[i].to} <=> ${data.server.domain}:${data.ports[i].dst}\n`;
             }
             text += `------------------------------------------------\n`;
             text += `Tgl         : ${moment().format('DD MMM YYYY HH:mm:ss')}\n`;
@@ -514,75 +493,38 @@
         multiCheck(table);
 
         $('#share').click(function() {
-            id = $(this).val();
-            $.ajax({
-                url: url_index_api + "/" + id,
-                method: 'GET',
-                success: function(result) {
-                    unblock();
-                    let text = share(result.data);
-                    if (navigator.share) {
-                        navigator.share({
-                            title: result.data.username,
-                            text: text,
-                        }).then(() => {
-                            Swal.fire(
-                                'Success!',
-                                'Thanks For Sharing!',
-                                'success'
-                            )
-                        }).catch(err => {
-                            Swal.fire(
-                                'Failed!',
-                                "Error while using Web share API:",
-                                'error'
-                            )
-                            console.log("Error while using Web share API:");
-                            console.log(err);
-                        });
-                    } else {
-                        Swal.fire(
-                            'Failed!',
-                            "Browser doesn't support this API !",
-                            'error'
-                        )
-                    }
-                },
-                beforeSend: function() {
-                    block();
-                },
-                error: function(xhr, status, error) {
-                    unblock();
-                    handleResponse(xhr)
-                }
-            });
+            if (navigator.share) {
+                navigator.share({
+                    title: "Share VPN",
+                    text: text,
+                }).then(() => {
+                    Swal.fire(
+                        'Success!',
+                        'Thanks For Sharing!',
+                        'success'
+                    )
+                }).catch(err => {
+                    Swal.fire(
+                        'Failed!',
+                        "Error while using Web share API:",
+                        'error'
+                    )
+                    console.log("Error while using Web share API:");
+                    console.log(err);
+                });
+            } else {
+                Swal.fire(
+                    'Failed!',
+                    "Browser doesn't support this API !",
+                    'error'
+                )
+            }
         })
 
         $('#wa').click(function() {
-            // id = $(this).val();
-            $.ajax({
-                url: url_index_api + "/" + id,
-                method: 'GET',
-                success: function(result) {
-                    unblock();
-                    let text = share(result.data);
-                    var win = window.open('https://api.whatsapp.com/send/?phone=&text=' +
-                        encodeURIComponent(text), '_blank');
-                    win.focus();
-                },
-                beforeSend: function() {
-                    block();
-                },
-                error: function(xhr, status, error) {
-                    unblock();
-                    er = xhr.responseJSON.errors
-                    Swal.fire(
-                        'Failed!',
-                        'Server Error',
-                        'error'
-                    )
-                }
-            });
+            var win = window.open('https://api.whatsapp.com/send/?phone=&text=' +
+                encodeURIComponent(text), '_blank');
+            win.focus();
         })
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
@@ -602,9 +544,8 @@
                 method: 'GET',
                 success: function(result) {
                     unblock();
-                    $('#share').val(result.data.id);
-                    $('#wa').val(result.data.id);
-                    $('#download').val(result.data.id);
+                    text = share(result.data)
+
                     $('#edit_username').val(result.data.username);
                     $('#edit_password').val(result.data.password);
                     $('#edit_ip').val(result.data.ip);
@@ -672,31 +613,7 @@
                         }
                         $('#table_port').html(a);
                     }
-                    var select_script = $('#select_script');
-                    var script = $('#script');
-                    select_script.val('').change();
-                    select_script.change(function() {
-                        let type = $(this).val();
-                        if (type == 'PPTP') {
-                            script.val(
-                                `/interface pptp-client add connect-to="${result.data.server.domain}" name="${result.data.server.name}:${result.data.username}" user="${result.data.username}" password="${result.data.password}" disabled="no" comment="<<==${result.data.server.domain}==>"; /tool netwatch add host="${result.data.server.netwatch}" comment="<<==${result.data.server.domain}==>"`
-                            );
-                        } else if (type == 'L2TP') {
-                            script.val(
-                                `/interface l2tp-client add connect-to="${result.data.server.domain}" name="${result.data.server.name}:${result.data.username}" user="${result.data.username}" password="${result.data.password}" disabled="no" comment="<<==${result.data.server.domain}==>"; /tool netwatch add host="${result.data.server.netwatch}" comment="<<==${result.data.server.domain}==>"`
-                            );
-                        } else if (type == 'SSTP') {
-                            script.val(
-                                `/interface sstp-client add connect-to="${result.data.server.domain}" name="${result.data.server.name}:${result.data.username}" user="${result.data.username}" password="${result.data.password}" disabled="no" comment="<<==${result.data.server.domain}==>"; /tool netwatch add host="${result.data.server.netwatch}" comment="<<==${result.data.server.domain}==>"`
-                            );
-                        } else if (type == 'OVPN') {
-                            script.val(
-                                `/interface ovpn-client add connect-to="${result.data.server.domain}" name="${result.data.server.name}:${result.data.username}" user="${result.data.username}" password="${result.data.password}" disabled="no" comment="<<==${result.data.server.domain}==>"; /tool netwatch add host="${result.data.server.netwatch}" comment="<<==${result.data.server.domain}==>"`
-                            );
-                        } else {
-                            script.val('');
-                        }
-                    })
+
                     tooltip()
                     if (show) {
                         show_card_detail()

@@ -89,10 +89,10 @@
                 </blockquote>
             </div>
 
-            <form id="form" class="was-validated" action="{{ route('api.vpns.autocreate') }}" method="POST">
+            <form id="form" class="was-validated" action="{{ route('api.vpns.user.store') }}" method="POST">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="modal-title"><i class="fas fa-plus me-1 bs-tooltip" title="Create VPN"></i>Create VPN
+                        <h5 class="modal-title"><i class="fas fa-plus me-1 bs-tooltip" title="Order VPN"></i>Order VPN
                         </h5>
                     </div>
                     <div class="card-body">
@@ -198,12 +198,12 @@
                 $('#qty').empty()
                 $("#qty").append(new Option(`1 Hari Trial (Rp. 0)`, 0));
                 if (value != '') {
-                    let js = tomse.options[value];
-                    $('#sufiks').text(js.sufiks)
+                    let server = tomse.options[value];
+                    $('#sufiks').text(server.sufiks)
                     for (let i = 1; i <= 6; i++) {
-                        $("#qty").append(new Option(`${i} Bulan, (Rp. ${hrg(i*js.price)})`, i));
+                        $("#qty").append(new Option(`${i} Bulan, (Rp. ${hrg(i*server.price)})`, i));
                     }
-                    $("#qty").append(new Option(`1 Tahun Rp. ${hrg(js.annual_price)}`, 12));
+                    $("#qty").append(new Option(`1 Tahun Rp. ${hrg(server.annual_price)}`, 12));
 
                 } else {
                     $('#sufiks').text('@kacangan.net')

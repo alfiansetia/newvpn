@@ -114,17 +114,14 @@
                 <div class="widget-content widget-content-area p-3 text-center">
                     <h3 class="mb-0 text-start">Total Balance</h3>
                     <div class="list-group">
-                        <span style="font-size: 38px;font-weight: 600; color: #191e3a">Rp.
-                            {{ hrg($user->balance) }}</span>
+                        <h1>Rp. {{ hrg($user->balance) }}</h1>
                     </div>
-                    <a href="{{ route('topups.index') }}" class="btn btn-primary"><i data-feather="dollar-sign"></i>
-                        TopUp Account</a>
                 </div>
             </div>
 
             <div class="payment-history layout-spacing ">
                 <div class="widget-content widget-content-area p-3">
-                    <h3 class="">Balance History</h3>
+                    <h3 class="mb-1">Your Balance History</h3>
                     <div class="table-responsive">
                         <table class="table" id="table_balance"></table>
                     </div>
@@ -136,51 +133,12 @@
 
 @push('jslib')
     <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 @endpush
 
 @push('js')
     <script src="{{ asset('js/v2/var.js') }}"></script>
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#edit_profile_btn').click(function() {
-                $('#name').focus();
-            });
-
-            $('.maxlength').maxlength({
-                placement: "top",
-                alwaysShow: true
-            });
-
-            $('#form').submit(function(event) {
-                block();
-            }).validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                    $(element).addClass('is-valid');
-                }
-            });
-
-        });
-    </script>
 
     <script>
         $(document).ready(function() {
@@ -192,23 +150,28 @@
                 ajax: {
                     url: "{{ route('api.balance.index') }}",
                     error: function(jqXHR, textStatus, errorThrown) {
-                        handleResponseCode(jqXHR, textStatus, errorThrown)
-                    },
-                    data: function(data) {
-                        data.dt = 'on'
+                        handleResponseCode(jqXHR)
                     },
                 },
+                order: [0, 'desc'],
                 columnDefs: [{
                     defaultContent: '',
                     targets: "_all"
                 }],
-                order: [0, 'desc'],
-                buttons: [],
+                lengthChange: false,
+                buttons: [{
+                    text: '<i class="fas fa-dollar-sign"></i> Topup Account',
+                    className: 'btn btn-primary',
+                    action: function(e, dt, node, config) {
+                        window.location.href = "{{ route('topups.index') }}"
+                    },
+                }, ],
                 dom: dom,
                 stripeClasses: [],
                 lengthMenu: length_menu,
                 pageLength: 10,
                 oLanguage: o_lang,
+                sPaginationType: 'simple_numbers',
                 columns: [{
                     title: "Date",
                     data: 'date',
@@ -218,10 +181,12 @@
                     data: 'amount',
                     className: 'text-start',
                     render: function(data, type, row, meta) {
-                        let plus = `<span class="badge badge-success">+</span>`;
-                        let min = `<span class="badge badge-danger">-</span>`;
+                        // let plus = `<span class="badge badge-success">+</span>`;
+                        // let min = `<span class="badge badge-danger">-</span>`;
+                        let min = `<span class="text-danger">-${hrg(data)}</span>`
+                        let plus = `<span class="text-success">+${hrg(data)}</span>`
                         if (type == 'display') {
-                            return `${row.type == 'min' ? min : plus} ${hrg(data)}`
+                            return `${row.type == 'min' ? min : plus}`
                         } else {
                             return data
                         }

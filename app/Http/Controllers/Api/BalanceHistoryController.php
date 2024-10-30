@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BalanceHistoryResource;
 use App\Models\BalanceHistory;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class BalanceHistoryController extends Controller
 {
@@ -16,7 +15,7 @@ class BalanceHistoryController extends Controller
     {
         $filters['user_id'] = auth()->id();
         $query = BalanceHistory::query()->with(['user'])->filter($filters);
-        return FacadesDataTables::eloquent($query)->setTransformer(function ($item) {
+        return DataTables::eloquent($query)->setTransformer(function ($item) {
             return BalanceHistoryResource::make($item)->resolve();
         })->toJson();
     }

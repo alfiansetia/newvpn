@@ -205,66 +205,20 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-xs-12 col-md-6 col-xl-8">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <section class="mb-0 mt-0">
-                                                            <div role="menu" class=""
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#iconAccordionFour"
-                                                                aria-expanded="false"
-                                                                aria-controls="iconAccordionFour">
-                                                                <div class="accordion-icon">
-                                                                    <i data-feather="link"></i>
-                                                                </div>
-                                                                Script Winbox
-                                                                <div class="icons">
-                                                                    <i data-feather="chevron-down"></i>
-                                                                </div>
-                                                            </div>
-                                                        </section>
-                                                    </div>
-                                                    <div id="iconAccordionFour" class="accordion-collapse collapse">
-                                                        <div class="card-body">
-                                                            <select id="select_script" class="form-control mb-2"
-                                                                style="width: 100%;">
-                                                                <option value="">PILIH TYPE VPN</option>
-                                                                <option value="PPTP">PPTP</option>
-                                                                <option value="L2TP">L2TP</option>
-                                                                <option value="SSTP">SSTP</option>
-                                                                <option value="OVPN">OVPN</option>
-                                                            </select>
-                                                            <textarea id="script" cols="40" class="form-control clipboard bs-tooltip" title="Click to copy!"
-                                                                data-clipboard-action="copy" data-clipboard-target="#script"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="card-footer text-center">
-                                        <button type="button" class="btn btn-secondary close-detail me-1"><i
+                                        <button type="button" class="btn btn-secondary close-detail me-1 mb-2"><i
                                                 class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
-                                        <button type="button" id="share" class="btn btn-info me-1"><i
+                                        <button type="button" id="share" class="btn btn-info me-1 mb-2"><i
                                                 class="fas fa-share-alt me-1 bs-tooltip"
                                                 title="Share"></i>Share</button>
-                                        <button type="button" id="wa" class="btn btn-success me-1"><i
+                                        <button type="button" id="wa" class="btn btn-success me-1 mb-2"><i
                                                 class="fab fa-whatsapp me-1 bs-tooltip"
                                                 title="Share Whatsapp"></i>WA</button>
-                                        <button type="button" id="download" class="btn btn-primary me-1"><i
-                                                class="fas fa-download me-1 bs-tooltip"
-                                                title="Download Config"></i>Download</button>
-                                        <button type="button" id="send_email" class="btn btn-primary me-1"><i
+                                        <button type="button" id="send_email" class="btn btn-warning me-1 mb-2"><i
                                                 class="fas fa-envelope me-1 bs-tooltip" title="Send Email"></i>Send
                                             Email</button>
-                                        <button type="button" id="analyze" class="btn btn-warning me-1"><i
-                                                class="fas fa-sync me-1 bs-tooltip"
-                                                title="Analyze"></i>Analyze</button>
-                                        <button type="button" id="btn_temp" class="btn btn-danger me-1"><i
-                                                class="fas fa-sync me-1 bs-tooltip"
-                                                title="Move Temporary IP"></i>Temporary</button>
                                     </div>
                                 </div>
                             </div>
@@ -378,6 +332,10 @@
                                         </div>
                                         <div class="card-footer text-center">
                                             @include('components.form.button_edit')
+
+                                            <button type="button" id="btn_temp" class="btn btn-danger me-1 mb-2"><i
+                                                    class="fas fa-sync me-1 bs-tooltip"
+                                                    title="Move Temporary IP"></i>Temporary</button>
                                         </div>
                                     </form>
                                 </div>

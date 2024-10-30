@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\TopupUserController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoucherTemplateController;
 use App\Http\Controllers\Api\VpnController;
+use App\Http\Controllers\Api\VpnUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -92,8 +93,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('ports', [PortController::class, 'destroyBatch'])->name('api.ports.destroy.batch');
         Route::apiResource('ports', PortController::class)->names('api.ports');
 
-        Route::post('vpns-create', [VpnController::class, 'autoCreate'])->name('api.vpns.autocreate');
-        Route::get('vpn-paginate-user', [VpnController::class, 'paginateUser'])->name('api.vpns.paginate.user');
+        Route::get('vpn-user-paginate', [VpnUserController::class, 'paginate'])->name('api.vpns.user.paginate');
+        Route::apiResource('vpn-user', VpnUserController::class)->names('api.vpns.user')->only(['index', 'show', 'store', 'update']);
+
         Route::get('vpn-paginate', [VpnController::class, 'paginate'])->name('api.vpns.paginate');
         Route::post('vpns/{vpn}/send-email', [VpnController::class, 'sendEmail'])->name('api.vpns.send.email');
         Route::post('vpns/{vpn}/temporary', [VpnController::class, 'temporary'])->name('api.vpns.temporary');
@@ -101,9 +103,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('vpns', VpnController::class)->names('api.vpns');
 
         Route::apiResource('topups', TopupController::class)->names('api.topups');
-        Route::apiResource('topup-user', TopupUserController::class)
-            ->names('api.topups.user')->only(['index', 'show', 'store', 'destroy']);
-
+        Route::apiResource('topup-user', TopupUserController::class)->names('api.topups.user')->only(['index', 'show', 'store', 'destroy']);
 
         Route::get('mikapi/dashboard/get-data', [DashboardController::class, 'get'])->name('api.mikapi.dashboard.get');
 

@@ -17,12 +17,12 @@ class TopupResurce extends JsonResource
         // return parent::toArray($request);
         $bank = $this->whenLoaded('bank');
         $user = $this->whenLoaded('user');
-        $bank_name = $bank->name;
-        $bank_acc_name = $bank->acc_name;
-        $bank_acc_number = $bank->acc_number;
+        $bank_name = $bank->name ?? '';
+        $bank_acc_name = $bank->acc_name ?? '';
+        $bank_acc_number = $bank->acc_number ?? '';
         $amount = $this->amount;
         $amount_parse = hrg($amount);
-        $email = $user->email;
+        $email = $user->email ?? '';
         $number = $this->number;
 
         return [

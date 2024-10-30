@@ -44,6 +44,9 @@ class Vpn extends Model
         if (isset($filters['dst'])) {
             $query->whereRelation('port', 'dst', $filters['dst']);
         }
+        if (isset($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
     }
 
     public function user()
