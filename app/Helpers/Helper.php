@@ -1,5 +1,17 @@
 <?php
 
+use App\Models\Company;
+
+function company()
+{
+    return Company::first();
+}
+
+function user()
+{
+    return auth()->user();
+}
+
 function isAdmin()
 {
     $user = auth()->user();

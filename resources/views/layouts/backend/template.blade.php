@@ -1,3 +1,9 @@
+@php
+    $company = company();
+    $user = user();
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en">
 
