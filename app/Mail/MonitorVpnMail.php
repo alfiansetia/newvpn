@@ -29,7 +29,7 @@ class MonitorVpnMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Monitor Expired Vpn',
+            subject: 'Informasi VPN Expired',
         );
     }
 

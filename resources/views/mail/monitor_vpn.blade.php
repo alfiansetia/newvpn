@@ -32,32 +32,49 @@
                                                     style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';max-width:100vw;padding:32px">
                                                     <h1
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';color:#3d4852;font-size:18px;font-weight:bold;margin-top:0;text-align:left">
-                                                        Hello!</h1>
+                                                        Halo, Terima kasih sudah menggunakan Layanan Kami</h1>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
-                                                        Time : {{ date('d-M-Y H:i:s') }}</p>
+                                                        Waktu : {{ date('d-M-Y H:i:s') }}</p>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
-                                                        Monitor Sukses dilaksanakan Bosku</p>
+                                                        Berikut detail akun VPN anda yang sudah expired. Silahkan
+                                                        Lakukan Perpanjangan agar akun tidak terhapus dari member area.
+                                                    </p>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
                                                         Vpn Expired : {{ count($vpns) }}
                                                     </p>
                                                     @if (count($vpns) > 0)
-                                                        <p
-                                                            style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
-                                                        <ul>
-                                                            @foreach ($vpns as $item)
-                                                                <li>{{ $item['username'] }} : {{ $item['expired'] }}
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                        </p>
+                                                        @foreach ($vpns as $item)
+                                                            <p
+                                                                style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
+                                                            <ul>
+                                                                <li>IP : {{ $item['ip'] }}</li>
+                                                                <li>Username : {{ $item['username'] }}</li>
+                                                                <li>Password : {{ $item['password'] }}</li>
+                                                                <li>Expired Date : {{ $item['expired'] }}</li>
+                                                                <li>Trial :
+                                                                    {{ $item['is_trial'] ? 'Trial' : 'No Trial' }}</li>
+                                                                <li>Desc : {{ $item['desc'] }}</li>
+                                                            </ul>
+                                                            <hr>
+                                                            </p>
+                                                        @endforeach
                                                     @endif
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
-                                                        Regards,<br>
+                                                        <br>
+                                                        <br>Regards,
+                                                        <br>
                                                         <span class="il">{{ $company->name }}</span>
+                                                        <br><a
+                                                            href="https://member.kacangan.net">https://member.kacangan.net</a>
+                                                        <br><a href="https://kacangan.net">https://kacangan.net</a>
+                                                        <br><a
+                                                            href="https://blog.kacangan.net">https://blog.kacangan.net</a>
+                                                        <br>Whatsapp : <a
+                                                            href="https://api.whatsapp.com/send/?phone=6282324129752&text=Halo">082324129752</a>
                                                     </p>
                                                 </td>
                                             </tr>

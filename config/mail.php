@@ -113,4 +113,8 @@ return [
         'name' => env('MAIL_FROM_NAME', 'KCN NET'),
     ],
 
+    'backup' => [
+        'notif_address' => env('MAIL_BACKUP_NOTIFICATION_ADDRESS', 'admin@kacangan.net')
+    ],
+
 ];

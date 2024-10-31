@@ -30,21 +30,25 @@ class MonitorExpiredVpn extends Command
     public function handle()
     {
         $vpns = Vpn::query()
-            ->with('server')
-            ->where('is_active', true)
+            ->with(['server', 'user'])
+            ->where('is_active', 1)
             ->where('expired', '<=', date('Y-m-d'))
-            ->get();
+            ->get()
+            ->groupBy('user_id');
         try {
-            foreach ($vpns as $value) {
-                $value->update([
-                    'is_active' => 'no'
-                ]);
+            foreach ($vpns as $data) {
+                foreach ($data as $key => $item) {
+                    $item->update([
+                        'is_active'                 => 0,
+                        'last_send_notification'    => date('Y-m-d H:i:s'),
+                    ]);
+                }
+                $to = $data->first()->user->email;
+                if (empty($to)) {
+                    throw new Exception('Error : MAIL_BACKUP_NOTIFICATION_ADDRESS !');
+                }
+                Mail::to($to)->queue(new MonitorVpnMail($data->toArray()));
             }
-            $to = env('MAIL_BACKUP_NOTIFICATION_ADDRESS');
-            if (empty($to)) {
-                throw new Exception('Error : MAIL_BACKUP_NOTIFICATION_ADDRESS !');
-            }
-            Mail::to($to)->send(new MonitorVpnMail($vpns->toArray()));
             $this->info('Monitor Sukses');
             return Command::SUCCESS;
         } catch (\Throwable $th) {
