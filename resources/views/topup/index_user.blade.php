@@ -278,6 +278,7 @@
                 defaultContent: '',
                 targets: "_all"
             }],
+            order: [0, 'desc'],
             lengthChange: false,
             buttons: [{
                 extend: "pageLength",

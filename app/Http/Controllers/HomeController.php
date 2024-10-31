@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
         $user = auth()->user();
         $new_users = User::latest()->limit(5)->get();
-        $query_expired = Vpn::query()->where('expired', '<=', date('Y-m-d'));
+        $query_expired = Vpn::query()->with(['server'])->where('expired', '<=', date('Y-m-d'));
         if ($user->is_admin()) {
             $data_vpn = Vpn::selectRaw('
                 SUM(CASE WHEN is_trial = 0 AND is_active = 1 THEN 1 ELSE 0 END) as active,

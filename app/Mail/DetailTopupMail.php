@@ -3,25 +3,26 @@
 namespace App\Mail;
 
 use App\Models\Company;
-use App\Models\Vpn;
+use App\Models\Topup;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class DetailVpnMail extends Mailable
+class DetailTopupMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $vpn;
+    public $topup;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Vpn $vpn)
+    public function __construct(Topup $topup)
     {
-        $this->vpn = $vpn;
+        $this->topup = $topup;
     }
 
     /**
@@ -30,7 +31,7 @@ class DetailVpnMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Informasi Detail Vpn ' . $this->vpn->username,
+            subject: 'Informasi Topup Saldo No ' . $this->topup->number,
         );
     }
 
@@ -40,7 +41,7 @@ class DetailVpnMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.detail_vpn',
+            view: 'mail.detail_topup',
         );
     }
 
@@ -57,12 +58,12 @@ class DetailVpnMail extends Mailable
     public function build()
     {
         $company = Company::first();
-        $vpn = $this->vpn->load(['server', 'ports']);
+        $topup = $this->topup->load(['bank', 'user']);
         $from = config('mail.from.address');
         return $this->from($from, $company->name)
             ->with([
                 'company'   => $company,
-                'vpn'       => $vpn
+                'topup'       => $topup
             ]);
     }
 }

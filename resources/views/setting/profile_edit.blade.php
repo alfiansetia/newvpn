@@ -1,3 +1,6 @@
+@php
+    $user = user();
+@endphp
 @extends('layouts.backend.template', ['title' => 'Setting Profile'])
 
 @push('css')

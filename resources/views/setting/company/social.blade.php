@@ -1,3 +1,7 @@
+@php
+    $company = company();
+@endphp
+
 @extends('layouts.backend.template', ['title' => 'Setting Company'])
 
 @push('css')

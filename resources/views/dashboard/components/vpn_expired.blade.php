@@ -2,7 +2,7 @@
     <div class="widget widget-table-three">
 
         <div class="widget-heading">
-            <h5 class="">Vpn Expired</h5>
+            <h5 class="">Latest Vpn Expired</h5>
         </div>
 
         <div class="widget-content">
@@ -44,10 +44,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="td-content">{{ $item->is_trial }}</div>
+                                        <div class="td-content">{{ $item->is_trial ? 'Trial' : 'No Trial' }}</div>
                                     </td>
                                     <td>
-                                        <div class="td-content">{{ $item->is_active }}</div>
+                                        <div class="td-content">{{ $item->is_active ? 'Active' : 'Nonactive' }}</div>
                                     </td>
                                 </tr>
                             @endforeach

@@ -9,10 +9,6 @@ class Topup extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function bank()
-    {
-        return $this->belongsTo(Bank::class);
-    }
 
     public function scopeFilter($query, array $filters)
     {
@@ -31,6 +27,11 @@ class Topup extends Model
         if (isset($filters['status'])) {
             $query->where('status', $filters['status']);
         }
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
     }
 
     public function user()
