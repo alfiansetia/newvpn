@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VpnResource;
+use App\Mail\DetailVpnMail;
 use App\Models\BalanceHistory;
 use App\Models\Server;
 use App\Models\TemporaryIp;
@@ -12,6 +13,7 @@ use App\Services\VpnServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -188,6 +190,8 @@ class VpnUserController extends Controller
                 ]);
             }
             $service = VpnServices::server($server)->store($vpn->fresh());
+            Mail::to($user->email)->queue(new DetailVpnMail($vpn));
+
             DB::commit();
             return $this->send_response('Success Create VPN!');
         } catch (Throwable $th) {
