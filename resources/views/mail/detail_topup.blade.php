@@ -39,7 +39,8 @@
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
                                                         Dengan ini kami informasikan detail Permintaan Topup Saldo anda
-                                                        berikut ini:</p>
+                                                        berikut ini:
+                                                    </p>
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
                                                         <br><b>Detail Transaksi</b>
@@ -59,13 +60,36 @@
                                                             <br>Bank Account Name : {{ $topup->bank->acc_name }}
                                                         </p>
                                                     @endif
-                                                    <p
-                                                        style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left; ">
-                                                        <br>
-                                                        <font color="red"><b>Silahkan Transfer Sejumlah Rp.
-                                                                {{ hrg($topup->amount) }} Ke Nomor Rekening/Bank
-                                                                Diatas, Lalu Konfirmasikan kepada admin kami.</b>
-                                                        </font>
+                                                    @if ($topup->status == 'pending')
+                                                        <p
+                                                            style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left; ">
+                                                            <br>
+                                                            <font color="red"><b>Silahkan Transfer Sejumlah Rp.
+                                                                    {{ hrg($topup->amount) }} Ke Nomor Rekening/Bank
+                                                                    Diatas, Lalu Konfirmasikan kepada admin kami.</b>
+                                                            </font>
+                                                        </p>
+                                                    @endif
+                                                    @if ($topup->status == 'cancel')
+                                                        <p
+                                                            style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left; ">
+                                                            <br>
+                                                            <font color="red"><b>Permintaan Topup Anda Sejumlah Rp.
+                                                                    {{ hrg($topup->amount) }} Ke Nomor Rekening/Bank
+                                                                    Diatas telah berhasil dibatalkan. Silahkan Hubungi
+                                                                    admin jika ada kesalahan.</b>
+                                                            </font>
+                                                        </p>
+                                                    @endif
+                                                    @if ($topup->status == 'done')
+                                                        <p
+                                                            style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left; ">
+                                                            <br>
+                                                        <h2>Pembayaran Anda Telah kami verifikasi dan telah kami terima,
+                                                            silahkan masuk ke dashboard member area anda dan refresh
+                                                            halaman untuk melihat update saldo anda:</h2>
+                                                        </p>
+                                                    @endif
                                                     <p
                                                         style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';font-size:16px;line-height:1.5em;margin-top:0;text-align:left">
                                                         <br>

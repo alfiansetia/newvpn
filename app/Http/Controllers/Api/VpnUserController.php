@@ -251,6 +251,7 @@ class VpnUserController extends Controller
                 'after'     => $new_balance,
                 'desc'      => 'Extend VPN ' . $vpn_user->username . ' ' . $month . ' Month',
             ]);
+            Mail::to($user->email)->queue(new DetailVpnMail($vpn_user));
             DB::commit();
             return $this->send_response('Success Extend Vpn ' . $month . ' Month!');
         } catch (\Throwable $th) {

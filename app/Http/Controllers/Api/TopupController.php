@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
+use App\Mail\DetailTopupMail;
 use App\Models\BalanceHistory;
 use App\Models\Topup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class TopupController extends Controller
@@ -55,7 +57,7 @@ class TopupController extends Controller
         $date_parse = Carbon::parse($date);
         $count = Topup::whereDate('date', $date_parse)->count() ?? 0;
         $number = 'INV' . date('ymd', strtotime($date)) . str_pad(($count + 1), 3, 0, STR_PAD_LEFT);
-        Topup::create([
+        $topup = Topup::create([
             'number'    => $number,
             'date'      => date('Y-m-d H:i:s'),
             'user_id'   => $request->user,
@@ -63,6 +65,8 @@ class TopupController extends Controller
             'amount'    => $request->amount,
             'desc'      => $request->desc,
         ]);
+        $topup->load(['bank', 'user']);
+        Mail::to($topup->user->email)->queue(new DetailTopupMail($topup));
         return $this->send_response('Success Insert Data');
     }
 
@@ -156,6 +160,7 @@ class TopupController extends Controller
             $topup->update([
                 'status' => $reqstatus,
             ]);
+            Mail::to($user->email)->queue(new DetailTopupMail($topup));
             DB::commit();
             return $this->send_response('Success Update Status : ' . $topup->number . ' to : ' . $reqstatus);
         } catch (\Throwable $th) {

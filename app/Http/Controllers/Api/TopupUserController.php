@@ -75,6 +75,7 @@ class TopupUserController extends Controller
         $topup_user->update([
             'status' => 'cancel',
         ]);
+        Mail::to(auth()->user()->email)->queue(new DetailTopupMail($topup_user));
         return $this->send_response('Success cancel data!');
     }
 }

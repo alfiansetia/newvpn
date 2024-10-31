@@ -30,8 +30,16 @@ class DetailTopupMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $status = $this->topup->status;
+        $number = $this->topup->number;
+        $subject = "Informasi Menunggu Pembayaran untuk Topup Saldo No $number";
+        if ($status == 'cancel') {
+            $subject = "Informasi Pembatalan Pembayaran untuk Topup Saldo No $number";
+        } elseif ($status == 'done') {
+            $subject = "Informasi Berhasil Topup Saldo No $number";
+        }
         return new Envelope(
-            subject: 'Informasi Topup Saldo No ' . $this->topup->number,
+            subject: $subject,
         );
     }
 
