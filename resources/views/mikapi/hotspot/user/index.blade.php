@@ -282,21 +282,27 @@
             }, {
                 title: "Server",
                 data: 'server',
+                className: "text-start",
             }, {
                 title: "Name",
                 data: 'name',
+                className: "text-start",
             }, {
                 title: "Profile",
                 data: 'profile',
+                className: "text-start",
             }, {
                 title: "MAC",
                 data: 'mac-address',
+                className: "text-start",
             }, {
                 title: "Uptime",
                 data: 'uptime_parse',
+                className: "text-center",
             }, {
                 title: "IN",
                 data: 'bytes-in',
+                className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return formatBytes(data);
@@ -307,6 +313,7 @@
             }, {
                 title: "OUT",
                 data: 'bytes-out',
+                className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return formatBytes(data);
@@ -317,6 +324,7 @@
             }, {
                 title: "Comment",
                 data: 'comment',
+                className: "text-start",
             }],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `

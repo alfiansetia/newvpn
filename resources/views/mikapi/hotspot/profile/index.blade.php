@@ -246,15 +246,19 @@
             }, {
                 title: "Name",
                 data: 'name',
+                className: "text-start",
             }, {
                 title: "Shared User",
                 data: 'shared-users',
+                className: "text-center",
             }, {
                 title: "Rate Limit",
                 data: 'rate-limit',
+                className: "text-center",
             }, {
                 title: "Session Timeout",
                 data: 'session-timeout',
+                className: "text-center",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         return dtm(data);

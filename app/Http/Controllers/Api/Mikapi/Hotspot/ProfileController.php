@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\ProfileResource;
 use App\Services\Mikapi\Hotspot\ProfileServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 

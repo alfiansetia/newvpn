@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\QueueResource;
 use App\Services\Mikapi\QueueServices;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class QueueController extends Controller
 {
-    use RouterTrait;
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -19,16 +18,13 @@ class QueueController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, QueueServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = QueueResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = QueueServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return QueueResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -36,11 +32,10 @@ class QueueController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, QueueServices::class);
-            $data = $this->conn->show($id);
+            $data = QueueServices::routerId($request->router)->show($id);
             return new QueueResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }
