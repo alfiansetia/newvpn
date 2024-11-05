@@ -358,7 +358,7 @@
         function edit(show = false) {
             clear_validate('formEdit')
             $.ajax({
-                url: url_index_api_router + "/" + id,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
