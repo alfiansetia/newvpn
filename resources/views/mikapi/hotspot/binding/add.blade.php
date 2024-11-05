@@ -1,7 +1,8 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_add" style="display: none;">
     <div class="widget-content widget-content-area br-8">
-
-        <form id="form" action="" method="POST">
+        <form id="form" class="was-validated"
+            action="{{ route('api.mikapi.hotspot.bindings.store') }}?router={{ request()->query('router') }}"
+            method="POST">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"
@@ -33,8 +34,8 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="server">Server :</label>
-                            <select name="server" id="server" class="form-control" style="width: 100%;">
-                                <option value="">Please select server</option>
+                            <select name="server" id="server" class="form-control-lg tomse-server"
+                                style="width: 100%;" required>
                             </select>
                             <span id="err_server" class="error invalid-feedback" style="display: hide;"></span>
                         </div>

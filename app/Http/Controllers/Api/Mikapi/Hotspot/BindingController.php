@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\BindingResource;
 use App\Services\Mikapi\Hotspot\BindingServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class BindingController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -21,49 +18,30 @@ class BindingController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $query = [];
-            if ($request->filled('server')) {
-                $query['?server'] = $request->input('server');
-            }
-            if ($request->filled('address')) {
-                $query['?address'] = $request->input('address');
-            }
-            if ($request->filled('type')) {
-                $query['?type'] = $request->input('type');
-            }
-            if ($request->filled('to-address')) {
-                $query['?to-address'] = $request->input('to-address');
-            }
-            if ($request->filled('mac-address')) {
-                $query['?mac-address'] = $request->input('mac-address');
-            }
-            if ($request->filled('comment')) {
-                $query['?comment'] = $request->comment;
-            }
-            $data = $this->conn->get($query);
-            $resource = BindingResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['server', 'address', 'type', 'to-address', 'mac-address', 'comment']);
+            $data = BindingServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return BindingResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $data = $this->conn->show($id);
+            $data = BindingServices::routerId($request->router)->show($id);
             return new BindingResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'server'        => 'nullable',
+            'server'        => 'required',
             'type'          => 'nullable|in:regular,bypassed,blocked',
             'address'       => 'required_without:mac|nullable|ip',
             'to_address'    => 'nullable|ip',
@@ -72,7 +50,7 @@ class BindingController extends Controller
             'is_active'     => 'nullable|in:on',
         ]);
         $param = [
-            'server'        => $request->input('server') ?? 'all',
+            'server'        => $request->input('server'),
             'type'          => $request->input('type') ?? 'regular',
             'address'       => $request->input('address') ?? '0.0.0.0',
             'to-address'    => $request->input('to_address') ?? '0.0.0.0',
@@ -81,18 +59,17 @@ class BindingController extends Controller
             'disabled'      => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            $data = BindingServices::routerId($request->router)->store($param);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'server'        => 'nullable',
+            'server'        => 'required',
             'type'          => 'required|in:regular,bypassed,blocked',
             'address'       => 'required_without:mac|nullable|ip',
             'to_address'    => 'nullable|ip',
@@ -101,8 +78,7 @@ class BindingController extends Controller
             'is_active'     => 'nullable|in:on',
         ]);
         $param = [
-            '.id'           => $id,
-            'server'        => $request->input('server') ?? 'all',
+            'server'        => $request->input('server'),
             'type'          => $request->input('type') ?? 'regular',
             'address'       => $request->input('address') ?? '0.0.0.0',
             'to-address'    => $request->input('to_address') ?? '0.0.0.0',
@@ -111,22 +87,20 @@ class BindingController extends Controller
             'disabled'      => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            $data = BindingServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = BindingServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -137,11 +111,10 @@ class BindingController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, BindingServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = BindingServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

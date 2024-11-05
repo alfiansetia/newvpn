@@ -2,7 +2,6 @@
     <div class="widget-content widget-content-area br-8">
 
         <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
-            {{ method_field('PUT') }}
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="titleEdit"><i class="fas fa-edit me-1 bs-tooltip"
@@ -35,8 +34,8 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_server">Server :</label>
-                            <select name="server" id="edit_server" class="form-control" style="width: 100%;">
-                                <option value="">Please select server</option>
+                            <select name="server" id="edit_server" class="form-control-lg tomse-server"
+                                style="width: 100%;" required>
                             </select>
                             <span id="err_edit_server" class="error invalid-feedback" style="display: hide;"></span>
                         </div>

@@ -86,17 +86,19 @@
 
 
 @push('js')
+    <script>
+        const url_index = "{{ route('mikapi.hotspot.user') }}" + param_router
+        const url_index_api = "{{ route('api.mikapi.hotspot.users.index') }}"
+        const url_index_api_router = "{{ route('api.mikapi.hotspot.users.index') }}" + param_router
+        var id = 0
+        var perpage = 50
+    </script>
     <script src="{{ asset('js/v2/var.js') }}"></script>
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
 
-        const url_index = "{{ route('mikapi.hotspot.user') }}" + param_router
-        const url_index_api = "{{ route('api.mikapi.hotspot.users.index') }}"
-        const url_index_api_router = "{{ route('api.mikapi.hotspot.users.index') }}" + param_router
-        var id = 0
-        var perpage = 50
 
         $('.mask_angka').inputmask({
             alias: 'numeric',
