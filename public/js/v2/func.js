@@ -122,7 +122,10 @@ function input_focus(input_name){
     $(`input[name="${input_name}"]`).focus();
 }
 
-function delete_batch() {
+function delete_batch(url = null) {
+    if(url == null){
+        url = url_index_api
+    }
     if (selected()) {
         Swal.fire({
             title: 'Are you sure?',
@@ -146,7 +149,7 @@ function delete_batch() {
                 ajax_setup()
                 $.ajax({
                     type: 'DELETE',
-                    url: url_index_api,
+                    url: url,
                     data: $(form).serialize(),
                     beforeSend: function () {
                         block();
@@ -573,4 +576,38 @@ function parsedtm(str) {
             time: '00:00:00'
         }
     }
+}
+
+function add_detail(data, id_table){
+    $(`#${id_table}`).empty()
+    Object.keys(data).forEach(function(key) {
+        const value = data[key];
+
+        if (Array.isArray(value)) {
+            value.forEach(function(item, index) {
+                $(`#${id_table}`).append(`
+                <tr>
+                    <td style="width:30%">${key} [${index + 1}]</td>
+                    <td style="width:2%">:</td>
+                    <td style="width:68%">${item}</td>
+                </tr>`);
+            });
+        } else if (typeof value === 'object' && value !== null) {
+            Object.keys(value).forEach(function(subKey) {
+                $(`#${id_table}`).append(`
+                <tr>
+                    <td style="width:30%">${key}.${subKey}</td>
+                    <td style="width:2%">:</td>
+                    <td style="width:68%">${value[subKey]}</td>
+                </tr>`);
+            });
+        } else {
+            $(`#${id_table}`).append(`
+            <tr>
+                <td style="width:30%">${key}</td>
+                <td style="width:2%">:</td>
+                <td style="width:68%">${value}</td>
+            </tr>`);
+        }
+    });
 }

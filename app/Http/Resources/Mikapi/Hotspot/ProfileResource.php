@@ -43,6 +43,7 @@ class ProfileResource extends JsonResource
             'shared-users'          => $this['shared-users'] == 'unlimited' ? 0 : $this['shared-users'],
             'status-autorefresh'    => $this['status-autorefresh'] ?? null,
             'transparent-proxy'     => ($this['transparent-proxy'] ?? false) == "true" ? true : false,
+            'session_timeout_parse_array'     =>  dtm_new_array($this['session-timeout'] ?? ''),
         ];
     }
 }

@@ -38,7 +38,7 @@ class UserResource extends JsonResource
             'routes'            => $this['routes'] ?? null,
             'server'            => $this['server'] ?? 'all',
             'uptime'            => $this['uptime'] ?? null,
-            'uptime_parse'      => !empty($this['uptime'] ?? null) ? dtm_new($this['uptime']) : null,
+            'uptime_parse'      => dtm_new($this['uptime'] ?? ''),
             'limit_parse_array' =>  dtm_new_array($this['limit-uptime'] ?? ''),
             'limit_uptime_parse' => !empty($this['limit-uptime'] ?? null) ? formatDTM($this['limit-uptime']) : null,
             'limit_byte_total_parse' => formatBytes((int) ($this['limit-bytes-total'] ?? '0')),

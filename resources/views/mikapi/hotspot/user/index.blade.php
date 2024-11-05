@@ -48,19 +48,6 @@
 @section('content')
     <div class="row" id="cancel-row">
 
-        <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
-            <div class="col-md-4">
-                <select class="form-control select2" name="status" id="select_comment">
-                    <option value="">All</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-block btn-primary" id="btn_filter">
-                    <i class="fas fa-filter me-1"></i>Filter
-                </button>
-            </div>
-        </div>
-
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
@@ -94,7 +81,6 @@
 
     <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 
-
     <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
@@ -107,11 +93,10 @@
         // $(document).ready(function() {
 
         const url_index = "{{ route('mikapi.hotspot.user') }}" + param_router
-        const url_index_api = "{{ route('api.mikapi.hotspot.users.index') }}" + param_router
-        const url_index_api_fresh = "{{ route('api.mikapi.hotspot.users.index') }}"
+        const url_index_api = "{{ route('api.mikapi.hotspot.users.index') }}"
+        const url_index_api_router = "{{ route('api.mikapi.hotspot.users.index') }}" + param_router
         var id = 0
         var perpage = 50
-        var refresh = false
 
         $('.mask_angka').inputmask({
             alias: 'numeric',
@@ -216,7 +201,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: url_index_api,
+                url: url_index_api_router,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
                 },
@@ -358,14 +343,14 @@
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id() + param_router
-            $('#formEdit').attr('action', url_index_api_fresh + "/" + id)
+            $('#formEdit').attr('action', url_index_api_router + "/" + id)
             edit(true)
         });
 
         function edit(show = false) {
             clear_validate('formEdit')
             $.ajax({
-                url: url_index_api_fresh + "/" + id,
+                url: url_index_api_router + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -438,14 +423,7 @@
                         $(`#${element}`).prop('disabled', result.data.default);
                     });
 
-                    $('#tbl_detail').empty()
-                    Object.keys(result.data).forEach(function(key) {
-                        $('#tbl_detail').append(`<tr>
-                                <td style="width:30%">${key}</td>
-                                <td style="width:2%">:</td>
-                                <td style="width:68%">${result.data[key]}</td>
-                            </tr>`)
-                    });
+                    add_detail(result.data, 'tbl_detail')
                     if (show) {
                         show_card_edit()
                         input_focus('name')

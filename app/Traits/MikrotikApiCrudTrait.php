@@ -51,8 +51,10 @@ trait MikrotikApiCrudTrait
         }
         $data = $response->query($query)->read();
         $id =  parent::cek_error($data);
-        $new_data = static::show($id);
-        static::store_item_to_cache($new_data);
+        if (parent::$cache) {
+            $new_data = static::show($id);
+            static::store_item_to_cache($new_data);
+        }
         return $id;
     }
 
@@ -69,8 +71,10 @@ trait MikrotikApiCrudTrait
         }
         $data = $response->query($query)->read();
         $new_id =  parent::cek_error($data);
-        $new_data = static::show($id);
-        static::update_item_to_cache($id, $new_data);
+        if (parent::$cache) {
+            $new_data = static::show($id);
+            static::update_item_to_cache($id, $new_data);
+        }
         return $id;
     }
 
@@ -82,7 +86,9 @@ trait MikrotikApiCrudTrait
         $response = parent::$client;
         $query = (new Query(parent::$command . 'remove'))->equal('.id', implode(',', $id));
         $data = $response->query($query)->read();
-        static::remove_from_cache($id);
+        if (parent::$cache) {
+            static::remove_from_cache($id);
+        }
         return $data;
     }
 
