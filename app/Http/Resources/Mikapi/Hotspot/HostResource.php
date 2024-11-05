@@ -41,6 +41,7 @@ class HostResource extends JsonResource
             'to-address'            => $this['to-address'] ?? null,
             'uptime'                => $this['uptime'] ?? null,
             'vlan-id'               => $this['vlan-id'] ?? null,
+            'uptime_parse'          => dtm_new($this['uptime'] ?? ''),
         ];
     }
 }

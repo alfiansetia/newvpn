@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\HostResource;
 use App\Services\Mikapi\Hotspot\HostServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class HostController extends Controller
 {
-    use RouterTrait, DataTableTrait;
 
     public function __construct(Request $request)
     {
@@ -21,50 +19,33 @@ class HostController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, HostServices::class);
-            $query = [];
-            if ($request->filled('server')) {
-                $query['?server'] = $request->input('server');
-            }
-            if ($request->filled('address')) {
-                $query['?address'] = $request->input('address');
-            }
-            if ($request->filled('to-address')) {
-                $query['?to-address'] = $request->input('to-address');
-            }
-            if ($request->filled('mac-address')) {
-                $query['?mac-address'] = $request->input('mac-address');
-            }
-            if ($request->filled('comment')) {
-                $query['?comment'] = $request->input('comment');
-            }
-            $data = $this->conn->get($query);
-            $resource = HostResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['server', 'address', 'to-address', 'mac-address', 'comment']);
+            $data = HostServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return HostResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, HostServices::class);
-            $data = $this->conn->show($id);
+            $data = HostServices::routerId($request->router)->show($id);
             return new HostResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, HostServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = HostServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -75,11 +56,10 @@ class HostController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, HostServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = HostServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }
