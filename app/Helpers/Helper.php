@@ -343,7 +343,7 @@ function hrg($angka)
 }
 
 
-function dtm_new(string $timeString)
+function dtm_new($timeString)
 {
     if (empty($timeString)) {
         return '00:00:00';
@@ -373,7 +373,7 @@ function dtm_new(string $timeString)
     return $output;
 }
 
-function dtm_new_array(string $timeString)
+function dtm_new_array($timeString)
 {
     if (empty($timeString)) {
         return [

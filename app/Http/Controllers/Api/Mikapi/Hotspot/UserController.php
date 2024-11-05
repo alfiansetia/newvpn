@@ -5,24 +5,14 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\UserResource;
 use App\Services\Mikapi\Hotspot\UserServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
-    private $path;
-    private $full_path;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
-        $this->path = storage_path('app/mikapi/hotspot/user');
-        $this->full_path = $this->path . '/' . $request->router . '.json';
     }
 
     public function index(Request $request)
