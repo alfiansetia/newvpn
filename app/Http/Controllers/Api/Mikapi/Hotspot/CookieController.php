@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\CookieResource;
 use App\Services\Mikapi\Hotspot\CookieServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class CookieController extends Controller
 {
-    use RouterTrait, DataTableTrait;
 
     public function __construct(Request $request)
     {
@@ -21,44 +19,33 @@ class CookieController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, CookieServices::class);
-            $query = [];
-            if ($request->filled('domain')) {
-                $query['?domain'] = $request->input('domain');
-            }
-            if ($request->filled('mac-address')) {
-                $query['?mac-address'] = $request->input('mac-address');
-            }
-            if ($request->filled('user')) {
-                $query['?user'] = $request->input('user');
-            }
-            $data = $this->conn->get($query);
-            $resource = CookieResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['domain', 'mac-address', 'user']);
+            $data = CookieServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return CookieResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, CookieServices::class);
-            $data = $this->conn->show($id);
+            $data = CookieServices::routerId($request->router)->show($id);
             return new CookieResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, CookieServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = CookieServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -69,11 +56,10 @@ class CookieController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, CookieServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = CookieServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

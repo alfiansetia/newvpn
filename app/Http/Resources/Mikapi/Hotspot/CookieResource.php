@@ -23,6 +23,7 @@ class CookieResource extends JsonResource
             'mac-address'       => $this['mac-address'] ?? null,
             'mac-cookie'        => ($this['mac-cookie'] ?? false) == 'true' ? true : false,
             'user'              => $this['user'] ?? null,
+            'expires_in_parse'  => dtm_new($this['expires-in'] ?? ''),
         ];
     }
 }

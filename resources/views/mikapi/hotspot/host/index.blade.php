@@ -202,8 +202,6 @@
             }
         });
 
-        $('#edit_save').remove()
-
         multiCheck(table);
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
