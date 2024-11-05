@@ -11,7 +11,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formRouter" class="fofrm-vertical" action="{{ route('mikapi.dashboard') }}" method="GET">
+                <form id="formRouter" class="form-vertical was-validated" action="{{ route('mikapi.dashboard') }}"
+                    method="GET">
                     <div class="form-group mb-2">
                         <label class="control-label" for="router"><i class="fas fa-user-tag me-1 bs-tooltip"
                                 title="Router"></i> Select Router :</label>

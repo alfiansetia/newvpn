@@ -45,5 +45,5 @@ var btn_element_refresh = `<div class="btn-group" role="group" id="btn_group_act
 <i class="fas fa-sync me-1 bs-tooltip" title="Refresh Data"></i>
 </button>`
 
-var btn_detail = `<button type="button" class="btn btn-secondary show-detail ms-1"><i
+var btn_detail = `<button type="button" class="btn btn-secondary show-detail ms-1 mb-2"><i
 class="fas fa-info me-1 bs-tooltip" title="Detail"></i>Detail</button>`

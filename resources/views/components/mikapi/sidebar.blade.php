@@ -38,7 +38,7 @@
         <ul class="list-unstyled menu-categories" id="accordionExample">
 
             <li class="menu {{ $title == 'Data Router' ? 'active' : '' }}">
-                <a href="{{ route('router.index') }}" aria-expanded="{{ $title == 'Data Router' ? 'true' : 'false' }}"
+                <a href="{{ route('routers.index') }}" aria-expanded="{{ $title == 'Data Router' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="cloud"></i>

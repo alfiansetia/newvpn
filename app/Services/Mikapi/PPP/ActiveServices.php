@@ -2,18 +2,19 @@
 
 namespace App\Services\Mikapi\PPP;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class ActiveServices extends RouterApiServices
+class ActiveServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'ppp';
-        $this->command = '/ppp/active/';
+        parent::__construct();
+
+        parent::$name = 'ppp';
+        parent::$command = '/ppp/active/';
+        parent::$cache = false;
     }
 }

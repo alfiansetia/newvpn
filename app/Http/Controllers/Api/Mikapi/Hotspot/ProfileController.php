@@ -8,6 +8,7 @@ use App\Services\Mikapi\Hotspot\ProfileServices;
 use App\Traits\DataTableTrait;
 use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProfileController extends Controller
 {
@@ -15,22 +16,19 @@ class ProfileController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('checkRouterExists');
+        $this->middleware('router.exists');
     }
 
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = ProfileResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = ProfileServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return ProfileResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -68,7 +66,7 @@ class ProfileController extends Controller
         try {
             $this->setRouter($request->router, ProfileServices::class);
             $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 500);
         }

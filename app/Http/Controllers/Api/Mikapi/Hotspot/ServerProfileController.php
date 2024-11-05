@@ -14,7 +14,7 @@ class ServerProfileController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('checkRouterExists');
+        $this->middleware('router.exists');
     }
 
     public function index(Request $request)

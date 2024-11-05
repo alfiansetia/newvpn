@@ -15,6 +15,12 @@ class RouterExistMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!$request->filled('router')) {
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json(['message' => "Invalid Selected Router!",], 403);
+            }
+            return redirect()->route('routers.index')->with('error', 'Router Required!');
+        }
         return $next($request);
     }
 }

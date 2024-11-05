@@ -9,7 +9,7 @@ class DHCPController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('checkRouterExists');
+        $this->middleware('router.exists');
     }
 
     public function lease()

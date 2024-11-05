@@ -1,7 +1,7 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_edit" style="display: none;">
     <div class="widget-content widget-content-area br-8">
 
-        <form id="formEdit" class="fofrm-vertical" action="" method="POST">
+        <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
             {{ method_field('PUT') }}
             <input type="hidden" name="default" id="default" value="no">
             <div class="card">

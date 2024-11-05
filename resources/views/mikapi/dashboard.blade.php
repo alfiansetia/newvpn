@@ -80,7 +80,7 @@
     <script src="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
 @endpush
 @push('js')
-    <script src="{{ asset('assets/js/func.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
 
     @if (session()->has('error'))
         <script>
@@ -120,7 +120,7 @@
                     diskhas = Math.round((disktot - diskfre) / disktot * 100);
 
                     sys_ros = res.data.resource[0].version
-                    sys_up = dtm(res.data.resource[0].uptime)
+                    sys_up = res.data.resource[0].uptime_parse
                 }
                 if (res.data.routerboard.length > 0) {
                     sys_rb = res.data.resource[0]['board-name'] + ' | ' + (res.data.routerboard[0]

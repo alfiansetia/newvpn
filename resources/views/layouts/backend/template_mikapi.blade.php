@@ -1,3 +1,8 @@
+@php
+    $company = company();
+    $user = user();
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +22,8 @@
     <script>
         var light_logo = "{{ $company->logo_light }}";
         var dark_logo = "{{ $company->logo_dark }}";
-        var param_router = "?router={{ request()->query('router') }}"
+        const param_router = "?router={{ request()->query('router') }}"
+        const router_id = "{{ request()->query('router') }}"
     </script>
 
     <link href="{{ asset('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet"

@@ -2,62 +2,53 @@
 
 namespace App\Services\Mikapi;
 
-use App\Services\RouterApiServices;
+use App\Http\Resources\Mikapi\System\PackageResource;
+use App\Http\Resources\Mikapi\System\ResourceResource;
+use App\Http\Resources\Mikapi\System\Routerboard\RouterboardResource;
+use App\Services\RouterServices;
+use Exception;
+use RouterOS\Query;
 
-class DashboardServices extends RouterApiServices
+class DashboardServices extends RouterServices
 {
-    public function get()
+    public static function get()
     {
-        if ($this->connect()) {
-            $packages = $this->API->comm("/system/package/print");
-            $resource = $this->API->comm("/system/resource/print");
-            $routerboard = $this->API->comm("/system/routerboard/print");
-            $hs_active = 0;
-            $hs_user = 0;
-            $ppp_active = 0;
-            $ppp_secret = 0;
-
-            if (cek_package($packages, 'hotspot')) {
-                $hs_active = $this->API->comm("/ip/hotspot/active/print", [
-                    'count-only' => ''
-                ]);
-                if (is_error($hs_active)) {
-                    $hs_active = 0;
-                }
-                $hs_user = $this->API->comm("/ip/hotspot/user/print", [
-                    'count-only' => ''
-                ]);
-                if (is_error($hs_user)) {
-                    $hs_user = 0;
-                }
-            }
-            if (cek_package($packages, 'ppp')) {
-                $ppp_active = $this->API->comm("/ppp/active/print", [
-                    'count-only' => ''
-                ]);
-                if (is_error($ppp_active)) {
-                    $ppp_active = 0;
-                }
-                $ppp_secret = $this->API->comm("/ppp/secret/print", [
-                    'count-only' => ''
-                ]);
-                if (is_error($ppp_secret)) {
-                    $ppp_secret = 0;
-                }
-            }
-            $data = ['message' => '', 'data' => [
-                'resource'      => $resource,
-                'package'       => $packages,
-                'routerboard'   => $routerboard,
-                'hs_active'     => $hs_active,
-                'hs_user'       => $hs_user,
-                'ppp_active'    => $ppp_active,
-                'ppp_secret'    => $ppp_secret,
-            ]];
-            $this->disconnect();
-            return $data;
-        } else {
-            return handle_fail_login($this->API);
+        if (empty(self::$router)) {
+            throw new Exception('Router Not Found!');
         }
+        $response = self::$client;
+        $packages = $response->query((new Query('/system/package/print')))->read();
+        $resource = $response->query((new Query('/system/resource/print')))->read();
+        $routerboard = $response->query((new Query('/system/routerboard/print')))->read();
+        $hs_active = 0;
+        $hs_user = 0;
+        $ppp_active = 0;
+        $ppp_secret = 0;
+        $hs_active = $response->query((new Query('/ip/hotspot/active/print'))->equal('count-only'))->read();
+        if (isset($hs_active['after']) && isset($hs_active['after']['ret'])) {
+            $hs_active = $hs_active['after']['ret'];
+        }
+        $hs_user = $response->query((new Query('/ip/hotspot/user/print'))->equal('count-only'))->read();
+        if (isset($hs_user['after']) && isset($hs_user['after']['ret'])) {
+            $hs_user = $hs_user['after']['ret'];
+        }
+        $ppp_active = $response->query((new Query('/ppp/active/print'))->equal('count-only'))->read();
+        if (isset($ppp_active['after']) && isset($ppp_active['after']['ret'])) {
+            $ppp_active = $ppp_active['after']['ret'];
+        }
+        $ppp_secret = $response->query((new Query('/ppp/secret/print'))->equal('count-only'))->read();
+        if (isset($ppp_secret['after']) && isset($ppp_secret['after']['ret'])) {
+            $ppp_secret = $ppp_secret['after']['ret'];
+        }
+        $data = [
+            'resource'      => ResourceResource::collection($resource),
+            'package'       => PackageResource::collection($packages),
+            'routerboard'   => RouterboardResource::collection($routerboard),
+            'hs_active'     => $hs_active,
+            'hs_user'       => $hs_user,
+            'ppp_active'    => $ppp_active,
+            'ppp_secret'    => $ppp_secret,
+        ];
+        return $data;
     }
 }

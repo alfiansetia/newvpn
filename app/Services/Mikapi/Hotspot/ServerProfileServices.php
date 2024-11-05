@@ -2,18 +2,18 @@
 
 namespace App\Services\Mikapi\Hotspot;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class ServerProfileServices extends RouterApiServices
+class ServerProfileServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
+        parent::__construct();
         $this->name = 'hotspot';
         $this->command = '/ip/hotspot/profile/';
+        parent::$cache = false;
     }
 }

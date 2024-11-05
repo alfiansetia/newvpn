@@ -9,6 +9,7 @@ use App\Traits\DataTableTrait;
 use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -19,7 +20,7 @@ class UserController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('checkRouterExists');
+        $this->middleware('router.exists');
         $this->path = storage_path('app/mikapi/hotspot/user');
         $this->full_path = $this->path . '/' . $request->router . '.json';
     }
@@ -27,59 +28,45 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $dt = $request->dt == 'on';
-            if ($request->refresh == 'on' || !file_exists($this->full_path)) {
-                $this->setRouter($request->router, UserServices::class);
-                $query = [];
-                if ($request->filled('name')) {
-                    $query['?name'] = $request->name;
-                }
-                if ($request->filled('server')) {
-                    $query['?server'] = $request->input('server');
-                }
-                if ($request->filled('address')) {
-                    $query['?address'] = $request->input('address');
-                }
-                if ($request->filled('mac-address')) {
-                    $query['?mac-address'] = $request->input('mac-address');
-                }
-                if ($request->filled('profile')) {
-                    $query['?profile'] = $request->input('profile');
-                }
-                if ($request->filled('comment')) {
-                    $query['?comment'] = $request->input('comment');
-                }
-                $data = $this->conn->get($query);
-                if (!File::exists($this->path)) {
-                    File::makeDirectory($this->path, 755, true);
-                }
-                $json = UserResource::collection($data);
-                File::put($this->full_path, $json->toJson(JSON_PRETTY_PRINT));
-                return $this->callback($json->toArray($request), $dt);
-            }
-            $file = file_get_contents($this->full_path);
-            $d = json_decode($file, true);
-            return $this->callback($d, $dt);
+            $data = UserServices::routerId($request->router)->from_cache();
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return UserResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
+
+    private function refreshData(Request $request)
+    {
+        $data = UserServices::routerId($request->router)->cache(true)->get();
+        return $data;
+    }
+
+    public function refresh(Request $request)
+    {
+        try {
+            $data  = $this->refreshData($request);
+            return $this->send_response('Success Refresh Data!');
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->show($id);
+            $data = UserServices::routerId($request->router)->show($id);
             return new UserResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'server'        => 'nullable',
+            'server'        => 'required',
             'profile'       => 'required',
             'name'          => 'required|min:2|max:50',
             'password'      => 'nullable|max:50',
@@ -93,7 +80,7 @@ class UserController extends Controller
             'is_active'     => 'nullable|in:on',
         ]);
         $param = [
-            'server'             => $request->input('server') ?? 'all',
+            'server'             => $request->input('server'),
             'profile'            => $request->input('profile'),
             'name'               => $request->input('name'),
             'password'           => $request->input('password'),
@@ -105,11 +92,10 @@ class UserController extends Controller
             'disabled'           => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            $data = UserServices::routerId($request->router)->store($param);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -130,7 +116,7 @@ class UserController extends Controller
             'is_active'     => 'nullable|in:on',
         ]);
         $param = [
-            '.id'                => $id,
+            // '.id'                => $id,
             'server'             => $request->input('server') ?? 'all',
             'profile'            => $request->input('profile'),
             'name'               => $request->input('name'),
@@ -143,22 +129,20 @@ class UserController extends Controller
             'disabled'           => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            $data = UserServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!', $data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = UserServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!', $data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -167,13 +151,12 @@ class UserController extends Controller
         $this->validate($request, [
             'id' => 'required|array|min:1|max:1000'
         ]);
-        $id = $request->id;
+        $ids = $request->id;
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = UserServices::routerId($request->router)->destroy($ids);
+            return $this->send_response('Success Delete Data!', $data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

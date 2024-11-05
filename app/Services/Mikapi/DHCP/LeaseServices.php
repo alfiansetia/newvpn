@@ -2,18 +2,19 @@
 
 namespace App\Services\Mikapi\DHCP;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class LeaseServices extends RouterApiServices
+class LeaseServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'dhcp';
-        $this->command = '/ip/dhcp-server/lease/';
+        parent::__construct();
+
+        parent::$name = 'dhcp';
+        parent::$command = '/ip/dhcp-server/lease/';
+        parent::$cache = false;
     }
 }

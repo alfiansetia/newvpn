@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('servers', [ServerController::class, 'index'])->name('servers.index');
         Route::get('ports', [PortController::class, 'index'])->name('ports.index');
 
-        Route::get('vpns-create', [VpnController::class, 'create'])->name('vpns.create');
+        Route::get('vpns/create', [VpnController::class, 'create'])->name('vpns.create');
         Route::get('vpns', [VpnController::class, 'index'])->name('vpns.index');
         Route::get('routers', [RouterController::class, 'index'])->name('routers.index');
 

@@ -15,6 +15,12 @@ class ActiveMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!auth()->user()->is_verified() || !auth()->user()->is_active()) {
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json(['message' => 'Your account is Nonactive!'], 403);
+            }
+            return redirect()->route('home')->with('error', 'Your account is Nonactive, Contact Admin!');
+        }
         return $next($request);
     }
 }

@@ -8,6 +8,7 @@ use App\Services\Mikapi\Hotspot\ServerServices;
 use App\Traits\DataTableTrait;
 use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ServerController extends Controller
 {
@@ -15,22 +16,19 @@ class ServerController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('checkRouterExists');
+        $this->middleware('router.exists');
     }
 
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, ServerServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = ServerResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = ServerServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return ServerResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

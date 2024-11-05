@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Company;
+use Illuminate\Support\Carbon;
 
 function company()
 {
@@ -51,6 +52,9 @@ function formatInterval($dtm)
 
 function formatDTM($dtm)
 {
+    if (empty($dtm)) {
+        return null;
+    }
     $day = '';
     if (substr($dtm, 1, 1) == "d" || substr($dtm, 2, 1) == "d") {
         $day = explode("d", $dtm)[0] . "d";
@@ -336,4 +340,72 @@ function date_log(string $date)
 function hrg($angka)
 {
     return number_format($angka, 0, ',', '.');
+}
+
+
+function dtm_new(string $timeString)
+{
+    if (empty($timeString)) {
+        return '00:00:00';
+    }
+    preg_match('/(?:(\d+)w)?(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/', $timeString, $matches);
+    $weeks = isset($matches[1]) ? (int)$matches[1] : 0;
+    $days = isset($matches[2]) ? (int)$matches[2] : 0;
+    $hours = isset($matches[3]) ? (int)$matches[3] : 0;
+    $minutes = isset($matches[4]) ? (int)$matches[4] : 0;
+    $seconds = isset($matches[5]) ? (int)$matches[5] : 0;
+
+    $carbon = Carbon::now()->startOfDay()
+        ->addDays($weeks * 7 + $days)
+        ->addHours($hours)
+        ->addMinutes($minutes)
+        ->addSeconds($seconds);
+
+    $outputParts = [];
+    if ($weeks > 0) {
+        $outputParts[] = "{$weeks}w";
+    }
+    if ($days > 0) {
+        $outputParts[] = "{$days}d";
+    }
+    $outputParts[] = sprintf("%02d:%02d:%02d", $carbon->hour, $carbon->minute, $carbon->second);
+    $output = implode(' ', $outputParts);
+    return $output;
+}
+
+function dtm_new_array(string $timeString)
+{
+    if (empty($timeString)) {
+        return [
+            'time'  => '00:00:00',
+            'day'   => 0,
+        ];
+    }
+
+    preg_match('/(?:(\d+)w)?(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/', $timeString, $matches);
+    $weeks = isset($matches[1]) ? (int)$matches[1] : 0;
+    $days = isset($matches[2]) ? (int)$matches[2] : 0;
+    $hours = isset($matches[3]) ? (int)$matches[3] : 0;
+    $minutes = isset($matches[4]) ? (int)$matches[4] : 0;
+    $seconds = isset($matches[5]) ? (int)$matches[5] : 0;
+
+    $carbon = Carbon::now()->startOfDay()
+        ->addDays($weeks * 7 + $days)
+        ->addHours($hours)
+        ->addMinutes($minutes)
+        ->addSeconds($seconds);
+
+    $outputParts = [];
+    if ($weeks > 0) {
+        $outputParts[] = "{$weeks}w";
+    }
+    if ($days > 0) {
+        $outputParts[] = "{$days}d";
+    }
+    $day = ($weeks * 7) + $days;
+    $time = sprintf("%02d:%02d:%02d", $carbon->hour, $carbon->minute, $carbon->second);
+    return [
+        'time'  => $time,
+        'day'   => $day,
+    ];
 }

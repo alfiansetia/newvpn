@@ -2,18 +2,19 @@
 
 namespace App\Services\Mikapi\PPP;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class L2tpSecretServices extends RouterApiServices
+class L2tpSecretServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'ppp';
-        $this->command = '/ppp/l2tp-secret/';
+        parent::__construct();
+
+        parent::$name = 'ppp';
+        parent::$command = '/ppp/l2tp-secret/';
+        parent::$cache = false;
     }
 }

@@ -7,10 +7,14 @@ use Exception;
 use RouterOS\Client;
 use RouterOS\Query;
 
-final class RouterServices
+class RouterServices
 {
     protected static $router;
     protected static $client;
+    protected static $command;
+    protected static $name;
+    protected static $path;
+    protected static $cache;
 
     public function __construct() {}
 
@@ -41,22 +45,54 @@ final class RouterServices
     private static function cek_available(Router $router)
     {
         if (!$router->port) {
-            throw new Exception('Select VPN on Router!');
-        }
-        if (!$router->port->vpn->is_active) {
-            throw new Exception('Your VPN Nonactive!');
+            throw new Exception('Port Not Found on Router!');
         }
         if (!$router->port->vpn->server->is_active) {
             throw new Exception('Server OFF! Contact Admin!');
         }
+        if (!$router->port->vpn->is_active || $router->port->vpn->is_expired()) {
+            throw new Exception('Vpn Not Active!');
+        }
         return $router;
     }
 
-    public function ping()
+    public static function ping()
     {
         if (empty(self::$client)) {
             throw new Exception('Router Not Found!');
         }
         return self::$client;
+    }
+
+    public static function routerId(string $id)
+    {
+        $router = self::cek_exist($id);
+        self::router($router);
+        return new static;
+    }
+
+
+    public static function cek_exist(string $id)
+    {
+        $user_id = auth()->id();
+        $router = Router::query()->where('user_id', $user_id)
+            ->with(['port', 'user', 'port.vpn.server'])->find($id);
+        if (!$router) {
+            throw new Exception('Router Not Found');
+        }
+        return $router;
+    }
+
+    public static function cek_error($response)
+    {
+        if (isset($response['after'])) {
+            if (isset($response['after']['message'])) {
+                throw new Exception($response['after']['message']);
+            }
+            if (isset($response['after']['ret'])) {
+                return $response['after']['ret'];
+            }
+        }
+        return $response;
     }
 }

@@ -2,18 +2,19 @@
 
 namespace App\Services\Mikapi\Hotspot;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class CookieServices extends RouterApiServices
+class CookieServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'hotspot';
-        $this->command = '/ip/hotspot/cookie/';
+        parent::__construct();
+
+        parent::$name = 'hotspot';
+        parent::$command = '/ip/hotspot/cookie/';
+        parent::$cache = false;
     }
 }
