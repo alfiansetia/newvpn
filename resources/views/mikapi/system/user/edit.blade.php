@@ -2,7 +2,6 @@
     <div class="widget-content widget-content-area br-8">
 
         <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
-            {{ method_field('PUT') }}
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="titleEdit"><i class="fas fa-edit me-1 bs-tooltip"
@@ -14,36 +13,36 @@
                             <label class="control-label" for="edit_name">Name :</label>
                             <input type="text" name="name" class="form-control maxlength" id="edit_name"
                                 placeholder="Please Enter Name" minlength="1" maxlength="50" required>
-                            <span id="err_edit_name" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_name" style="display: hide;"></span>
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_password">Password :</label>
                             <input type="text" name="password" class="form-control maxlength" id="edit_password"
                                 placeholder="Please Enter Password" minlength="0" maxlength="50">
-                            <span id="err_edit_password" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_password" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_group">Group :</label>
-                            <select name="group" id="edit_group" class="form-control" style="width: 100%;" required>
-                                <option value="">Please select Group</option>
+                            <select name="group" id="edit_group" class="form-control-lg tomse-group"
+                                style="width: 100%;" required>
                             </select>
-                            <span id="err_edit_group" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_group" style="display: hide;"></span>
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_ip_address">IP :</label>
                             <input type="text" name="ip_address" class="form-control maxlength mask_ip"
                                 id="edit_ip_address" placeholder="Please Enter IP Address" minlength="0"
                                 maxlength="18">
-                            <span id="err_edit_ip_address" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_ip_address" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="form-group mb-2">
                         <label class="control-label" for="edit_comment">Comment :</label>
                         <textarea name="comment" class="form-control maxlength" id="edit_comment" minlength="0" maxlength="100"
                             placeholder="Please Enter Comment"></textarea>
-                        <span id="err_edit_comment" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_comment" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
                         <div class="col-lg-3 col-6 mb-2 mt-2">

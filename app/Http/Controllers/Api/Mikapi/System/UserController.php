@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\System;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\System\UserResource;
 use App\Services\Mikapi\System\UserServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    use RouterTrait, DataTableTrait;
 
     public function __construct(Request $request)
     {
@@ -21,14 +19,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = UserResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = UserServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return UserResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -37,8 +32,7 @@ class UserController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->show($id);
+            $data = UserServices::routerId($request->router)->show($id);
             return new UserResource($data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -53,7 +47,7 @@ class UserController extends Controller
             'group'             => 'required',
             'ip_address'        => 'nullable|ip',
             'comment'           => 'nullable|max:100',
-
+            'is_active'         => 'nullable|in:on',
         ]);
         $param = [
             'name'              => $request->input('name'),
@@ -61,10 +55,10 @@ class UserController extends Controller
             'group'             => $request->input('group'),
             'address'           => $request->input('ip_address') ?? '0.0.0.0',
             'comment'           => $request->input('comment'),
+            'disabled'          => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->store($param);
+            $data = UserServices::routerId($request->router)->store($param);
             return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -78,24 +72,25 @@ class UserController extends Controller
             'group'        => 'required',
             'ip_address'   => 'nullable|ip',
             'comment'      => 'nullable|max:100',
+            'is_active'    => 'nullable|in:on',
+
         ];
         if ($request->filled('password')) {
             $param['password'] = 'required|min:1|max:50';
         }
         $this->validate($request, $param);
         $param = [
-            '.id'          => $id,
             'name'         => $request->input('name'),
             'group'        => $request->input('group'),
-            'address'      => $request->input('ip_address') ?? '0.0.0.0',
+            'address'      => $request->input('ip_address'),
             'comment'      => $request->input('comment'),
+            'disabled'     => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         if ($request->filled('password')) {
             $param['password'] = $request->input('password');
         }
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->update($param);
+            $data = UserServices::routerId($request->router)->update($id, $param);
             return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -105,8 +100,7 @@ class UserController extends Controller
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->destroy($id);
+            $data = UserServices::routerId($request->router)->destroy([$id]);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -120,8 +114,7 @@ class UserController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, UserServices::class);
-            $data = $this->conn->destroy_batch($id);
+            $data = UserServices::routerId($request->router)->destroy($id);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
