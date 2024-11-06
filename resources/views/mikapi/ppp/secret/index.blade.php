@@ -91,7 +91,6 @@
             placement: "top",
         });
 
-
         document.querySelectorAll('.tomse-profile').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -116,7 +115,6 @@
                 },
             });
         });
-
 
         $('#reset').click(function() {
             document.getElementById('profile').tomselect.clear()
