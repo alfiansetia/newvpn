@@ -48,6 +48,8 @@ class ProfileResource extends JsonResource
             'use-mpls'              => $this['use-mpls'] ?? 'default',
             'use-upnp'              => $this['use-upnp'] ?? 'default',
             'wins-server'           => $this['wins-server'] ?? null,
+            'session_timeout_parse' => dtm_new($this['session-timeout'] ?? ''),
+            'session_timeout_parse_array' => dtm_new_array($this['session-timeout'] ?? ''),
         ];
     }
 }

@@ -13,7 +13,7 @@
                             <label class="control-label" for="edit_mac">MAC :</label>
                             <input type="text" name="mac" class="form-control maxlength mask_mac" id="edit_mac"
                                 placeholder="Please Enter MAC" minlength="0" maxlength="18">
-                            <span id="err_edit_mac" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_mac" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -21,14 +21,14 @@
                             <label class="control-label" for="edit_address">Address :</label>
                             <input type="text" name="address" class="form-control maxlength mask_ip"
                                 id="edit_address" placeholder="Please Enter Address" minlength="0" maxlength="18">
-                            <span id="err_edit_address" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_address" style="display: hide;"></span>
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_to_address">To Address :</label>
                             <input type="text" name="to_address" class="form-control maxlength mask_ip"
                                 id="edit_to_address" placeholder="Please Enter To Address" minlength="0"
                                 maxlength="18">
-                            <span id="err_edit_to_address" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_to_address" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -37,7 +37,7 @@
                             <select name="server" id="edit_server" class="form-control-lg tomse-server"
                                 style="width: 100%;" required>
                             </select>
-                            <span id="err_edit_server" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_server" style="display: hide;"></span>
                         </div>
                         <div class="form-group col-6 mb-2">
                             <label class="control-label" for="edit_type">Type :</label>
@@ -46,14 +46,14 @@
                                 <option value="bypassed">Bypassed</option>
                                 <option value="blocked">Blocked</option>
                             </select>
-                            <span id="err_edit_type" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_type" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="form-group mb-2">
                         <label class="control-label" for="edit_comment">Comment :</label>
                         <textarea name="comment" class="form-control maxlength" id="edit_comment" minlength="0" maxlength="100"
                             placeholder="Please Enter Comment"></textarea>
-                        <span id="err_edit_comment" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_comment" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
                         <div class="col-lg-3 col-6 mb-2 mt-2">

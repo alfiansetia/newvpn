@@ -30,6 +30,7 @@ class ActiveResource extends JsonResource
             'service'               => $this['service'] ?? 'any',
             'session-id'            => $this['session-id'] ?? null,
             'uptime'                => $this['uptime'] ?? null,
+            'uptime_parse'          => dtm_new($this['uptime'] ?? ''),
         ];
     }
 }
