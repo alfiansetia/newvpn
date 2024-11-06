@@ -57,8 +57,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('mikapi/dashboard', [DashboardController::class, 'index'])->name('mikapi.dashboard');
 
-        Route::get('mikapi/system/routerboard', [SystemController::class, 'routerboard'])->name('mikapi.system.routerboard');
-        Route::get('mikapi/system/resource', [SystemController::class, 'resource'])->name('mikapi.system.resource');
+        Route::get('mikapi/system/index', [SystemController::class, 'index'])->name('mikapi.system.index');
         Route::get('mikapi/system/user', [SystemController::class, 'user'])->name('mikapi.system.user');
         Route::get('mikapi/system/group', [SystemController::class, 'group'])->name('mikapi.system.group');
         Route::get('mikapi/system/user_active', [SystemController::class, 'user_active'])->name('mikapi.system.user_active');

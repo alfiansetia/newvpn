@@ -28,7 +28,7 @@ class RouterboardServices extends RouterServices
         $response = parent::$client;
         $query = (new Query('/system/routerboard/print'));
         $data = $response->query($query)->read();
-        return cek_error($data);
+        return parent::cek_error($data);
     }
 
     public function setting()
@@ -39,6 +39,6 @@ class RouterboardServices extends RouterServices
         $response = parent::$client;
         $query = (new Query('/system/routerboard/settings/print'));
         $data = $response->query($query)->read();
-        return cek_error($data);
+        return parent::cek_error($data);
     }
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\Mikapi\System\GroupController;
 use App\Http\Controllers\Api\Mikapi\System\PackageController;
 use App\Http\Controllers\Api\Mikapi\System\ResourceController;
 use App\Http\Controllers\Api\Mikapi\System\RouterboardController;
+use App\Http\Controllers\Api\Mikapi\System\SystemController;
 use App\Http\Controllers\Api\Mikapi\System\UserActiveController;
 use App\Http\Controllers\Api\Mikapi\System\UserController as SystemUserController;
 use App\Http\Controllers\Api\OnetapController;
@@ -194,12 +195,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('mikapi/dhcp/leases', [DHCPLeasesController::class, 'destroy_batch'])
             ->name('api.mikapi.dhcp.leases.destroy.batch');
 
-        Route::get('mikapi/system/routerboards', [RouterboardController::class, 'index'])
+        Route::get('mikapi/system/routerboards', [SystemController::class, 'routerboard'])
             ->name('api.mikapi.system.routerboards.index');
-        Route::get('mikapi/system/routerboards-settings', [RouterboardController::class, 'settings'])
+        Route::get('mikapi/system/routerboards-settings', [SystemController::class, 'setting'])
             ->name('api.mikapi.system.routerboards.settings');
-
-        Route::get('mikapi/system/resources', [ResourceController::class, 'index'])
+        Route::get('mikapi/system/resources', [SystemController::class, 'resource'])
             ->name('api.mikapi.system.resources.index');
 
         Route::get('mikapi/interfaces/{id}/monitor', [InterfaceController::class, 'monitor'])

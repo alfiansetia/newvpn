@@ -28,6 +28,6 @@ class InterfaceServices extends RouterServices
         $response = parent::$client;
         $query = (new Query('/interface/monitor-traffic'))->equal('interface', $id)->equal('once', '');
         $data = $response->query($query)->read();
-        return cek_error($data);
+        return parent::cek_error($data);
     }
 }

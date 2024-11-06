@@ -179,13 +179,10 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'System Routerboard' || $title == 'System Resource' || $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'System' || $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'show' : '' }}"
                     id="system_nav" data-bs-parent="#accordionExample">
-                    <li class="{{ $title == 'System Routerboard' ? 'active' : '' }}">
-                        <a href="{{ route('mikapi.system.routerboard') }}{{ $param_router }}"> Routerboard </a>
-                    </li>
-                    <li class="{{ $title == 'System Resource' ? 'active' : '' }}">
-                        <a href="{{ route('mikapi.system.resource') }}{{ $param_router }}"> Resource </a>
+                    <li class="{{ $title == 'System' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.system.index') }}{{ $param_router }}"> System </a>
                     </li>
                     <li class="{{ $title == 'System User' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.user') }}{{ $param_router }}"> User </a>

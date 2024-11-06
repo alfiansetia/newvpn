@@ -12,14 +12,9 @@ class SystemController extends Controller
         $this->middleware('router.exists');
     }
 
-    public function routerboard()
+    public function index()
     {
-        return view('mikapi.system.routerboard.index');
-    }
-
-    public function resource()
-    {
-        return view('mikapi.system.resource.index');
+        return view('mikapi.system.system.index');
     }
 
     public function user()
