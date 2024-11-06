@@ -1,98 +1,32 @@
 @extends('layouts.backend.template_mikapi', ['title' => 'Log'])
 @push('csslib')
+    <!-- DATATABLE -->
+    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
-
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
-
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
+    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
+        type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
-            <div class="col-md-8">
+            <div class="col-md-8 mb-2">
                 <select class="form-control" name="topics" id="select_topics" multiple>
-                    <option value="system" selected>system</option>
-                    <option value="error" selected>error</option>
-                    <option value="critical" selected>critical</option>
-                    <option value="account">account</option>
-                    <option value="async">async</option>
-                    <option value="backup">backup</option>
-                    <option value="bgp">bgp</option>
-                    <option value="bfd">bfd</option>
-                    <option value="bridge">bridge</option>
-                    <option value="calc">calc</option>
-                    <option value="caps">caps</option>
-                    <option value="certificate">certificate</option>
-                    <option value="ddns">ddns</option>
-                    <option value="debug">debug</option>
-                    <option value="dhcp">dhcp</option>
-                    <option value="dns">dns</option>
-                    <option value="dot1x">dot1x</option>
-                    <option value="dude">dude</option>
-                    <option value="e-mail">e-mail</option>
-                    <option value="event">event</option>
-                    <option value="firewall">firewall</option>
-                    <option value="gsm">gsm</option>
-                    <option value="gps">gps</option>
-                    <option value="health">health</option>
-                    <option value="hotspot">hotspot</option>
-                    <option value="igmp-proxy">igmp-proxy</option>
-                    <option value="interface">interface</option>
-                    <option value="ipsec">ipsec</option>
-                    <option value="info">info</option>
-                    <option value="isdn">isdn</option>
-                    <option value="iscsi">iscsi</option>
-                    <option value="kvm">kvm</option>
-                    <option value="ldp">ldp</option>
-                    <option value="lte">lte</option>
-                    <option value="lora">lora</option>
-                    <option value="l2tp">l2tp</option>
-                    <option value="mme">mme</option>
-                    <option value="mqtt">mqtt</option>
-                    <option value="mpls">mpls</option>
-                    <option value="ntp">ntp</option>
-                    <option value="raw">raw</option>
-                    <option value="radius">radius</option>
-                    <option value="radvd">radvd</option>
-                    <option value="read">read</option>
-                    <option value="route">route</option>
-                    <option value="rsvp">rsvp</option>
-                    <option value="smb">smb</option>
-                    <option value="script">script</option>
-                    <option value="sertcp">sertcp</option>
-                    <option value="ssh">ssh</option>
-                    <option value="sstp">sstp</option>
-                    <option value="snmp">snmp</option>
-                    <option value="simulator">simulator</option>
-                    <option value="state">state</option>
-                    <option value="stp">stp</option>
-                    <option value="store">store</option>
-                    <option value="tftp">tftp</option>
-                    <option value="telephony">telephony</option>
-                    <option value="timer">timer</option>
-                    <option value="tr069">tr069</option>
-                    <option value="upnp">upnp</option>
-                    <option value="ups">ups</option>
-                    <option value="vrrp">vrrp</option>
-                    <option value="warning">warning</option>
-                    <option value="web-proxy">web-proxy</option>
-                    <option value="wireless">wireless</option>
-                    <option value="write">write</option>
-
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4 mb-2">
                 <button type="button" class="btn btn-block btn-primary" id="btn_filter">
                     <i class="fas fa-filter me-1"></i>Filter
                 </button>
@@ -116,56 +50,254 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
-
-    <!-- InputMask -->
-    {{-- <script src="{{ asset('backend/src/plugins/src/input-mask/jquery.inputmask.bundle.min.js') }}"></script> --}}
-
-    <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
 
 @push('js')
-    <script src="{{ asset('js/navigation.js') }}"></script>
-    <script src="{{ asset('js/func.js') }}"></script>
+    <script>
+        const url_index = "{{ route('mikapi.log.index') }}" + param_router
+        const url_index_api = "{{ route('api.mikapi.logs.index') }}"
+        const url_index_api_router = "{{ route('api.mikapi.logs.index') }}" + param_router
+        var id = 0
+        var perpage = 50
+    </script>
+    <script src="{{ asset('js/v2/var.js') }}"></script>
+    <script src="{{ asset('js/v2/navigation.js') }}"></script>
+    <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
 
-        $('.maxlength').maxlength({
-            alwaysShow: true,
-            placement: "top",
+        const names = [{
+                name: "system"
+            },
+            {
+                name: "error"
+            },
+            {
+                name: "critical"
+            },
+            {
+                name: "account"
+            },
+            {
+                name: "async"
+            },
+            {
+                name: "backup"
+            },
+            {
+                name: "bgp"
+            },
+            {
+                name: "bfd"
+            },
+            {
+                name: "bridge"
+            },
+            {
+                name: "calc"
+            },
+            {
+                name: "caps"
+            },
+            {
+                name: "certificate"
+            },
+            {
+                name: "ddns"
+            },
+            {
+                name: "debug"
+            },
+            {
+                name: "dhcp"
+            },
+            {
+                name: "dns"
+            },
+            {
+                name: "dot1x"
+            },
+            {
+                name: "dude"
+            },
+            {
+                name: "e-mail"
+            },
+            {
+                name: "event"
+            },
+            {
+                name: "firewall"
+            },
+            {
+                name: "gsm"
+            },
+            {
+                name: "gps"
+            },
+            {
+                name: "health"
+            },
+            {
+                name: "hotspot"
+            },
+            {
+                name: "igmp-proxy"
+            },
+            {
+                name: "interface"
+            },
+            {
+                name: "ipsec"
+            },
+            {
+                name: "info"
+            },
+            {
+                name: "isdn"
+            },
+            {
+                name: "iscsi"
+            },
+            {
+                name: "kvm"
+            },
+            {
+                name: "ldp"
+            },
+            {
+                name: "lte"
+            },
+            {
+                name: "lora"
+            },
+            {
+                name: "l2tp"
+            },
+            {
+                name: "mme"
+            },
+            {
+                name: "mqtt"
+            },
+            {
+                name: "mpls"
+            },
+            {
+                name: "ntp"
+            },
+            {
+                name: "raw"
+            },
+            {
+                name: "radius"
+            },
+            {
+                name: "radvd"
+            },
+            {
+                name: "read"
+            },
+            {
+                name: "route"
+            },
+            {
+                name: "rsvp"
+            },
+            {
+                name: "smb"
+            },
+            {
+                name: "script"
+            },
+            {
+                name: "sertcp"
+            },
+            {
+                name: "ssh"
+            },
+            {
+                name: "sstp"
+            },
+            {
+                name: "snmp"
+            },
+            {
+                name: "simulator"
+            },
+            {
+                name: "state"
+            },
+            {
+                name: "stp"
+            },
+            {
+                name: "store"
+            },
+            {
+                name: "tftp"
+            },
+            {
+                name: "telephony"
+            },
+            {
+                name: "timer"
+            },
+            {
+                name: "tr069"
+            },
+            {
+                name: "upnp"
+            },
+            {
+                name: "ups"
+            },
+            {
+                name: "vrrp"
+            },
+            {
+                name: "warning"
+            },
+            {
+                name: "web-proxy"
+            },
+            {
+                name: "wireless"
+            },
+            {
+                name: "write"
+            }
+        ];
+
+        new TomSelect("#select_topics", {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Select Topics",
+            allowEmptyOption: true,
+            options: names,
+            delimiter: ',',
         });
 
-        $("#select_topics").select2({
-            tags: true,
-            tokenSeparators: [',', ' '],
-        }).on('select2:select', function(e) {
-            var id = e.params.data.id;
-            var option = $(e.target).children('[value=' + id + ']');
-            option.detach();
-            $(e.target).append(option).change();
-        });
-
+        var filter = document.getElementById('select_topics').tomselect
+        filter.setValue(['hotspot', 'info', 'debug'])
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: false,
             ajax: {
-                url: "{{ route('api.mikapi.logs.destroy') }}",
+                url: url_index_api_router,
                 data: function(dt) {
                     let topics = $('#select_topics').val() || []
                     let topicsString = ''
                     if (topics.length > 0) {
                         topicsString = topics.join(',');
                     }
-                    dt.router = "{{ request()->query('router') }}";
                     dt.topics = topicsString
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -179,18 +311,40 @@
             order: [
                 [1, 'desc']
             ],
-            buttons: [],
+            lengthChange: false,
+            buttons: [{
+                extend: "pageLength",
+                attr: {
+                    'data-toggle': 'tooltip',
+                    'title': 'Page Length'
+                },
+                className: 'btn btn-sm btn-info'
+            }, {
+                text: '<i class="fas fa-trash"></i>',
+                className: 'btn btn-danger',
+                action: function(e, dt, node, config) {
+                    delete_all()
+                },
+            }, {
+                text: '<i class="fas fa-sync"></i>',
+                className: 'btn btn-info',
+                action: function(e, dt, node, config) {
+                    table.ajax.reload()
+                },
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
             pageLength: 10,
             oLanguage: o_lang,
+            sPaginationType: 'simple_numbers',
             columns: [{
                 width: "30px",
                 title: 'Id',
                 data: 'DT_RowId',
                 className: "",
-                orderable: !1,
+                orderable: false,
+                searchable: false,
                 render: function(data, type, row, meta) {
                     return `
                     <div class="form-check form-check-primary d-block new-control">
@@ -200,12 +354,15 @@
             }, {
                 title: "Time",
                 data: 'time',
+                className: 'text-start',
             }, {
                 title: "Topics",
                 data: 'topics',
+                className: 'text-start',
             }, {
                 title: "Message",
                 data: 'message',
+                className: 'text-start',
             }],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
@@ -226,33 +383,18 @@
             table.ajax.reload()
         })
 
-        $("div.toolbar").html(btn_element_refresh);
-
-        $('#btn_refresh').click(function() {
-            refresh = true
-            table.ajax.reload()
-        })
-
-        $('#btn_add').remove()
-        $('#btn_delete').text('Delete All Log')
-
-        $('#btn_delete').click(function() {
-            delete_all()
-        })
-
         multiCheck(table);
 
-        var id;
-
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
-            id = table.row(this).id()
+            id = table.row(this).id() + param_router
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });
 
         function edit(show = false) {
-            clear_validate($('#formEdit'))
+            clear_validate('formEdit2')
             $.ajax({
-                url: "{{ route('api.mikapi.logs.show', '') }}/" + id + param_router,
+                url: url_index_api + "/" + id,
                 method: 'GET',
                 success: function(result) {
                     unblock();
@@ -321,4 +463,5 @@
 
         // });
     </script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

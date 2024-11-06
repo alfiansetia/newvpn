@@ -130,7 +130,7 @@ class UserController extends Controller
     {
         try {
             $data = UserServices::routerId($request->router)->destroy([$id]);
-            return $this->send_response('Success Delete Data!', $data);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -144,7 +144,7 @@ class UserController extends Controller
         $ids = $request->id;
         try {
             $data = UserServices::routerId($request->router)->destroy($ids);
-            return $this->send_response('Success Delete Data!', $data);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }

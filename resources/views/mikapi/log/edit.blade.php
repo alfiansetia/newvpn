@@ -1,8 +1,7 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_edit" style="display: none;">
     <div class="widget-content widget-content-area br-8">
 
-        <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
-            {{ method_field('PUT') }}
+        <form id="formEdit2" class="form-vertical was-validated" action="" method="POST">
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="titleEdit"><i class="fas fa-info me-1 bs-tooltip"

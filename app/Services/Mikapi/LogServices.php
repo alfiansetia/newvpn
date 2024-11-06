@@ -26,9 +26,15 @@ class LogServices extends RouterServices
             throw new Exception('Router Not Found!');
         }
         $response = parent::$client;
-        $query = (new Query('/system/logging/action/set'))->equal('numbers', 0)->equal('memory-lines', 1);
-        $query2 = (new Query('/system/logging/action/set'))->equal('numbers', '0,1')->equal('memory-lines', 1000);
+        $query_file = (new Query('/file/print'))->where('name', 'log.0.txt')->where('name', 'log.1.txt')->operations('|');
+        $files = $response->query($query_file)->read();
+        foreach ($files ?? [] as $item) {
+            $query_file = (new Query('/file/remove'))->equal('.id', $item['.id']);
+            $response->query($query_file)->read();
+        }
+        $query = (new Query('/system/logging/action/set'))->equal('numbers', '0,1,2,3')->equal('memory-lines', 1);
+        $query2 = (new Query('/system/logging/action/set'))->equal('numbers', '0,1,2,3')->equal('memory-lines', 1000);
         $data = $response->query($query)->query($query2)->read();
-        return $data;
+        return  parent::cek_error($data);
     }
 }

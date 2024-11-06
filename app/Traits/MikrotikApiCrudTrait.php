@@ -15,7 +15,7 @@ trait MikrotikApiCrudTrait
         }
         $response = parent::$client;
         $query = (new Query(parent::$command . 'print'));
-        foreach ($filter ?? [] as $key => $value) {
+        foreach ($filters ?? [] as $key => $value) {
             $query->where($key, $value);
         }
         $data = $response->query($query)->read();
