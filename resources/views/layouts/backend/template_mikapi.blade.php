@@ -46,6 +46,8 @@
     <link href="{{ asset('backend/src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet">
     <link href="{{ asset('backend/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('backend/src/plugins/css/dark/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <link href="{{ asset('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />

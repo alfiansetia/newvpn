@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\System;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\System\GroupResource;
 use App\Services\Mikapi\System\GroupServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class GroupController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     private
         $policies = [
             'read',
@@ -43,14 +40,11 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = GroupResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = GroupServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return GroupResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -59,8 +53,7 @@ class GroupController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $data = $this->conn->show($id);
+            $data = GroupServices::routerId($request->router)->show($id);
             return new GroupResource($data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -95,8 +88,7 @@ class GroupController extends Controller
             'policy'    => $activatedPolicies,
         ];
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $data = $this->conn->store($param);
+            $data = GroupServices::routerId($request->router)->store($param);
             return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -125,15 +117,13 @@ class GroupController extends Controller
             return $request->input($item) !== 'on' ? '!' . $item : $item;
         })->implode(',');
         $param = [
-            '.id'       => $id,
             'name'      => $request->input('name'),
             'skin'      => $request->input('skin') ?? 'default',
             'comment'   => $request->input('comment'),
             'policy'    => $activatedPolicies,
         ];
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $data = $this->conn->update($param);
+            $data = GroupServices::routerId($request->router)->update($id, $param);
             return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -143,8 +133,7 @@ class GroupController extends Controller
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $data = $this->conn->destroy($id);
+            $data = GroupServices::routerId($request->router)->destroy([$id]);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -158,8 +147,7 @@ class GroupController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, GroupServices::class);
-            $data = $this->conn->destroy_batch($id);
+            $data = GroupServices::routerId($request->router)->destroy($id);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

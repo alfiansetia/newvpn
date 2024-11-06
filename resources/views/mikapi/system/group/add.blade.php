@@ -1,7 +1,8 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_add" style="display: none;">
     <div class="widget-content widget-content-area br-8">
 
-        <form id="form" action="" method="POST">
+        <form id="form" class="was-validated"
+            action="{{ route('api.mikapi.system.groups.store') }}?router={{ request()->query('router') }}" method="POST">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"
@@ -20,7 +21,7 @@
                             <select name="skin" id="skin" class="form-control select2" style="width: 100%;">
                                 <option value="">Default</option>
                             </select>
-                            <span id="err_skin" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_skin" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -62,7 +63,7 @@
                         <label class="control-label" for="comment">Comment :</label>
                         <textarea name="comment" class="form-control maxlength" id="comment" minlength="0" maxlength="100"
                             placeholder="Please Enter Comment"></textarea>
-                        <span id="err_comment" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_comment" style="display: hide;"></span>
                     </div>
                 </div>
                 <div class="card-footer text-center">

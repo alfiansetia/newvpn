@@ -2,7 +2,6 @@
     <div class="widget-content widget-content-area br-8">
 
         <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
-            {{ method_field('PUT') }}
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="titleEdit"><i class="fas fa-edit me-1 bs-tooltip"
@@ -18,10 +17,10 @@
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_skin">Skin :</label>
-                            <select name="skin" id="edit_skin" class="form-control select2" style="width: 100%;">
+                            <select name="skin" id="edit_skin" class="form-control" style="width: 100%;">
                                 <option value="">Default</option>
                             </select>
-                            <span id="err_edit_skin" class="error invalid-feedback" style="display: hide;"></span>
+                            <span class="error invalid-feedback err_skin" style="display: hide;"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -62,7 +61,7 @@
                         <label class="control-label" for="edit_comment">Comment :</label>
                         <textarea name="comment" class="form-control maxlength" id="edit_comment" minlength="0" maxlength="100"
                             placeholder="Please Enter Comment"></textarea>
-                        <span id="err_edit_comment" class="error invalid-feedback" style="display: hide;"></span>
+                        <span class="error invalid-feedback err_comment" style="display: hide;"></span>
                     </div>
                 </div>
                 <div class="card-footer text-center">
