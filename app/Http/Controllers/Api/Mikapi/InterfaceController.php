@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\InterfaceResource;
 use App\Services\Mikapi\InterfaceServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class InterfaceController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -21,17 +18,11 @@ class InterfaceController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, InterfaceServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            if ($request->filled('default-name')) {
-                $query['?default-name'] = $request->input('default-name');
-            }
-            $data = $this->conn->get($query);
-            $resource = InterfaceResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name', 'default-name']);
+            $data = InterfaceServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return InterfaceResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -40,8 +31,7 @@ class InterfaceController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, InterfaceServices::class);
-            $data = $this->conn->show($id);
+            $data = InterfaceServices::routerId($request->router)->show($id);
             return new InterfaceResource($data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -50,26 +40,27 @@ class InterfaceController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $this->setRouter($request->router, InterfaceServices::class);
         $this->validate($request, [
             'name'      => 'required|min:2|max:25',
             'comment'   => 'nullable',
         ]);
         $param = [
-            '.id'       => $id,
             'name'      => $request->input('name'),
             'comment'   => $request->input('comment'),
         ];
-        $data = $this->conn->update($param);
-        return response()->json($data, $data['status'] ? 200 : 422);
+        try {
+            $data = InterfaceServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!');
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
     }
 
     public function monitor(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, InterfaceServices::class);
-            $data = $this->conn->monitor($id);
-            return response()->json(['data' => $data]);
+            $data = InterfaceServices::routerId($request->router)->monitor($id);
+            return $this->send_response('', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
