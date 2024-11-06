@@ -33,7 +33,7 @@ class InterfaceController extends Controller
             $resource = InterfaceResource::collection($data);
             return $this->callback($resource->toArray($request), $request->dt == 'on');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class InterfaceController extends Controller
             $data = $this->conn->show($id);
             return new InterfaceResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ class InterfaceController extends Controller
             $data = $this->conn->monitor($id);
             return response()->json(['data' => $data]);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

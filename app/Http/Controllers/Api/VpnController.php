@@ -87,7 +87,7 @@ class VpnController extends Controller
             return $this->send_response('Success Insert Data');
         } catch (Throwable $th) {
             DB::rollBack();
-            return $this->send_error($th->getMessage());
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ class VpnController extends Controller
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->send_error($th->getMessage());
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -170,7 +170,7 @@ class VpnController extends Controller
             return $this->send_response('Success Move Vpn to Temporary!');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->send_error($th->getMessage());
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

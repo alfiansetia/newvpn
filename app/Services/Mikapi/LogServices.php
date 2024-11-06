@@ -2,38 +2,33 @@
 
 namespace App\Services\Mikapi;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
+use Exception;
+use RouterOS\Query;
 
-class LogServices extends RouterApiServices
+class LogServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'system';
-        $this->command = '/log/';
+        parent::__construct();
+
+        parent::$name = 'system';
+        parent::$command = '/log/';
+        parent::$cache = false;
     }
 
     public function destroy()
     {
-        if ($this->connect()) {
-            $data1 = $this->API->comm('/system/logging/action/set', [
-                'numbers'       => 0,
-                'memory-lines'  => 1
-            ]);
-            cek_error($data1);
-            $data2 = $this->API->comm('/system/logging/action/set', [
-                'numbers'       => '0,1',
-                'memory-lines'  => 1000
-            ]);
-            cek_error($data2);
-            $this->disconnect();
-            return $data1;
-        } else {
-            return handle_fail_login($this->API);
+        if (empty(static::$router)) {
+            throw new Exception('Router Not Found!');
         }
+        $response = parent::$client;
+        $query = (new Query('/system/logging/action/set'))->equal('numbers', 0)->equal('memory-lines', 1);
+        $query2 = (new Query('/system/logging/action/set'))->equal('numbers', '0,1')->equal('memory-lines', 1000);
+        $data = $response->query($query)->query($query2)->read();
+        return $data;
     }
 }

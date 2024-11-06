@@ -52,7 +52,7 @@ class GroupController extends Controller
             $resource = GroupResource::collection($data);
             return $this->callback($resource->toArray($request), $request->dt == 'on');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ class GroupController extends Controller
             $data = $this->conn->show($id);
             return new GroupResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -97,9 +97,9 @@ class GroupController extends Controller
         try {
             $this->setRouter($request->router, GroupServices::class);
             $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -134,9 +134,9 @@ class GroupController extends Controller
         try {
             $this->setRouter($request->router, GroupServices::class);
             $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -145,9 +145,9 @@ class GroupController extends Controller
         try {
             $this->setRouter($request->router, GroupServices::class);
             $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -160,9 +160,9 @@ class GroupController extends Controller
         try {
             $this->setRouter($request->router, GroupServices::class);
             $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

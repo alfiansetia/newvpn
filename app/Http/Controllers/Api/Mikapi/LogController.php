@@ -30,7 +30,7 @@ class LogController extends Controller
             $resource = LogResource::collection($data);
             return $this->callback($resource->toArray($request), $request->dt == 'on');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ class LogController extends Controller
             $data = $this->conn->show($id);
             return new LogResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ class LogController extends Controller
             $data = $this->conn->destroy();
             return response()->json(['message' => 'Success deleted data!', 'data' => $data]);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

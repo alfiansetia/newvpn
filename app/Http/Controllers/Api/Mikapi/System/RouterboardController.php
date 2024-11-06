@@ -26,7 +26,7 @@ class RouterboardController extends Controller
             $data = $this->conn->routerboard($query);
             return RouterboardResource::collection($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -38,7 +38,7 @@ class RouterboardController extends Controller
             $data = $this->conn->setting($query);
             return SettingResource::collection($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

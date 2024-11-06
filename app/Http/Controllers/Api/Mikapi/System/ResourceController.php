@@ -25,7 +25,7 @@ class ResourceController extends Controller
             $data = $this->conn->get($query);
             return ResourceResource::collection($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ class ResourceController extends Controller
             $data = $this->conn->settings($query);
             return ResourceResource::collection($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

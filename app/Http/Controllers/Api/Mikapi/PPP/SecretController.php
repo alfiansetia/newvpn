@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\PPP;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\PPP\SecretResource;
 use App\Services\Mikapi\PPP\SecretServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SecretController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -21,27 +18,23 @@ class SecretController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = SecretResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = SecretServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return SecretResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $data = $this->conn->show($id);
+            $data = SecretServices::routerId($request->router)->show($id);
             return new SecretResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -66,11 +59,10 @@ class SecretController extends Controller
             'comment'           => $request->input('comment'),
         ];
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            $data = SecretServices::routerId($request->router)->store($param);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -87,7 +79,6 @@ class SecretController extends Controller
             'is_active'         => 'nullable|in:on',
         ]);
         $param = [
-            '.id'               => $id,
             'name'              => $request->input('name'),
             'password'          => $request->input('password'),
             'service'           => $request->input('service') ?? 'any',
@@ -98,22 +89,20 @@ class SecretController extends Controller
             'disabled'          => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            $data = SecretServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = SecretServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -124,11 +113,10 @@ class SecretController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, SecretServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = SecretServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

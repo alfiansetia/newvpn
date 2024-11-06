@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\PPP;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\PPP\ProfileResource;
 use App\Services\Mikapi\PPP\ProfileServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProfileController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -21,27 +18,23 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->get($query);
-            $resource = ProfileResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['name']);
+            $data = ProfileServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return ProfileResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $data = $this->conn->show($id);
+            $data = ProfileServices::routerId($request->router)->show($id);
             return new ProfileResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -69,11 +62,10 @@ class ProfileController extends Controller
             'comment'           => $request->input('comment'),
         ];
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            $data = ProfileServices::routerId($request->router)->store($param);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -94,7 +86,6 @@ class ProfileController extends Controller
         }
         $this->validate($request, $validate);
         $param = [
-            '.id'               => $id,
             'only-one'          => $request->input('only_one') ?? 'default',
             'local-address'     => $request->input('local_address') ?? '0.0.0.0',
             'remote-address'    => $request->input('remote_address') ?? '0.0.0.0',
@@ -107,22 +98,20 @@ class ProfileController extends Controller
             $param['name'] = $request->input('name');
         }
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            $data = ProfileServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = ProfileServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -133,11 +122,10 @@ class ProfileController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, ProfileServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = ProfileServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

@@ -196,7 +196,7 @@ class VpnUserController extends Controller
             return $this->send_response('Success Create VPN!');
         } catch (Throwable $th) {
             DB::rollBack();
-            return $this->send_error($th->getMessage());
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

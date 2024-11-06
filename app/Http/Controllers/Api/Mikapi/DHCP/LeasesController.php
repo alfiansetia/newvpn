@@ -42,7 +42,7 @@ class LeasesController extends Controller
             $resource = LeasesResource::collection($data);
             return $this->callback($resource->toArray($request), $request->dt == 'on');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ class LeasesController extends Controller
             $data = $this->conn->show($id);
             return new LeasesResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -62,9 +62,9 @@ class LeasesController extends Controller
         try {
             $this->setRouter($request->router, LeaseServices::class);
             $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -77,9 +77,9 @@ class LeasesController extends Controller
         try {
             $this->setRouter($request->router, LeaseServices::class);
             $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }

@@ -43,7 +43,7 @@ class ServerController extends Controller
             $data = $this->conn->show($id);
             return new ServerResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

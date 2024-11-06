@@ -2,18 +2,19 @@
 
 namespace App\Services\Mikapi\System;
 
-use App\Models\Router;
-use App\Services\RouterApiServices;
-use App\Traits\CrudApiTrait;
+use App\Services\RouterServices;
+use App\Traits\MikrotikApiCrudTrait;
 
-class UserActiveServices extends RouterApiServices
+class UserActiveServices extends RouterServices
 {
-    use CrudApiTrait;
+    use MikrotikApiCrudTrait;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        parent::__construct($router);
-        $this->name = 'system';
-        $this->command = '/user/active/';
+        parent::__construct();
+
+        parent::$name = 'system';
+        parent::$command = '/user/active/';
+        parent::$cache = false;
     }
 }

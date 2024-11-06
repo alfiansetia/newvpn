@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\PPP;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\PPP\L2tpSecretResource;
 use App\Services\Mikapi\PPP\L2tpSecretServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class L2tpSecretController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -21,30 +18,23 @@ class L2tpSecretController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $query = [];
-            if ($request->filled('address')) {
-                $query['?address'] = $request->address;
-            }
-            if ($request->filled('comment')) {
-                $query['?comment'] = $request->comment;
-            }
-            $data = $this->conn->get($query);
-            $resource = L2tpSecretResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['comment', 'address']);
+            $data = L2tpSecretServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return L2tpSecretResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $data = $this->conn->show($id);
+            $data = L2tpSecretServices::routerId($request->router)->show($id);
             return new L2tpSecretResource($data);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -65,11 +55,10 @@ class L2tpSecretController extends Controller
             'comment'           => $request->input('comment'),
         ];
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $data = $this->conn->store($param);
-            return response()->json(['message' => 'Success Insert Data!', 'data' => $data]);
+            $data = L2tpSecretServices::routerId($request->router)->store($param);
+            return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -85,28 +74,25 @@ class L2tpSecretController extends Controller
         $subnet = $request->input('subnet');
         $slash = $request->input('subnet') == null ? '' : '/';
         $param = [
-            '.id'               => $id,
             'secret'            => $request->input('secret'),
             'address'           => $address . $slash . $subnet,
             'comment'           => $request->input('comment'),
         ];
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $data = $this->conn->update($param);
-            return response()->json(['message' => 'Success Update Data!', 'data' => $data]);
+            $data = L2tpSecretServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $data = $this->conn->destroy($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = L2tpSecretServices::routerId($request->router)->destroy([$id]);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 
@@ -117,11 +103,10 @@ class L2tpSecretController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, L2tpSecretServices::class);
-            $data = $this->conn->destroy_batch($id);
-            return response()->json(['message' => 'Success Delete Data!', 'data' => $data]);
+            $data = L2tpSecretServices::routerId($request->router)->destroy($id);
+            return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 }
