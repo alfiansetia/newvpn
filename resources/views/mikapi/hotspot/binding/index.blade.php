@@ -281,7 +281,7 @@
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id() + param_router
-            $('#formEdit').attr('action', url_index_api_router + "/" + id)
+            $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });
 

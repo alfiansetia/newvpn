@@ -176,14 +176,7 @@
                     part = result.data.address.split('/')
                     $('#edit_address').val(part[0]);
                     $('#edit_subnet').val(part[1]);
-                    $('#tbl_detail').empty()
-                    Object.keys(result.data).forEach(function(key) {
-                        $('#tbl_detail').append(`<tr>
-                                <td style="width:30%">${key}</td>
-                                <td style="width:2%">:</td>
-                                <td style="width:68%">${result.data[key]}</td>
-                            </tr>`)
-                    });
+                    add_detail(result.data, 'tbl_detail')
                     if (show) {
                         show_card_edit()
                         input_focus('name')
@@ -201,5 +194,5 @@
 
         // });
     </script>
-    <script src="{{ asset('js/trigger.js') }}"></script>
+    <script src="{{ asset('js/v2/trigger.js') }}"></script>
 @endpush

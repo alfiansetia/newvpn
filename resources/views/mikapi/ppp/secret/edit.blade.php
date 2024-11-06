@@ -41,7 +41,7 @@
                     <div class="row">
                         <div class="form-group col-6 mb-2">
                             <label class="control-label" for="edit_service">Service :</label>
-                            <select name="service" id="edit_service" class="form-control select2" required>
+                            <select name="service" id="edit_service" class="form-control" required>
                                 @php
                                     $services = ['any', 'async', 'l2tp', 'ovpn', 'pppoe', 'pptp', 'sstp'];
                                 @endphp
@@ -53,8 +53,8 @@
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_profile">Profile :</label>
-                            <select name="profile" id="edit_profile" class="form-control" style="width: 100%;" required>
-                                <option value="">Please select Profile</option>
+                            <select name="profile" id="edit_profile" class="form-control-lg tomse-profile"
+                                style="width: 100%;" required>
                             </select>
                             <span class="error invalid-feedback err_profile" style="display: hide;"></span>
                         </div>
