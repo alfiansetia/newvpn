@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\DHCP;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\DHCP\LeasesResource;
 use App\Services\Mikapi\DHCP\LeaseServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class LeasesController extends Controller
 {
-    use RouterTrait, DataTableTrait;
 
     public function __construct(Request $request)
     {
@@ -21,26 +19,11 @@ class LeasesController extends Controller
     public function index(Request $request)
     {
         try {
-            $this->setRouter($request->router, LeaseServices::class);
-            $query = [];
-            if ($request->filled('server')) {
-                $query['?server'] = $request->input('server');
-            }
-            if ($request->filled('address')) {
-                $query['?address'] = $request->input('address');
-            }
-            if ($request->filled('mac-address')) {
-                $query['?mac-address'] = $request->input('mac-address');
-            }
-            if ($request->filled('user')) {
-                $query['?user'] = $request->input('user');
-            }
-            if ($request->filled('comment')) {
-                $query['?comment'] = $request->input('comment');
-            }
-            $data = $this->conn->get($query);
-            $resource = LeasesResource::collection($data);
-            return $this->callback($resource->toArray($request), $request->dt == 'on');
+            $filters = $request->only(['server', 'address', 'mac-address', 'user', 'comment']);
+            $data = LeaseServices::routerId($request->router)->get($filters);
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return LeasesResource::make($item)->resolve();
+            })->toJson();
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -49,8 +32,7 @@ class LeasesController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, LeaseServices::class);
-            $data = $this->conn->show($id);
+            $data = LeaseServices::routerId($request->router)->show($id);
             return new LeasesResource($data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -60,8 +42,7 @@ class LeasesController extends Controller
     public function destroy(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, LeaseServices::class);
-            $data = $this->conn->destroy($id);
+            $data = LeaseServices::routerId($request->router)->destroy([$id]);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -75,8 +56,7 @@ class LeasesController extends Controller
         ]);
         $id = $request->id;
         try {
-            $this->setRouter($request->router, LeaseServices::class);
-            $data = $this->conn->destroy_batch($id);
+            $data = LeaseServices::routerId($request->router)->destroy($id);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

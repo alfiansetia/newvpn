@@ -61,7 +61,7 @@
             }],
             createdRow: function(row, data, dataIndex) {
                 if (data.blocked == true) {
-                    $('td', row).css('background-color', 'red');
+                    $('td', row).css('background-color', 'rgb(218, 212, 212)');
                 }
             },
             buttons: [],

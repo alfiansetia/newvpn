@@ -11,6 +11,15 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
     <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .row-disabled {
+            background-color: rgb(218, 212, 212)
+        }
+
+        .form-control.flatpickr-input {
+            background-image: none !important;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
@@ -65,7 +74,7 @@
             },
             createdRow: function(row, data, dataIndex) {
                 if (data.blocked == true) {
-                    $('td', row).css('background-color', 'red');
+                    $('td', row).css('background-color', 'rgb(218, 212, 212)');
                 }
             },
             columnDefs: [{
