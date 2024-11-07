@@ -37,10 +37,10 @@ class ActiveResource extends JsonResource
             'radius'            => ($this['radius'] ?? false) == "true" ? true : false,
             'server'            => $this['server'] ?? 'all',
             'session-time-left' => $this['session-time-left'] ?? null,
-            'uptime'            => $this['uptime'],
+            'uptime'            => $this['uptime'] ?? null,
             'user'              => $this['user'],
             'session_time_left_parse' => dtm_new($this['session-time-left'] ?? ''),
-            'uptime_parse'      => dtm_new($this['uptime']),
+            'uptime_parse'      => dtm_new($this['uptime'] ?? ''),
         ];
     }
 }
