@@ -48,6 +48,22 @@
 @section('content')
     <div class="row" id="cancel-row">
 
+        <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
+            <div class="col-md-4 mb-2">
+                <select class="form-control tomse-comment" name="comment" id="filter_comment">
+                </select>
+            </div>
+            <div class="col-md-4 mb-2">
+                <select class="form-control tomse-profile" name="profile" id="filter_profile">
+                </select>
+            </div>
+            <div class="col-md-4 mb-2">
+                <button type="button" class="btn btn-block btn-primary" id="btn_filter">
+                    <i class="fas fa-filter me-1"></i>Filter
+                </button>
+            </div>
+        </div>
+
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
@@ -139,6 +155,34 @@
             enableSeconds: true
         })
 
+        document.querySelectorAll('.tomse-comment').forEach((el) => {
+            var tomse = new TomSelect(el, {
+                valueField: 'comment',
+                labelField: 'comment',
+                searchField: 'comment',
+                preload: 'focus',
+                disabledField: '',
+                placeholder: "Please Select Profile",
+                allowEmptyOption: true,
+                load: function(query, callback) {
+                    var url = '{{ route('api.mikapi.hotspot.users.comment') }}' + param_router +
+                        '&limit=' + perpage +
+                        '&name=' +
+                        encodeURIComponent(
+                            query);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            callback(json.data);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+            });
+        });
+
+
+
         document.querySelectorAll('.tomse-profile').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -193,7 +237,6 @@
             });
         });
 
-
         $('#reset').click(function() {
             document.getElementById('server').tomselect.clear()
             document.getElementById('profile').tomselect.clear()
@@ -204,6 +247,16 @@
             serverSide: true,
             ajax: {
                 url: url_index_api_router,
+                data: function(d) {
+                    let c = document.getElementById('filter_comment').tomselect.getValue();
+                    let p = document.getElementById('filter_profile').tomselect.getValue();
+                    if (c != '' || c != null) {
+                        d.comment = c
+                    }
+                    if (p != '' || p != null) {
+                        d.profile = p
+                    }
+                },
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
                 },
@@ -342,6 +395,12 @@
                 feather.replace();
             }
         });
+
+
+        $('#btn_filter').click(function() {
+            table.ajax.reload()
+        })
+
 
         $('#btn_refresh').click(function() {
             table.ajax.reload()

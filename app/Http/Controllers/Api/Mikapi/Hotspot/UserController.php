@@ -18,10 +18,28 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $data = UserServices::routerId($request->router)->from_cache();
+            $response = UserServices::routerId($request->router)->from_cache();
+            $data = collect($response);
+            if ($request->filled('comment')) {
+                $data = $data->where('comment', $request->comment);
+            }
+            if ($request->filled('profile')) {
+                $data = $data->where('profile', $request->profile);
+            }
             return DataTables::collection($data)->setTransformer(function ($item) {
                 return UserResource::make($item)->resolve();
             })->toJson();
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
+
+    public function comment(Request $request)
+    {
+        try {
+            $response = UserServices::routerId($request->router)->from_cache();
+            $data = collect($response)->unique('comment');
+            return $this->send_response('', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
