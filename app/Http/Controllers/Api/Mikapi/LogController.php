@@ -18,7 +18,7 @@ class LogController extends Controller
     public function index(Request $request)
     {
         try {
-            $filters = $request->only(['topics']);
+            $filters = $request->only(['topics', 'buffer']);
             $data = LogServices::routerId($request->router)->get($filters);
             return DataTables::collection($data)->setTransformer(function ($item) {
                 return LogResource::make($item)->resolve();

@@ -22,8 +22,12 @@
 @section('content')
     <div class="row" id="cancel-row">
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
-            <div class="col-md-8 mb-2">
+            <div class="col-md-6 mb-2">
                 <select class="form-control" name="topics" id="select_topics" multiple>
+                </select>
+            </div>
+            <div class="col-md-2 mb-2">
+                <select class="form-control" name="buffer" id="select_buffer">
                 </select>
             </div>
             <div class="col-md-4 mb-2">
@@ -285,20 +289,40 @@
             delimiter: ',',
         });
 
+        new TomSelect("#select_buffer", {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "All Buffer",
+            allowEmptyOption: true,
+            options: [{
+                name: 'disk',
+            }, {
+                name: 'memory',
+            }],
+        });
+
+        var filter = document.getElementById('select_buffer').tomselect
+        filter.setValue('disk')
+
         var filter = document.getElementById('select_topics').tomselect
         filter.setValue(['hotspot', 'info', 'debug'])
+
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: false,
             ajax: {
                 url: url_index_api_router,
                 data: function(dt) {
-                    let topics = $('#select_topics').val() || []
+                    let topics = document.getElementById('select_topics').tomselect.getValue() || []
+                    let buffer = document.getElementById('select_buffer').tomselect.getValue()
                     let topicsString = ''
                     if (topics.length > 0) {
                         topicsString = topics.join(',');
                     }
                     dt.topics = topicsString
+                    dt.buffer = buffer
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponse(jqXHR)
