@@ -47,7 +47,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::post('/auth/onetap', [OnetapController::class, 'onetap'])->name('api.auth.onetap.login');
+Route::post('/auth/onetap', [OnetapController::class, 'login'])->name('api.auth.onetap.login');
 
 
 
