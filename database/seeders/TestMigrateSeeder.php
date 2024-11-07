@@ -22,7 +22,7 @@ class TestMigrateSeeder extends Seeder
      */
     public function run(): void
     {
-        $db = json_decode(file_get_contents(public_path('json/kncet.json')), true);
+        $db = json_decode(file_get_contents(storage_path('app\backup\db.json')), true);
 
         // users
         foreach ($db as $data) {
