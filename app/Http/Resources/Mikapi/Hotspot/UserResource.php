@@ -30,7 +30,7 @@ class UserResource extends JsonResource
             'limit-bytes-total' => (int) ($this['limit-bytes-total'] ?? '0'),
             'limit-uptime'      => $this['limit-uptime'] ?? null,
             'mac-address'       => $this['mac-address'] ?? null,
-            'name'              => $this['name'],
+            'name'              => $this['name'] ?? null,
             'packets-in'        => (int) ($this['packets-in'] ?? '0'),
             'packets-out'       => (int) ($this['packets-out'] ?? '0'),
             'password'          => $this['password'] ?? null,
