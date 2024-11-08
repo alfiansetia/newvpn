@@ -15,8 +15,8 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'DT_RowId'          => $this['.id'],
-            '.id'               => $this['.id'],
+            'DT_RowId'          => $this['.id'] ?? 0,
+            '.id'               => $this['.id'] ?? 0,
             'address'           => $this['address'] ?? null,
             'bytes-in'          => (int) ($this['bytes-in'] ?? '0'),
             'bytes-out'         => (int) ($this['bytes-out'] ?? '0'),
