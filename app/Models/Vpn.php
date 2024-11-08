@@ -42,7 +42,7 @@ class Vpn extends Model
             $query->where('is_trial', $filters['is_trial']);
         }
         if (isset($filters['dst'])) {
-            $query->whereRelation('port', 'dst', $filters['dst']);
+            $query->whereRelation('ports', 'dst', $filters['dst']);
         }
         if (isset($filters['user_id'])) {
             $query->where('user_id', $filters['user_id']);
