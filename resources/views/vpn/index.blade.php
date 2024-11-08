@@ -615,6 +615,13 @@
                     }
 
                     tooltip()
+
+                    document.querySelectorAll('.accordion .collapse:not(.show)').forEach((item) => {
+                        new bootstrap.Collapse(item, {
+                            toggle: false
+                        }).show();
+                    });
+
                     if (show) {
                         show_card_detail()
                         input_focus('username')
