@@ -35,8 +35,8 @@ class RouterServices
             'user'      => $user,
             'pass'      => $pass,
             'port'      => $port,
-            'timeout'   => 2,
-            'attempts'  => 1,
+            // 'timeout'   => 2,
+            // 'attempts'  => 1,
         ]);
         self::$client = new Client($config);
         return new static;

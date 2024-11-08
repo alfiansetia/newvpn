@@ -19,8 +19,8 @@ class LogResource extends JsonResource
             'DT_RowId'  => $this['.id'],
             '.id'       => $this['.id'],
             'time'      => date_log($this['time']),
-            'topics'    => $this['topics'],
-            'message'   => $this['message'],
+            'topics'    => $this['topics'] ?? null,
+            'message'   => $this['message'] ?? null,
         ];
     }
 }
