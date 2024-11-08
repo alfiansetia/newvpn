@@ -6,13 +6,16 @@
     <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @section('content')
     <!--  BEGIN CONTENT AREA  -->
     <div class="row layout-top-spacing">
 
-
+        @include('dashboard.components.card_info')
         @include('dashboard.components.grafik')
         @include('dashboard.components.donut')
         @include('dashboard.components.vpn_expired')

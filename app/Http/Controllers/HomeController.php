@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Router;
+use App\Models\Topup;
 use App\Models\User;
 use App\Models\Vpn;
 use App\Traits\CompanyTrait;
@@ -27,6 +29,8 @@ class HomeController extends Controller
         $user = auth()->user();
         $new_users = User::latest()->limit(5)->get();
         $query_expired = Vpn::query()->with(['server'])->where('expired', '<=', date('Y-m-d'));
+        $router_count = Router::query()->where('user_id', $user->id)->count();
+        $billing_pending = Topup::query()->where('user_id', $user->id)->where('status', 'pending')->count();
         if ($user->is_admin()) {
             $data_vpn = Vpn::selectRaw('
                 SUM(CASE WHEN is_trial = 0 AND is_active = 1 THEN 1 ELSE 0 END) as active,
@@ -50,9 +54,23 @@ class HomeController extends Controller
         }
         $new_expired_vpns = $query_expired->latest('expired')->limit(5)->get();
         if ($user->is_admin()) {
-            return view('dashboard.admin', compact('data_vpn', 'new_users', 'new_expired_vpns'));
+            return view('dashboard.admin', compact(
+                'data_vpn',
+                'new_users',
+                'new_expired_vpns',
+                'router_count',
+                'billing_pending',
+                'user',
+            ));
         } else {
-            return view('dashboard.user', compact('data_vpn', 'new_users', 'new_expired_vpns'));
+            return view('dashboard.user', compact(
+                'data_vpn',
+                'new_users',
+                'new_expired_vpns',
+                'router_count',
+                'billing_pending',
+                'user',
+            ));
         }
     }
 }
