@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $response = UserServices::routerId($request->router)->get();
+            $response = UserServices::routerId($request->router)->from_cache();
             $data = collect($response);
             if ($request->filled('comment')) {
                 $data = $data->where('comment', $request->comment);
@@ -37,7 +37,8 @@ class UserController extends Controller
     public function comment(Request $request)
     {
         try {
-            $response = UserServices::routerId($request->router)->from_cache();
+            $service = new UserServices();
+            $response = $service->routerId($request->router)->from_cache();
             $data = collect($response)->unique('comment');
             return $this->send_response('', $data);
         } catch (\Throwable $th) {

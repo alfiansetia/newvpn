@@ -20,6 +20,7 @@ class RouterServices
 
     public static function router(Router $router)
     {
+        $router = self::cek_available($router);
         self::$router = $router;
         $ip = $router->port->vpn->server->ip;
         $user = $router->username;
@@ -29,7 +30,6 @@ class RouterServices
         } catch (\Throwable $th) {
             $pass = '';
         }
-        $router = self::cek_available($router);
         $config = new \RouterOS\Config([
             'host'      => $ip,
             'user'      => $user,
