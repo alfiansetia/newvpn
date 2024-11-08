@@ -165,7 +165,8 @@
                     placeholder: "Please Select Bank",
                     allowEmptyOption: true,
                     load: function(query, callback) {
-                        var url = '{{ route('api.banks.paginate') }}?limit=' + perpage + '&name=' +
+                        var url = '{{ route('api.banks.paginate') }}?is_active=1&limit=' + perpage +
+                            '&name=' +
                             encodeURIComponent(
                                 query);
                         fetch(url)
