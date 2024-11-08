@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            $response = UserServices::routerId($request->router)->from_cache();
+            $response = UserServices::routerId($request->router)->get();
             $data = collect($response);
             if ($request->filled('comment')) {
                 $data = $data->where('comment', $request->comment);
