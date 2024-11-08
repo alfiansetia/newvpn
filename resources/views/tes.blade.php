@@ -163,7 +163,7 @@
             ajax: {
                 url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR.status)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{

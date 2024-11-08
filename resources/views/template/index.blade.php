@@ -73,7 +73,7 @@
             ajax: {
                 url: "{{ route('template.index') }}",
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR.status)
+                    handleResponseCode(jqXHR)
                 },
             },
             columnDefs: [{
