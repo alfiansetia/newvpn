@@ -158,6 +158,55 @@
         var perpage = 50
         var text = ''
 
+        function get_script(param) {
+            let vpn = param.data
+            let type = param.name || ''
+            let sc = '';
+            if (type == 'pptp') {
+                sc += `/interface pptp-client add `
+            } else if (type == 'l2tp') {
+                sc += `/interface l2tp-client add `
+            } else if (type == 'sstp') {
+                sc += `/interface sstp-client add `
+            } else if (type == 'ovpn') {
+                sc += `/interface ovpn-client add `
+                sc += `mode="ethernet" `
+            } else {
+                return '';
+            }
+            sc += `disabled=no `;
+            sc += `name="tunnel_${vpn.id}_${vpn.server.name}" `
+            sc += `connect-to="${vpn.server.domain}" `
+            sc += `user="${vpn.username}" `
+            sc += `password="${vpn.password}"; `
+
+            sc += `\n/tool netwatch remove [find where host=${vpn.server.netwatch}]; `
+            sc += `\n/tool netwatch add `
+            sc += `disabled=no `;
+            sc += `host=${vpn.server.netwatch} `;
+            sc += `comment="netwatch_${vpn.server.name}" `;
+            sc += `interval=1m timeout=1s type=simple; \n`
+            return sc
+        }
+
+        var script = new TomSelect('#select_script', {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Select Type Script",
+            allowEmptyOption: true,
+            onChange: function(value) {
+                if (value != '') {
+                    let data = script.options[value];
+                    let sc = get_script(data)
+                    $('#select_script_value').val(sc)
+                } else {
+                    $('#select_script_value').val('')
+                }
+            }
+        });
+
         document.querySelectorAll('.tomse-server').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'id',
@@ -620,6 +669,16 @@
                         new bootstrap.Collapse(item, {
                             toggle: false
                         }).show();
+                    });
+
+                    let script = document.getElementById('select_script').tomselect
+                    script.clear()
+                    let type = ['pptp', 'l2tp', 'sstp', 'ovpn']
+                    type.forEach(item => {
+                        script.addOption({
+                            name: item,
+                            data: result.data
+                        })
                     });
 
                     if (show) {

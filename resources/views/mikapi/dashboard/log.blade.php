@@ -1,4 +1,4 @@
-<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 mb-4">
     <div class="widget widget-chart-one">
         <div class="widget-heading">
             <h5 class="">Hotspot Logs</h5>

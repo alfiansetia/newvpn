@@ -30,7 +30,7 @@
                                 <div class="media-body">
                                     <div id="iconsAccordion" class="accordion-icons accordion">
                                         <div class="row">
-                                            <div class="col-xs-12 col-md-6 col-xl-4">
+                                            <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <section class="mb-0 mt-0">
@@ -103,7 +103,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 col-md-6 col-xl-4">
+                                            <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <section class="mb-0 mt-0">
@@ -175,7 +175,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 col-md-6 col-xl-4">
+                                            <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <section class="mb-0 mt-0">
@@ -199,6 +199,37 @@
                                                         <div class="card-body pt-0 ps-0">
                                                             <ul class="list-group" id="table_port">
                                                             </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-md-6 col-xl-6 mb-2">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <section class="mb-0 mt-0">
+                                                            <div role="menu" class=""
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#iconAccordionFour"
+                                                                aria-expanded="false"
+                                                                aria-controls="iconAccordionFour">
+                                                                <div class="accordion-icon">
+                                                                    <i data-feather="code"></i>
+                                                                </div>
+                                                                Script Mikrotik
+                                                                <div class="icons">
+                                                                    <i data-feather="chevron-down"></i>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                    <div id="iconAccordionFour"
+                                                        class="accordion-collapse collapse show">
+                                                        <div class="card-body">
+                                                            <div class="form-row">
+                                                                <select class="form-control mb-2"
+                                                                    id="select_script"></select>
+                                                                <textarea class="form-control mb-2" id="select_script_value" rows="4"></textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

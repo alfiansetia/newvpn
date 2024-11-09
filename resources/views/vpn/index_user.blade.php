@@ -84,7 +84,7 @@
                                         <div class="media-body">
                                             <div id="iconsAccordion" class="accordion-icons accordion">
                                                 <div class="row">
-                                                    <div class="col-xs-12 col-md-6 col-xl-4">
+                                                    <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <section class="mb-0 mt-0">
@@ -160,7 +160,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-12 col-md-6 col-xl-4">
+                                                    <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <section class="mb-0 mt-0">
@@ -232,7 +232,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-12 col-md-6 col-xl-4">
+                                                    <div class="col-xs-12 col-md-6 col-xl-4 mb-2">
                                                         <div class="card">
                                                             <div class="card-header">
                                                                 <section class="mb-0 mt-0">
@@ -256,6 +256,37 @@
                                                                 <div class="card-body pt-0 ps-0">
                                                                     <ul class="list-group" id="table_port">
                                                                     </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6 col-xl-6 mb-2">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <section class="mb-0 mt-0">
+                                                                    <div role="menu" class=""
+                                                                        data-bs-toggle="collapse"
+                                                                        data-bs-target="#iconAccordionFour"
+                                                                        aria-expanded="false"
+                                                                        aria-controls="iconAccordionFour">
+                                                                        <div class="accordion-icon">
+                                                                            <i data-feather="code"></i>
+                                                                        </div>
+                                                                        Script Mikrotik
+                                                                        <div class="icons">
+                                                                            <i data-feather="chevron-down"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+                                                            </div>
+                                                            <div id="iconAccordionFour"
+                                                                class="accordion-collapse collapse show">
+                                                                <div class="card-body">
+                                                                    <div class="form-row">
+                                                                        <select class="form-control mb-2"
+                                                                            id="select_script"></select>
+                                                                        <textarea class="form-control mb-2" id="select_script_value" rows="4"></textarea>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -358,6 +389,55 @@
         var id = 0
         var perpage = 50
         var text = ''
+
+        function get_script(param) {
+            let vpn = param.data
+            let type = param.name || ''
+            let sc = '';
+            if (type == 'pptp') {
+                sc += `/interface pptp-client add `
+            } else if (type == 'l2tp') {
+                sc += `/interface l2tp-client add `
+            } else if (type == 'sstp') {
+                sc += `/interface sstp-client add `
+            } else if (type == 'ovpn') {
+                sc += `/interface ovpn-client add `
+                sc += `mode="ethernet" `
+            } else {
+                return '';
+            }
+            sc += `disabled=no `;
+            sc += `name="tunnel_${vpn.id}_${vpn.server.name}" `
+            sc += `connect-to="${vpn.server.domain}" `
+            sc += `user="${vpn.username}" `
+            sc += `password="${vpn.password}"; `
+
+            sc += `\n/tool netwatch remove [find where host=${vpn.server.netwatch}]; `
+            sc += `\n/tool netwatch add `
+            sc += `disabled=no `;
+            sc += `host=${vpn.server.netwatch} `;
+            sc += `comment="netwatch_${vpn.server.name}" `;
+            sc += `interval=1m timeout=1s type=simple; \n`
+            return sc
+        }
+
+        var script = new TomSelect('#select_script', {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Select Type Script",
+            allowEmptyOption: true,
+            onChange: function(value) {
+                if (value != '') {
+                    let data = script.options[value];
+                    let sc = get_script(data)
+                    $('#select_script_value').val(sc)
+                } else {
+                    $('#select_script_value').val('')
+                }
+            }
+        });
 
         new TomSelect("#amount", {
             valueField: 'id',
@@ -660,6 +740,15 @@
                         new bootstrap.Collapse(item, {
                             toggle: false
                         }).show();
+                    });
+                    let script = document.getElementById('select_script').tomselect
+                    script.clear()
+                    let type = ['pptp', 'l2tp', 'sstp', 'ovpn']
+                    type.forEach(item => {
+                        script.addOption({
+                            name: item,
+                            data: result.data
+                        })
                     });
 
                     if (show) {
