@@ -34,7 +34,7 @@
     @endif
     <div class="row layout-top-spacing layout-spacing">
         <!-- Content -->
-        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 mb-2">
+        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 mb-4">
             <div class="user-profile">
                 <div class="widget-content widget-content-area p-3">
                     <div class="d-flex justify-content-between">
