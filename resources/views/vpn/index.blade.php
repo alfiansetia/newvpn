@@ -73,6 +73,10 @@
         .tbb::before {
             content: ": ";
         }
+
+        .form-control.flatpickr-input {
+            background-image: none !important;
+        }
     </style>
 @endpush
 @section('content')
