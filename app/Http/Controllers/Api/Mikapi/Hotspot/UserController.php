@@ -102,7 +102,7 @@ class UserController extends Controller
         ];
         try {
             $data = UserServices::routerId($request->router)->store($param);
-            return $this->send_response('Success Insert Data!');
+            return $this->send_response('Success Insert Data!', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }

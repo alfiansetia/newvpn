@@ -2,12 +2,12 @@
 
 namespace App\Services\Mikapi\Hotspot;
 
-use App\Services\RouterServices;
-use App\Traits\MikrotikApiCrudTrait;
+use App\Services\RouterApiServices;
+use App\Traits\CrudApiTrait;
 
-class CookieServices extends RouterServices
+class CookieServices extends RouterApiServices
 {
-    use MikrotikApiCrudTrait;
+    use CrudApiTrait;
 
     public function __construct()
     {

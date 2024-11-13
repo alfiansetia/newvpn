@@ -2,12 +2,12 @@
 
 namespace App\Services\Mikapi\DHCP;
 
-use App\Services\RouterServices;
-use App\Traits\MikrotikApiCrudTrait;
+use App\Services\RouterApiServices;
+use App\Traits\CrudApiTrait;
 
-class LeaseServices extends RouterServices
+class LeaseServices extends RouterApiServices
 {
-    use MikrotikApiCrudTrait;
+    use CrudApiTrait;
 
     public function __construct()
     {

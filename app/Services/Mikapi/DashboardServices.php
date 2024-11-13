@@ -5,40 +5,47 @@ namespace App\Services\Mikapi;
 use App\Http\Resources\Mikapi\System\PackageResource;
 use App\Http\Resources\Mikapi\System\ResourceResource;
 use App\Http\Resources\Mikapi\System\Routerboard\RouterboardResource;
-use App\Services\RouterServices;
+use App\Services\RouterApiServices;
 use Exception;
 use RouterOS\Query;
 
-class DashboardServices extends RouterServices
+class DashboardServices extends RouterApiServices
 {
     public static function get()
     {
         if (empty(self::$router)) {
             throw new Exception('Router Not Found!');
         }
-        $response = self::$client;
-        $packages = $response->query((new Query('/system/package/print')))->read();
-        $resource = $response->query((new Query('/system/resource/print')))->read();
-        $routerboard = $response->query((new Query('/system/routerboard/print')))->read();
+        $packages = parent::$API->comm('/system/package/print');
+        $resource = parent::$API->comm('/system/resource/print');
+        $routerboard = parent::$API->comm('/system/routerboard/print');
         $hs_active = 0;
         $hs_user = 0;
         $ppp_active = 0;
         $ppp_secret = 0;
-        $hs_active = $response->query((new Query('/ip/hotspot/active/print'))->equal('count-only'))->read();
-        if (isset($hs_active['after']) && isset($hs_active['after']['ret'])) {
-            $hs_active = $hs_active['after']['ret'];
+        try {
+            $hs_active = parent::$API->comm('/ip/hotspot/active/print', ['count-only' => '']);
+            parent::cek_error($hs_active);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        $hs_user = $response->query((new Query('/ip/hotspot/user/print'))->equal('count-only'))->read();
-        if (isset($hs_user['after']) && isset($hs_user['after']['ret'])) {
-            $hs_user = $hs_user['after']['ret'];
+        try {
+            $hs_user = parent::$API->comm('/ip/hotspot/user/print', ['count-only' => '']);
+            parent::cek_error($hs_user);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        $ppp_active = $response->query((new Query('/ppp/active/print'))->equal('count-only'))->read();
-        if (isset($ppp_active['after']) && isset($ppp_active['after']['ret'])) {
-            $ppp_active = $ppp_active['after']['ret'];
+        try {
+            $ppp_active = parent::$API->comm('/ppp/active/print', ['count-only' => '']);
+            parent::cek_error($ppp_active);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        $ppp_secret = $response->query((new Query('/ppp/secret/print'))->equal('count-only'))->read();
-        if (isset($ppp_secret['after']) && isset($ppp_secret['after']['ret'])) {
-            $ppp_secret = $ppp_secret['after']['ret'];
+        try {
+            $ppp_active = parent::$API->comm('/ppp/secret/print', ['count-only' => '']);
+            parent::cek_error($ppp_active);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
         $data = [
             'resource'      => ResourceResource::collection($resource),

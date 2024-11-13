@@ -2,14 +2,13 @@
 
 namespace App\Services\Mikapi;
 
-use App\Services\RouterServices;
-use App\Traits\MikrotikApiCrudTrait;
+use App\Services\RouterApiServices;
+use App\Traits\CrudApiTrait;
 use Exception;
-use RouterOS\Query;
 
-class InterfaceServices extends RouterServices
+class InterfaceServices extends RouterApiServices
 {
-    use MikrotikApiCrudTrait;
+    use CrudApiTrait;
 
     public function __construct()
     {
@@ -22,12 +21,13 @@ class InterfaceServices extends RouterServices
 
     public function monitor($id)
     {
-        if (empty(static::$router)) {
+        if (empty(parent::$router)) {
             throw new Exception('Router Not Found!');
         }
-        $response = parent::$client;
-        $query = (new Query('/interface/monitor-traffic'))->equal('interface', $id)->equal('once', '');
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/interface/monitor-traffic', [
+            'interface' => $id,
+            'once'      => ''
+        ]);
         return parent::cek_error($data);
     }
 }

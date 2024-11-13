@@ -2,12 +2,12 @@
 
 namespace App\Services\Mikapi\PPP;
 
-use App\Services\RouterServices;
-use App\Traits\MikrotikApiCrudTrait;
+use App\Services\RouterApiServices;
+use App\Traits\CrudApiTrait;
 
-class ActiveServices extends RouterServices
+class ActiveServices extends RouterApiServices
 {
-    use MikrotikApiCrudTrait;
+    use CrudApiTrait;
 
     public function __construct()
     {

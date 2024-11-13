@@ -258,7 +258,7 @@
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR)
+                    handleResponse(jqXHR)
                 },
             },
             columnDefs: [{
@@ -292,7 +292,7 @@
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {
-                        delete_batch(url_index_api);
+                        delete_batch(url_index_api_router);
                     }
                 }, {
                     text: 'Refresh Data',

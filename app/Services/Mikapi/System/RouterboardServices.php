@@ -2,14 +2,14 @@
 
 namespace App\Services\Mikapi\System;
 
-use App\Services\RouterServices;
-use App\Traits\MikrotikApiCrudTrait;
+use App\Services\RouterApiServices;
+use App\Traits\CrudApiTrait;
 use Exception;
 use RouterOS\Query;
 
-class RouterboardServices extends RouterServices
+class RouterboardServices extends RouterApiServices
 {
-    use MikrotikApiCrudTrait;
+    use CrudApiTrait;
 
     public function __construct()
     {
@@ -22,23 +22,19 @@ class RouterboardServices extends RouterServices
 
     public function routerboard()
     {
-        if (empty(static::$router)) {
+        if (empty(parent::$router)) {
             throw new Exception('Router Not Found!');
         }
-        $response = parent::$client;
-        $query = (new Query('/system/routerboard/print'));
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/system/routerboard/print');
         return parent::cek_error($data);
     }
 
     public function setting()
     {
-        if (empty(static::$router)) {
+        if (empty(parent::$router)) {
             throw new Exception('Router Not Found!');
         }
-        $response = parent::$client;
-        $query = (new Query('/system/routerboard/settings/print'));
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/system/routerboard/settings/print');
         return parent::cek_error($data);
     }
 }

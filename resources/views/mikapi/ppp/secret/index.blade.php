@@ -126,7 +126,7 @@
             ajax: {
                 url: url_index_api_router,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    handleResponseCode(jqXHR)
+                    handleResponse(jqXHR)
                 },
             },
             columnDefs: [{

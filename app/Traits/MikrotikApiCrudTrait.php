@@ -110,9 +110,6 @@ trait MikrotikApiCrudTrait
         if (!File::exists(parent::$path)) {
             File::makeDirectory(parent::$path, 755, true);
         }
-        // $data = collect($data)->filter(function ($item) {
-        //     return isset($item['.id']);
-        // });
         File::put(parent::$path . '/' . parent::$router->id . '.json', json_encode($data, JSON_PRETTY_PRINT));
         return new static;
     }

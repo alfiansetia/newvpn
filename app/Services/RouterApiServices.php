@@ -33,12 +33,16 @@ class RouterApiServices
             $pass = '';
         }
 
-        self::$API = new RouterosAPI();
-        self::$API->debug = false;
-        self::$API->timeout = 2;
-        self::$API->attempts = 1;
-        self::$API->connect($ip, $user, $pass);
-        return new static;
+        $api = new RouterosAPI();
+        $api->debug = false;
+        $api->timeout = 2;
+        $api->attempts = 1;
+        if ($api->connect($ip, $user, $pass)) {
+            self::$API = $api;
+            return new static;
+        } else {
+            self::fail_login($api);
+        }
     }
 
     private static function cek_available(Router $router)
@@ -77,48 +81,25 @@ class RouterApiServices
         $router = Router::query()->where('user_id', $user_id)
             ->with(['port', 'user', 'port.vpn.server'])->find($id);
         if (!$router) {
-            throw new Exception('Router Not Found');
+            throw new Exception('Router Not Found!');
         }
         return $router;
     }
 
-    public static function cek_error($response)
+    public static function cek_error($api)
     {
-        if (isset($response['after'])) {
-            if (isset($response['after']['message'])) {
-                throw new Exception($response['after']['message']);
-            }
-            if (isset($response['after']['ret'])) {
-                return $response['after']['ret'];
-            }
+        if (isset($api['!trap'])) {
+            throw new Exception('Error : ' . $api['!trap'][0]['message']);
         }
-        return $response;
+        return $api;
     }
 
-    public static function get($c, array $filters = [])
+    public static function fail_login($api)
     {
-        if (empty(self::$router)) {
-            throw new Exception('Router Not Found!');
+        if ($api->error_str == "") {
+            $api->error_str = "User/Password Wrong!";
         }
-        $data = self::$API->comm($c);
-        return $data;
+        $message = 'Router Not Connect : ' . $api->error_str;
+        throw new Exception($message);
     }
-
-
-    // protected function connect()
-    // {
-    //     $ip = $this->router->port->vpn->server->ip . ':' . $this->router->port->dst;
-    //     $user = $this->router->username;
-    //     try {
-    //         $pass = decrypt($this->router->password);
-    //     } catch (\Throwable $th) {
-    //         $pass = '';
-    //     }
-    //     return $this->API->connect($ip, $user, $pass);
-    // }
-
-    // protected function disconnect()
-    // {
-    //     return $this->API->disconnect();
-    // }
 }
