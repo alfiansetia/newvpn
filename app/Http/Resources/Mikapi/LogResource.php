@@ -15,12 +15,28 @@ class LogResource extends JsonResource
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
+        $mesage = $this['message'] ?? null;
+        $ip = null;
+        $mesage_parse = null;
+        if (
+            preg_match('/->:\s*([^:]+):\s*(.+)/', $mesage, $matches) ||
+            preg_match('/^([^:]+):\s*(.+)/', $mesage, $matches)
+        ) {
+
+            $identifier = trim($matches[1]);
+            $remainingMessage = trim($matches[2]);
+
+            $ip = $identifier;
+            $mesage_parse = $remainingMessage;
+        }
         return [
             'DT_RowId'  => $this['.id'],
             '.id'       => $this['.id'],
             'time'      => date_log($this['time']),
             'topics'    => $this['topics'] ?? null,
-            'message'   => $this['message'] ?? null,
+            'message'   => $mesage,
+            'ip'        => $ip,
+            'message_parse' => $mesage_parse,
         ];
     }
 }

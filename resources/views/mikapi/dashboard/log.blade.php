@@ -8,6 +8,7 @@
                 <thead>
                     <tr>
                         <th>Time</th>
+                        <th>IP/User</th>
                         <th>Message</th>
                     </tr>
                 </thead>

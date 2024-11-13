@@ -169,16 +169,15 @@
             });
 
             var table = $('#tableData').DataTable({
-                processing: false,
+                processing: true,
                 serverSide: false,
                 searching: false,
                 order: [
                     [0, 'desc']
                 ],
-                rowId: '.id',
                 ajax: {
                     url: "{{ route('api.mikapi.logs.index') }}" + param_router +
-                        '&topics=hotspot,info,debug',
+                        '&topics=hotspot,info,debug&buffer=disk',
                     error: function(xhr, error, code) {
                         if (xhr.status == 500) {
                             Snackbar.show({
@@ -215,8 +214,11 @@
                     title: "Time",
                     data: 'time'
                 }, {
+                    title: "Ip/User",
+                    data: 'ip',
+                }, {
                     title: "Message",
-                    data: 'message',
+                    data: 'message_parse',
                 }],
                 drawCallback: function(settings) {
                     feather.replace();
