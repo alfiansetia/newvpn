@@ -5,7 +5,6 @@ namespace App\Services\Mikapi;
 use App\Services\RouterApiServices;
 use App\Traits\CrudApiTrait;
 use Exception;
-use RouterOS\Query;
 
 class LogServices extends RouterApiServices
 {
