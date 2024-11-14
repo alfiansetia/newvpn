@@ -286,10 +286,24 @@
             });
         });
 
+        new TomSelect("#amount", {
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Please Select Amount",
+            allowEmptyOption: true,
+        });
+
         $('#reset').click(function() {
             document.getElementById('server').tomselect.clear()
             document.getElementById('email').tomselect.clear()
         })
+
+        $('#send_email').after(`<button type="button" id="btn_extend"
+                                class="btn btn-danger me-1 mb-2"><i
+                                    class="fas fa-external-link-alt me-1 bs-tooltip"
+                                    title="Extend With Balance"></i>Extend / Perpanjang</button>`)
 
         $('.mask_angka').inputmask({
             alias: 'numeric',
@@ -583,6 +597,7 @@
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
             id = table.row(this).id()
             $('#formEdit').attr('action', url_index_api + "/" + id)
+            $('#form_extend').attr('action', "{{ route('api.vpns.user.index') }}" + "/" + id)
             let data = table.row(this).data()
             if (data.user != null) {
                 $('#input_send_email').val(data.user.email)
@@ -669,6 +684,19 @@
 
                     tooltip()
 
+                    let amount = document.getElementById('amount').tomselect
+                    amount.clear()
+                    for (let i = 1; i <= 6; i++) {
+                        amount.addOption([{
+                            id: i,
+                            'name': `${i} Bulan, (Rp. ${hrg(i*result.data.server.price)})`
+                        }])
+                    }
+                    amount.addOption([{
+                        id: 12,
+                        'name': `1 Tahun Rp. ${hrg(result.data.server.annual_price)}`
+                    }])
+
                     document.querySelectorAll('.accordion .collapse:not(.show)').forEach((item) => {
                         new bootstrap.Collapse(item, {
                             toggle: false
@@ -741,6 +769,30 @@
                 }
             })
         })
+
+        $('#btn_extend').click(function() {
+            $('#modal_extend').modal('show')
+        })
+
+        $('#form_extend').submit(function(event) {
+            event.preventDefault();
+        }).validate({
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                $(element).addClass('is-valid');
+            },
+            submitHandler: function(form) {
+                send_ajax_only('form_extend', 'PUT')
+            }
+        });
 
         // });
     </script>

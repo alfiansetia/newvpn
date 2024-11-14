@@ -30,3 +30,36 @@
         </div>
     </div>
 </form>
+
+
+<div class="modal animated fade fadeInDown" id="modal_extend" tabindex="-1" role="dialog"
+    aria-labelledby="modal_extend" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <form class="was-validated" action="" id="form_extend">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleEdit"><i class="fas fa-info me-1 bs-tooltip"
+                            title="Extend With Balance"></i>Extend With Balance</h5>
+                    <button type="button" class="btn-close bs-tooltip" data-bs-dismiss="modal" aria-label="Close"
+                        title="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-2">
+                        <label for="amount">Value Extend :</label>
+                        <select name="amount" id="amount" class="form-control-lg" style="width: 100%;" required>
+                        </select>
+                        <span id="err_amount" class="error invalid-feedback" style="display: hide;"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                            class="fas fa-times me-1 bs-tooltip" title="Close"></i>Close</button>
+                    <button id="btn_modal_submit" type="submit" class="btn btn-primary"><i
+                            class="fas fa-paper-plane me-1 bs-tooltip" title="Submit"></i>Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
