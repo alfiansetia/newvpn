@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\ServerResource;
 use App\Services\Mikapi\Hotspot\ServerServices;
-use App\Traits\DataTableTrait;
-use App\Traits\RouterTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class ServerController extends Controller
 {
-    use RouterTrait, DataTableTrait;
-
     public function __construct(Request $request)
     {
         $this->middleware('router.exists');
@@ -35,12 +31,7 @@ class ServerController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            $this->setRouter($request->router, ServerServices::class);
-            $query = [];
-            if ($request->filled('name')) {
-                $query['?name'] = $request->name;
-            }
-            $data = $this->conn->show($id);
+            $data = ServerServices::routerId($request->router)->show($id);
             return new ServerResource($data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -49,7 +40,6 @@ class ServerController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $this->setRouter($request->router, ServerServices::class);
         $disabled = filter_var($request->input('disabled'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         $this->validate($request, [
             'name'              => 'required|min:2|max:25',
@@ -57,12 +47,15 @@ class ServerController extends Controller
             'disabled'          => 'required|boolean',
         ]);
         $param = [
-            '.id'               => $id,
             'name'              => $request->input('name'),
             'addresses-per-mac' => $request->input('addresses-per-mac'),
             'disabled'          => $request->input('disabled') ? 'yes' : 'no',
         ];
-        $data = $this->conn->update($param);
-        return response()->json($data, $data['status'] ? 200 : 422);
+        try {
+            $data = ServerServices::routerId($request->router)->update($id, $param);
+            return $this->send_response('Success Update Data!', $data);
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
     }
 }

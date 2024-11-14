@@ -10,7 +10,6 @@ class RouterApiServices
 {
     protected static $router;
     protected static $API;
-    protected static $client;
     protected static $command;
     protected static $name;
     protected static $path;
@@ -61,10 +60,10 @@ class RouterApiServices
 
     public static function ping()
     {
-        if (empty(self::$client)) {
+        if (empty(self::$router)) {
             throw new Exception('Router Not Found!');
         }
-        return self::$client;
+        return self::$router;
     }
 
     public static function routerId(string $id)

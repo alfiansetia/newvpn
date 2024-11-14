@@ -5,25 +5,22 @@ namespace App\Services;
 use App\Models\Vpn;
 use Exception;
 use Illuminate\Support\Carbon;
-use RouterOS\Query;
 
 class VpnServices extends ServerServices
 {
 
     public function show(Vpn $vpn)
     {
-        if (empty(self::$server)) {
+        if (empty(parent::$server)) {
             throw new Exception('Server Not Found!');
         }
-        $response = self::$client;
-        $query = (new Query('/ppp/secret/print'))
-            ->where("name", $vpn->username);
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/ppp/secret/print', [
+            '?name' => $vpn->username
+        ]);
         if (empty($data)) {
-            return null;
-        } else {
-            return $data[0];
+            throw new Exception('Data Not Found!');
         }
+        return $data[0];
     }
 
     public function store(Vpn $vpn)
@@ -32,99 +29,101 @@ class VpnServices extends ServerServices
             throw new Exception('Server Not Found!');
         }
         $server = self::$server;
-        $response = self::$client;
         $vpn->load('ports');
         $expired = strtolower(Carbon::parse($vpn->expired)->format('M/d/Y'));
-        $query = (new Query('/ppp/secret/print'))
-            ->where("name", $vpn->username);
-        $data = $response->query($query)->read();
-        cek_exists($data);
-        $queryAdd = (new Query('/ppp/secret/add'))
-            ->equal('service', 'any')
-            ->equal('name', $vpn->username)
-            ->equal('password', $vpn->password)
-            ->equal('local-address', $server->netwatch)
-            ->equal('remote-address', $vpn->ip)
-            ->equal('disabled', $vpn->is_active ? 'no' : 'yes')
-            ->equal('comment', $expired);
-        $response->query($queryAdd)->read();
+        $data = parent::$API->comm('/ppp/secret/print', [
+            '?name' => $vpn->username
+        ]);
+        parent::cek_error($data);
+        parent::cek_exists($data);
 
-        foreach ($vpn->ports as $item) {
-            $queryAdd = (new Query('/ip/firewall/nat/add'))
-                ->equal('chain', 'dstnat')
-                ->equal('action', 'dst-nat')
-                ->equal('to-addresses', $vpn->ip)
-                ->equal('to-ports', $item->to)
-                ->equal('protocol', 'tcp')
-                ->equal('dst-port', $item->dst)
-                ->equal('disabled', 'no')
-                ->equal('comment', $vpn->username);
-            $response->query($queryAdd)->read();
+        $data = parent::$API->comm('/ppp/secret/add', [
+            'service'           => 'any',
+            'name'              => $vpn->username,
+            'password'          => $vpn->password,
+            'local-address'     => $server->netwatch,
+            'remote-address'    => $vpn->ip,
+            'disabled'          => $vpn->is_active ? 'no' : 'yes',
+            'comment'           => $expired,
+        ]);
+
+        foreach ($vpn->ports ?? [] as $item) {
+            $data = parent::$API->comm('/ip/firewall/nat/add', [
+                'chain'         => 'dstnat',
+                'action'        => 'dst-nat',
+                'to-addresses'  => $vpn->ip,
+                'to-ports'      => $item->to,
+                'protocol'      => 'tcp',
+                'dst-port'      => $item->dst,
+                'disabled'      => 'no',
+                'comment'       => $vpn->username,
+            ]);
         }
         return true;
     }
 
     public function update(array $old, Vpn $vpn)
     {
-        if (empty(self::$server)) {
+        if (empty(parent::$server)) {
             throw new Exception('Server Not Found!');
         }
-        $server = self::$server;
-        $response = self::$client;
+        $server = parent::$server;
         $vpn->load('ports');
         $expired = strtolower(Carbon::parse($vpn->expired)->format('M/d/Y'));
-        $query = (new Query('/ppp/secret/print'))
-            ->where("name", $old['username']);
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/ppp/secret/print', [
+            '?name' => $old['username']
+        ]);
+
         if (empty($data)) {
-            $queryAdd = (new Query('/ppp/secret/add'))
-                ->equal('service', 'any')
-                ->equal('name', $vpn->username)
-                ->equal('password', $vpn->password)
-                ->equal('local-address', $server->netwatch)
-                ->equal('remote-address', $vpn->ip)
-                ->equal('disabled', $vpn->is_active ? 'no' : 'yes')
-                ->equal('comment', $expired);
-            $response->query($queryAdd)->read();
+            $data_add = parent::$API->comm('/ppp/secret/add', [
+                'service'           => 'any',
+                'name'              => $vpn->username,
+                'password'          => $vpn->password,
+                'local-address'     => $server->netwatch,
+                'remote-address'    => $vpn->ip,
+                'disabled'          => $vpn->is_active ? 'no' : 'yes',
+                'comment'           => $expired,
+            ]);
+            parent::cek_error($data_add);
         } else {
             $firstItem = $data[0];
-            $queryUpdate = (new Query('/ppp/secret/set'))
-                ->equal('.id', $firstItem['.id'])
-                ->equal('name', $vpn->username)
-                ->equal('password', $vpn->password)
-                ->equal('local-address', $server->netwatch)
-                ->equal('remote-address', $vpn->ip)
-                ->equal('disabled', $vpn->is_active ? 'no' : 'yes')
-                ->equal('comment', $expired);
-            $response->query($queryUpdate)->read();
+            $data_update = parent::$API->comm('/ppp/secret/set', [
+                '.id'               => $firstItem['.id'],
+                'name'              => $vpn->username,
+                'password'          => $vpn->password,
+                'local-address'     => $server->netwatch,
+                'remote-address'    => $vpn->ip,
+                'disabled'          => $vpn->is_active ? 'no' : 'yes',
+                'comment'           => $expired,
+            ]);
+            parent::cek_error($data_update);
             $idsToRemove = array_column(array_slice($data, 1), '.id');
             if (!empty($idsToRemove)) {
-                $queryRemove = (new Query('/ppp/secret/remove'))
-                    ->equal('.id', implode(',', $idsToRemove));
-                $response->query($queryRemove)->read();
+                $data_remove = parent::$API->comm('/ppp/secret/remove', [
+                    '.id'   => implode(',', $idsToRemove)
+                ]);
             }
         }
-
-        $queryNat = (new Query('/ip/firewall/nat/print'))
-            ->where("comment", $old['username']);
-        $dataNat = $response->query($queryNat)->read();
+        $dataNat = parent::$API->comm('/ip/firewall/nat/print', [
+            "?comment" => $old['username']
+        ]);
         if (!empty($dataNat)) {
             $idStringNat = implode(',', array_column($dataNat, '.id'));
-            $queryRemoveNat = (new Query('/ip/firewall/nat/remove'))
-                ->equal('.id', $idStringNat);
-            $response->query($queryRemoveNat)->read();
+            $queryRemoveNat = parent::$API->comm('/ip/firewall/nat/remove', [
+                '.id'   => $idStringNat
+            ]);
         }
         foreach ($vpn->ports as $item) {
-            $queryAdd = (new Query('/ip/firewall/nat/add'))
-                ->equal('chain', 'dstnat')
-                ->equal('action', 'dst-nat')
-                ->equal('to-addresses', $vpn->ip)
-                ->equal('to-ports', $item->to)
-                ->equal('protocol', 'tcp')
-                ->equal('dst-port', $item->dst)
-                ->equal('disabled', 'no')
-                ->equal('comment', $vpn->username);
-            $response->query($queryAdd)->read();
+            $queryAdd = parent::$API->comm('/ip/firewall/nat/add', [
+                'chain'         => 'dstnat',
+                'action'        => 'dst-nat',
+                'to-addresses'  => $vpn->ip,
+                'to-ports'      => $item->to,
+                'protocol'      => 'tcp',
+                'dst-port'      => $item->dst,
+                'disabled'      => 'no',
+                'comment'       => $vpn->username,
+            ]);
         }
         return true;
     }
@@ -134,36 +133,34 @@ class VpnServices extends ServerServices
         if (empty(self::$server)) {
             throw new Exception('Server Not Found!');
         }
-        $response = self::$client;
         $vpn->load('ports');
-        $query = (new Query('/ppp/secret/print'))
-            ->where("name", $vpn->username);
-        $data = $response->query($query)->read();
+        $data = parent::$API->comm('/ppp/secret/print', [
+            "?name" => $vpn->username
+        ]);
         if (!empty($data)) {
             $idString = implode(',', array_column($data, '.id'));
-            $queryRemove = (new Query('/ppp/secret/remove'))
-                ->equal('.id', $idString);
-            $response->query($queryRemove)->read();
+            $queryRemove = parent::$API->comm('/ppp/secret/remove', [
+                '.id'   => $idString
+            ]);
         }
-
-        $queryActive = (new Query('/ppp/active/print'))
-            ->where("name", $vpn->username);
-        $dataActive = $response->query($queryActive)->read();
+        $dataActive = parent::$API->comm('/ppp/active/print', [
+            "?name" => $vpn->username
+        ]);
         if (!empty($dataActive)) {
-            $idString = implode(',', array_column($dataActive, '.id'));
-            $queryRemove = (new Query('/ppp/active/remove'))
-                ->equal('.id', $idString);
-            $response->query($queryRemove)->read();
+            $idStringActive = implode(',', array_column($dataActive, '.id'));
+            $queryRemove = parent::$API->comm('/ppp/active/remove', [
+                '.id'   => $idStringActive
+            ]);
         }
 
-        $queryNat = (new Query('/ip/firewall/nat/print'))
-            ->where("comment", $vpn->username);
-        $dataNat = $response->query($queryNat)->read();
+        $dataNat = parent::$API->comm('/ip/firewall/nat/print', [
+            "?comment" => $vpn->username
+        ]);
         if (!empty($dataNat)) {
-            $idString = implode(',', array_column($dataNat, '.id'));
-            $queryRemove = (new Query('/ip/firewall/nat/remove'))
-                ->equal('.id', $idString);
-            $response->query($queryRemove)->read();
+            $idStringnat = implode(',', array_column($dataNat, '.id'));
+            $queryRemove = parent::$API->comm('/ip/firewall/nat/remove', [
+                '.id'   => $idStringnat
+            ]);
         }
         return true;
     }

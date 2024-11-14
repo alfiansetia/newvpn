@@ -7,7 +7,6 @@ use App\Traits\CrudApiTrait;
 
 class ServerServices extends RouterApiServices
 {
-
     use CrudApiTrait;
 
     public function __construct()

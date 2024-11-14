@@ -5,24 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VoucherTemplateResource;
 use App\Models\VoucherTemplate;
-use App\Traits\CrudTransformTrait;
 use Illuminate\Http\Request;
 
 class VoucherTemplateController extends Controller
 {
-    use CrudTransformTrait;
 
     public function __construct()
     {
         $this->middleware('role:admin')->except(['index']);
-        $this->model = VoucherTemplate::class;
-        $this->transform = VoucherTemplateResource::class;
     }
 
     public function index()
     {
         $data = VoucherTemplate::all();
-        return response()->json(['message' => '', 'data' => $this->transform::collection($data)]);
+        return response()->json([
+            'message' => '',
+            'data' => VoucherTemplateResource::collection($data)
+        ]);
     }
 
     public function store(Request $request)
