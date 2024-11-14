@@ -36,4 +36,9 @@ class SystemController extends Controller
     {
         return view('mikapi.system.scheduler.index');
     }
+
+    public function package()
+    {
+        return view('mikapi.system.package.index');
+    }
 }

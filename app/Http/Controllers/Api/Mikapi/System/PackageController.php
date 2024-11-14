@@ -18,7 +18,7 @@ class PackageController extends Controller
     public function index(Request $request)
     {
         try {
-            $filters = $request->only(['name', 'bundle']);
+            $filters = $request->only(['name', 'bundle', 'comment']);
             $data = PackageServices::routerId($request->router)->get($filters);
             return DataTables::collection($data)->setTransformer(function ($item) {
                 return PackageResource::make($item)->resolve();

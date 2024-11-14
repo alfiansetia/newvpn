@@ -166,9 +166,9 @@
                     <span>SYSTEM</span>
                 </div>
             </li>
-            <li class="menu {{ $title == 'System' || $title == 'Scheduler' ? 'active' : '' }}">
+            <li class="menu {{ $title == 'System' || $title == 'Scheduler' || $title == 'Package' ? 'active' : '' }}">
                 <a href="#system_nav" data-bs-toggle="collapse"
-                    aria-expanded="{{ $title == 'System' || $title == 'Scheduler' ? 'true' : 'false' }}"
+                    aria-expanded="{{ $title == 'System' || $title == 'Scheduler' || $title == 'Package' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="cpu"></i>
@@ -178,10 +178,13 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'System' || $title == 'Scheduler' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'System' || $title == 'Scheduler' || $title == 'Package' ? 'show' : '' }}"
                     id="system_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'System' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.index') }}{{ $param_router }}"> System </a>
+                    </li>
+                    <li class="{{ $title == 'Package' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.system.package') }}{{ $param_router }}"> Package </a>
                     </li>
                     <li class="{{ $title == 'Scheduler' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.scheduler') }}{{ $param_router }}"> Scheduler </a>
