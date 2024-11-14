@@ -31,4 +31,9 @@ class SystemController extends Controller
     {
         return view('mikapi.system.user_active.index');
     }
+
+    public function scheduler()
+    {
+        return view('mikapi.system.scheduler.index');
+    }
 }

@@ -163,13 +163,12 @@
             <li class="menu menu-heading">
                 <div class="heading">
                     <i data-feather="minus"></i>
-                    <span>SETTING</span>
+                    <span>SYSTEM</span>
                 </div>
             </li>
-            <li
-                class="menu {{ $title == 'System Routerboard' || $title == 'System Resource' || $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'active' : '' }}">
+            <li class="menu {{ $title == 'System' || $title == 'Scheduler' ? 'active' : '' }}">
                 <a href="#system_nav" data-bs-toggle="collapse"
-                    aria-expanded="{{ $title == 'System Routerboard' || $title == 'System Resource' || $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'true' : 'false' }}"
+                    aria-expanded="{{ $title == 'System' || $title == 'Scheduler' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="cpu"></i>
@@ -179,16 +178,37 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'System' || $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'System' || $title == 'Scheduler' ? 'show' : '' }}"
                     id="system_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'System' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.index') }}{{ $param_router }}"> System </a>
                     </li>
-                    <li class="{{ $title == 'System User' ? 'active' : '' }}">
-                        <a href="{{ route('mikapi.system.user') }}{{ $param_router }}"> User </a>
+                    <li class="{{ $title == 'Scheduler' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.system.scheduler') }}{{ $param_router }}"> Scheduler </a>
                     </li>
+                </ul>
+            </li>
+
+            <li
+                class="menu {{ $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'active' : '' }}">
+                <a href="#user_nav" data-bs-toggle="collapse"
+                    aria-expanded="{{ $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="users"></i>
+                        <span> USER</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $title == 'System User' || $title == 'System Group' || $title == 'User Active' ? 'show' : '' }}"
+                    id="user_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'System Group' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.group') }}{{ $param_router }}"> Group </a>
+                    </li>
+                    <li class="{{ $title == 'System User' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.system.user') }}{{ $param_router }}"> User </a>
                     </li>
                     <li class="{{ $title == 'User Active' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.system.user_active') }}{{ $param_router }}"> User Active </a>

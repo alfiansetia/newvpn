@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\Mikapi\System\GroupController;
 use App\Http\Controllers\Api\Mikapi\System\PackageController;
 use App\Http\Controllers\Api\Mikapi\System\ResourceController;
 use App\Http\Controllers\Api\Mikapi\System\RouterboardController;
+use App\Http\Controllers\Api\Mikapi\System\SchedulerController;
 use App\Http\Controllers\Api\Mikapi\System\SystemController;
 use App\Http\Controllers\Api\Mikapi\System\UserActiveController;
 use App\Http\Controllers\Api\Mikapi\System\UserController as SystemUserController;
@@ -226,6 +227,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('mikapi/system/user_actives', UserActiveController::class)
             ->only(['index', 'show'])
             ->names('api.mikapi.system.user_actives');
+
+        Route::delete('mikapi/system/schedulers', [SchedulerController::class, 'destroy_batch'])
+            ->name('api.mikapi.system.schedulers.destroy.batch');
+        Route::apiResource('mikapi/system/schedulers', SchedulerController::class)
+            ->only(['index', 'show', 'destroy'])->names('api.mikapi.system.schedulers');
+
 
         Route::delete('mikapi/logs', [LogController::class, 'destroy'])->name('api.mikapi.logs.destroy');
         Route::apiResource('mikapi/logs', LogController::class)->only(['index', 'show'])->names('api.mikapi.logs');
