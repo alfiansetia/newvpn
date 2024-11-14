@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RouterResource;
 use App\Models\Port;
 use App\Models\Router;
-use App\Services\RouterServices;
+use App\Services\RouterApiServices;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -159,7 +159,7 @@ class RouterController extends Controller
             return $this->send_response_not_found();
         }
         try {
-            $ping  = RouterServices::router($router)->ping();
+            $ping  = RouterApiServices::router($router)->ping();
             return $this->send_response('Router Connected!');
         } catch (Exception $e) {
             return $this->send_response('Router Not Connect : ' . $e->getMessage(), null, 500);
