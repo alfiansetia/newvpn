@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Traits\CompanyTrait;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -17,7 +16,6 @@ class SettingController extends Controller
     {
         $this->middleware('role:admin');
     }
-
 
     public function telegram()
     {
@@ -38,11 +36,7 @@ class SettingController extends Controller
             'telegram_bot_name' => $request->telegram_bot_name,
             'telegram_group_id' => $request->telegram_group_id,
         ]);
-        if ($setting) {
-            return response()->json(['message' => 'Success Update Telegram!']);
-        } else {
-            return response()->json(['message' => 'Failed Update Telegram!']);
-        }
+        return $this->send_response('Success Update Telegram!');
     }
 
     public function telegramSet(Request $request)
@@ -92,12 +86,12 @@ class SettingController extends Controller
                 $error = $json['description'] . '!';
             }
             if ($response->successful() && !empty($json)) {
-                return response()->json(['data' => $json, 'message' => $message, 'data' => $json]);
+                return $this->send_response($message, $json);
             } else {
-                return response()->json(['message' => 'Error get Webhook Info : ' . $error, 'data' => $json], 500);
+                return $this->send_error('Error get Webhook Info : ' . $error, $json);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error Request! : ' . $e->getMessage()], 500);
+            return $this->send_error('Error : ' . $e->getMessage());
         }
     }
 }

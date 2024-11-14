@@ -73,7 +73,6 @@ class SocialiteController extends Controller
                 ]);
                 $create->markEmailAsVerified();
                 \auth()->login($create, true);
-                // return response()->json($create);
                 return redirect()->route('home');
             }
         } catch (\Exception $e) {

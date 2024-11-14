@@ -32,15 +32,9 @@ class DatabaseBackupController extends Controller
     {
         try {
             Artisan::call('database:backup');
-            return response()->json([
-                'data'      => [],
-                'message'   => 'Success creating backup!',
-            ]);
+            return $this->send_response('Success creating backup!');
         } catch (\Throwable $th) {
-            return response()->json([
-                'data'      => [],
-                'message'   => 'Error creating backup : ' . $th->getMessage(),
-            ], 500);
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

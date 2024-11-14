@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'User & Password Wrong'], 401);
+            return $this->send_response_unauthenticate('User & Password Wrong');
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
@@ -24,19 +24,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()
-            ->json([
-                'message'   => 'Hi ' . $user->name . ', welcome to home',
-                'token'     => $token,
-                'user'      => new UserResource($user),
-            ]);
+        return $this->send_response('Hi ' . $user->name . ', welcome to home', [
+            'token'     => $token,
+            'user'      => new UserResource($user),
+        ]);
     }
 
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return [
-            'message' => 'You have successfully logged out and the token was successfully deleted'
-        ];
+        return $this->send_response('You have successfully logged out and the token was successfully deleted');
     }
 }

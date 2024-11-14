@@ -122,9 +122,10 @@ class VpnController extends Controller
             if ($request->sync == 'on') {
                 $service = VpnServices::server($vpn->server)->update($old, $new);
             }
-            return response()->json(['message' => 'Success Update Data', 'data' => '']);
-        } catch (Throwable $e) {
-            return response()->json(['message' => 'Failed Update Data : ' . $e->getMessage()], 500);
+            Mail::to($vpn->user->email)->queue(new DetailVpnMail($new));
+            return $this->send_response('Success Update Data');
+        } catch (Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
         }
     }
 

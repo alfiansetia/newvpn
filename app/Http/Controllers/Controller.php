@@ -28,35 +28,35 @@ class Controller extends BaseController
         ], $code);
     }
 
-    public function send_response_not_found(string $message = 'Data Not Found!')
+    public function send_response_not_found(string $message = 'Data Not Found!', mixed $data = null)
     {
         return response()->json([
             'message'   => $message,
-            'data'      => null,
+            'data'      => $data,
         ], 404);
     }
 
-    public function send_response_unauthorize(string $message = 'Unauthorize!')
+    public function send_response_unauthorize(string $message = 'Unauthorize!', mixed $data = null)
     {
         return response()->json([
             'message'   => $message,
-            'data'      => null,
+            'data'      => $data,
         ], 403);
     }
 
-    public function send_response_unauthenticate(string $message = 'Unauthenticate, Please Login!')
+    public function send_response_unauthenticate(string $message = 'Unauthenticate, Please Login!', mixed $data = null)
     {
         return response()->json([
             'message'   => $message,
-            'data'      => null,
+            'data'      => $data,
         ], 401);
     }
 
-    public function send_error(string $message = 'Server Error!')
+    public function send_error(string $message = 'Server Error!', mixed $data = null)
     {
         return response()->json([
             'message'   => $message,
-            'data'      => null,
+            'data'      => $data,
         ], 500);
     }
 }
