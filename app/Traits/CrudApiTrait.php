@@ -44,7 +44,7 @@ trait CrudApiTrait
             $data = static::show($id);
             $cache = static::store_item_to_cache($data);
         }
-        return $data;
+        return $id;
     }
 
     public static function update(string $id, array $param)
@@ -56,7 +56,7 @@ trait CrudApiTrait
             $data = static::show($id);
             $cache = static::update_item_to_cache($id, $data);
         }
-        return $data;
+        return $response;
     }
 
     public static function destroy(array $id = [])
