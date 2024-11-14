@@ -66,6 +66,24 @@ class RouterApiServices
         return self::$router;
     }
 
+    public static function reboot()
+    {
+        if (empty(self::$router)) {
+            throw new Exception('Router Not Found!');
+        }
+        $data = self::$API->comm('/system/reboot');
+        return self::cek_error($data);
+    }
+
+    public static function shutdown()
+    {
+        if (empty(self::$router)) {
+            throw new Exception('Router Not Found!');
+        }
+        $data = self::$API->comm('/system/shutdown');
+        return self::cek_error($data);
+    }
+
     public static function routerId(string $id)
     {
         $router = self::cek_exist($id);

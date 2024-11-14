@@ -53,4 +53,22 @@ class SystemController extends Controller
             return $this->send_error('Error : ' . $th->getMessage());
         }
     }
+
+    public function panel(Request $request, string $panel)
+    {
+        try {
+            if ($panel == 'reboot') {
+                $data = RouterboardServices::routerId($request->router)->reboot();
+            } elseif ($panel == 'shutdown') {
+                $data = RouterboardServices::routerId($request->router)->shutdown();
+            } else {
+                return $this->send_response_unauthorize('Action only reboot or shutdown');
+            }
+            return DataTables::collection($data)->setTransformer(function ($item) {
+                return SettingResource::make($item)->resolve();
+            })->toJson();
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
 }

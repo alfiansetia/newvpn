@@ -236,6 +236,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('mikapi/system/packages', PackageController::class)
             ->only(['index', 'show'])->names('api.mikapi.system.packages');
 
+        Route::post('mikapi/system/panel/{action}', [SystemController::class, 'panel'])
+            ->name('api.mikapi.system.panel');
+
 
         Route::delete('mikapi/logs', [LogController::class, 'destroy'])->name('api.mikapi.logs.destroy');
         Route::apiResource('mikapi/logs', LogController::class)->only(['index', 'show'])->names('api.mikapi.logs');
