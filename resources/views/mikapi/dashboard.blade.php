@@ -231,5 +231,59 @@
             });
 
         });
+
+        function send(formID, message) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Yes!',
+                confirmButtonAriaLabel: 'Thumbs up, Yes!',
+                cancelButtonText: '<i class="fa fa-thumbs-down"></i> No',
+                cancelButtonAriaLabel: 'Thumbs down',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                padding: '2em',
+                customClass: 'animated tada',
+                showClass: {
+                    popup: `animated tada`
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ajax_setup()
+                    $.ajax({
+                        type: 'POST',
+                        url: $(`#${formID}`).attr('action'),
+                        beforeSend: function() {
+                            block();
+                        },
+                        success: function(res) {
+                            unblock();
+                            Swal.fire(
+                                'Success!',
+                                res.message,
+                                'success'
+                            )
+                        },
+                        error: function(xhr, status, error) {
+                            unblock();
+                            handleResponse(xhr)
+                        }
+                    });
+                }
+            })
+        }
+
+
+        $('#btn_shutdown').click(function() {
+            send('form_shutdown', 'Shutdown Router?')
+
+        })
+
+        $('#btn_reboot').click(function() {
+            send('form_reboot', 'Reboot Router?')
+
+        })
     </script>
 @endpush

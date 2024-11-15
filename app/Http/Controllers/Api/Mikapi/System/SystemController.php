@@ -56,6 +56,7 @@ class SystemController extends Controller
 
     public function panel(Request $request, string $panel)
     {
+        // return $this->send_response('Success ' . $panel . ' Router!');
         try {
             if ($panel == 'reboot') {
                 $data = RouterboardServices::routerId($request->router)->reboot();
@@ -64,9 +65,7 @@ class SystemController extends Controller
             } else {
                 return $this->send_response_unauthorize('Action only reboot or shutdown');
             }
-            return DataTables::collection($data)->setTransformer(function ($item) {
-                return SettingResource::make($item)->resolve();
-            })->toJson();
+            return $this->send_response('Success ' . $panel . ' Router!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
