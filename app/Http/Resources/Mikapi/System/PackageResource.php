@@ -16,8 +16,8 @@ class PackageResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'      => $this['.id'],
-            '.id'           => $this['.id'],
+            'DT_RowId'      => $this['.id'] ?? 0,
+            '.id'           => $this['.id'] ?? 0,
             'name'          => $this['name'],
             'version'       => $this['version'],
             'build-time'    => $this['build-time'],

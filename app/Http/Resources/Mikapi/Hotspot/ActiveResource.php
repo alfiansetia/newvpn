@@ -15,8 +15,8 @@ class ActiveResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'DT_RowId'          => $this['.id'],
-            '.id'               => $this['.id'],
+            'DT_RowId'          => $this['.id'] ?? 0,
+            '.id'               => $this['.id'] ?? 0,
             'address'           => $this['address'] ?? null,
             'advertisement'     => $this['advertisement'] ?? null,
             'blocked'           => ($this['blocked'] ?? false) == "true" ? true : false,

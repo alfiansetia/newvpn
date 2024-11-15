@@ -16,7 +16,7 @@ class LeasesResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'                  => $this['.id'],
+            'DT_RowId'                  => $this['.id'] ?? 0,
             '.id'                       => $this['.id'] ?? null,
             'active-address'            => $this['active-address'] ?? null,
             'active-client-id'          => $this['active-client-id'] ?? null,

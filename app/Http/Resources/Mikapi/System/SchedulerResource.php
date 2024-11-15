@@ -16,8 +16,8 @@ class SchedulerResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'          => $this['.id'],
-            '.id'               => $this['.id'],
+            'DT_RowId'          => $this['.id'] ?? 0,
+            '.id'               => $this['.id'] ?? 0,
             'comment'           => $this['comment'] ?? null,
             'interval'          => $this['interval'] ?? null,
             'disabled'          => ($this['disabled'] ?? false) == "true" ? true : false,

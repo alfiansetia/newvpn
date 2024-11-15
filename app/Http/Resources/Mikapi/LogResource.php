@@ -30,8 +30,8 @@ class LogResource extends JsonResource
             $mesage_parse = $remainingMessage;
         }
         return [
-            'DT_RowId'  => $this['.id'],
-            '.id'       => $this['.id'],
+            'DT_RowId'  => $this['.id'] ?? 0,
+            '.id'       => $this['.id'] ?? 0,
             'time'      => date_log($this['time']),
             'topics'    => $this['topics'] ?? null,
             'message'   => $mesage,

@@ -20,8 +20,8 @@ class GroupResource extends JsonResource
             $policy[str_replace('!', '', $item)] = strpos($item, '!') === 0 ? false : true;
         }
         return [
-            'DT_RowId'  => $this['.id'],
-            '.id'       => $this['.id'],
+            'DT_RowId'  => $this['.id'] ?? 0,
+            '.id'       => $this['.id'] ?? 0,
             'comment'   => $this['comment'] ?? null,
             'name'      => $this['name'],
             'skin'      => $this['skin'] ?? 'default',

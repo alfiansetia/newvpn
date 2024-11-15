@@ -16,8 +16,8 @@ class CookieResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'          => $this['.id'],
-            '.id'               => $this['.id'],
+            'DT_RowId'          => $this['.id'] ?? 0,
+            '.id'               => $this['.id'] ?? 0,
             'domain'            => $this['domain'] ?? null,
             'expires-in'        => $this['expires-in'] ?? null,
             'mac-address'       => $this['mac-address'] ?? null,

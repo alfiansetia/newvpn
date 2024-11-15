@@ -15,8 +15,8 @@ class UserActiveResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'DT_RowId'  => $this['.id'],
-            '.id'       => $this['.id'],
+            'DT_RowId'  => $this['.id'] ?? 0,
+            '.id'       => $this['.id'] ?? 0,
             'address'   => $this['address'] ?? '0.0.0.0',
             'by-romon'  => ($this['by-romon'] ?? false) == "true" ? true : false,
             'group'     => $this['group'] ?? null,

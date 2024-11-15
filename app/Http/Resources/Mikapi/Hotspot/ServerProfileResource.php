@@ -16,7 +16,7 @@ class ServerProfileResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            '.id'                       => $this['.id'],
+            '.id'                       => $this['.id'] ?? 0,
             'name'                      => $this['name'],
             'hotspot-address'           => $this['hotspot-address'],
             'dns-name'                  => $this['dns-name'],

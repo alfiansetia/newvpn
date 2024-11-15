@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Mikapi\System\PackageController;
 use App\Http\Controllers\Api\Mikapi\System\ResourceController;
 use App\Http\Controllers\Api\Mikapi\System\RouterboardController;
 use App\Http\Controllers\Api\Mikapi\System\SchedulerController;
+use App\Http\Controllers\Api\Mikapi\System\ScriptController;
 use App\Http\Controllers\Api\Mikapi\System\SystemController;
 use App\Http\Controllers\Api\Mikapi\System\UserActiveController;
 use App\Http\Controllers\Api\Mikapi\System\UserController as SystemUserController;
@@ -238,6 +239,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::post('mikapi/system/panel/{action}', [SystemController::class, 'panel'])
             ->name('api.mikapi.system.panel');
+
+        Route::delete('mikapi/system/scripts', [ScriptController::class, 'destroy_batch'])
+            ->name('api.mikapi.system.scripts.destroy.batch');
+        Route::apiResource('mikapi/system/scripts', ScriptController::class)
+            ->only(['index', 'show', 'destroy'])->names('api.mikapi.system.scripts');
 
 
         Route::delete('mikapi/logs', [LogController::class, 'destroy'])->name('api.mikapi.logs.destroy');

@@ -16,8 +16,8 @@ class ProfileResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'              => $this['.id'],
-            '.id'                   => $this['.id'],
+            'DT_RowId'              => $this['.id'] ?? 0,
+            '.id'                   => $this['.id'] ?? 0,
             'address-list'          => $this['address-list'] ?? null,
             'bridge'                => $this['bridge'] ?? null,
             'bridge-horizon'        => $this['bridge-horizon'] ?? 0,

@@ -16,8 +16,8 @@ class BindingResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'      => $this['.id'],
-            '.id'           => $this['.id'],
+            'DT_RowId'      => $this['.id'] ?? 0,
+            '.id'           => $this['.id'] ?? 0,
             'address'       => $this['address'] ?? null,
             'blocked'       => ($this['blocked'] ?? false) == 'true' ? true : false,
             'bypassed'      => ($this['bypassed'] ?? false) == 'true' ? true : false,

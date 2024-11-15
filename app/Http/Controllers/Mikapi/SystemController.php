@@ -41,4 +41,9 @@ class SystemController extends Controller
     {
         return view('mikapi.system.package.index');
     }
+
+    public function script()
+    {
+        return view('mikapi.system.script.index');
+    }
 }

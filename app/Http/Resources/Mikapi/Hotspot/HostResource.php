@@ -16,8 +16,8 @@ class HostResource extends JsonResource
     {
         // return  parent::toArray($request);
         return [
-            'DT_RowId'              => $this['.id'],
-            '.id'                   => $this['.id'],
+            'DT_RowId'              => $this['.id'] ?? 0,
+            '.id'                   => $this['.id'] ?? 0,
             'DHCP'                  => ($this['DHCP'] ?? false) == 'true' ? true : false,
             'address'               => $this['address'] ?? null,
             'authorized'            => ($this['authorized'] ?? false) == 'true' ? true : false,

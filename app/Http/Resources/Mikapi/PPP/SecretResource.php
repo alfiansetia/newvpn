@@ -16,8 +16,8 @@ class SecretResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'DT_RowId'                  => $this['.id'],
-            '.id'                       => $this['.id'],
+            'DT_RowId'                  => $this['.id'] ?? 0,
+            '.id'                       => $this['.id'] ?? 0,
             'caller-id'                 => $this['caller-id'] ?? null,
             'comment'                   => $this['comment'] ?? null,
             'disabled'                  => ($this['disabled'] ?? false) == "true" ? true : false,

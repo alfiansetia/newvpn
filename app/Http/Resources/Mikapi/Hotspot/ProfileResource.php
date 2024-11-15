@@ -15,8 +15,8 @@ class ProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'DT_RowId'              => $this['.id'],
-            '.id'                   => $this['.id'],
+            'DT_RowId'              => $this['.id'] ?? 0,
+            '.id'                   => $this['.id'] ?? 0,
             'add-mac-cookie'        => ($this['add-mac-cookie'] ?? false) == "true" ? true : false,
             'address-list'          => $this['address-list'] ?? null,
             'advertise'             => ($this['advertise'] ?? false) == "true" ? true : false,

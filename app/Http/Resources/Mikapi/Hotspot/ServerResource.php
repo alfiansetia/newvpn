@@ -16,7 +16,7 @@ class ServerResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            '.id'               => $this['.id'],
+            '.id'               => $this['.id'] ?? 0,
             'HTTPS'             => ($this['HTTPS'] ?? false) == "true" ? true : false,
             'address-pool'      => $this['address-pool'] ?? null,
             'addresses-per-mac' => (int) $this['addresses-per-mac'] ?? '0',
