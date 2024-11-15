@@ -155,6 +155,7 @@
             enableSeconds: true
         })
 
+        var tomse_data_comment = null;
         document.querySelectorAll('.tomse-comment').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'comment',
@@ -162,9 +163,13 @@
                 searchField: 'comment',
                 preload: 'focus',
                 disabledField: '',
-                placeholder: "Please Select Profile",
+                placeholder: "Please Select Comment",
                 allowEmptyOption: true,
                 load: function(query, callback) {
+                    if (tomse_data_comment) {
+                        callback(tomse_data_comment);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.hotspot.users.comment') }}' + param_router +
                         '&limit=' + perpage +
                         '&name=' +
@@ -173,6 +178,7 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data_comment = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();
@@ -183,6 +189,7 @@
 
 
 
+        var tomse_data_profile = null;
         document.querySelectorAll('.tomse-profile').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -192,6 +199,10 @@
                 placeholder: "Please Select Profile",
                 allowEmptyOption: true,
                 load: function(query, callback) {
+                    if (tomse_data_profile) {
+                        callback(tomse_data_profile);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.hotspot.profiles.index') }}' + param_router +
                         '&limit=' + perpage +
                         '&name=' +
@@ -200,6 +211,7 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data_profile = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();
@@ -208,6 +220,7 @@
             });
         });
 
+        var tomse_data_server = null;
         document.querySelectorAll('.tomse-server').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -220,6 +233,10 @@
                     name: 'all'
                 }],
                 load: function(query, callback) {
+                    if (tomse_data_server) {
+                        callback(tomse_data_server);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.hotspot.servers.index') }}' + param_router +
                         '&limit=' +
                         perpage +
@@ -229,6 +246,7 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data_server = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();

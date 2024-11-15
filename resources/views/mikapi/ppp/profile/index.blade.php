@@ -95,7 +95,7 @@
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
-
+        var tomse_data = null;
         document.querySelectorAll('.tomse-parent').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -108,6 +108,10 @@
                     name: 'none'
                 }],
                 load: function(query, callback) {
+                    if (tomse_data) {
+                        callback(tomse_data);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.queues.index') }}' + param_router +
                         '&limit=' +
                         perpage +
@@ -117,6 +121,7 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();

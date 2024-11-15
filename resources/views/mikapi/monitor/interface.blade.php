@@ -230,6 +230,7 @@
             var i;
             var j;
 
+            var tomse_data = null;
             var tomse = new TomSelect('#select_interface', {
                 valueField: '.id',
                 labelField: 'name',
@@ -241,12 +242,17 @@
                     get_interval()
                 },
                 load: function(query, callback) {
+                    if (tomse_data) {
+                        callback(tomse_data);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.interfaces.index') }}' + param_router + '&name=' +
                         encodeURIComponent(
                             query);
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();

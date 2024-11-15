@@ -85,6 +85,7 @@
     <script>
         // $(document).ready(function() {
 
+        var tomse_data = null;
         document.querySelectorAll('.tomse-group').forEach((el) => {
             var tomse = new TomSelect(el, {
                 valueField: 'name',
@@ -94,6 +95,10 @@
                 placeholder: "Please Select Group",
                 allowEmptyOption: true,
                 load: function(query, callback) {
+                    if (tomse_data) {
+                        callback(tomse_data);
+                        return;
+                    }
                     var url = '{{ route('api.mikapi.system.groups.index') }}' + param_router +
                         '&limit=' +
                         perpage +
@@ -103,6 +108,7 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(json => {
+                            tomse_data = json.data
                             callback(json.data);
                         }).catch(() => {
                             callback();
