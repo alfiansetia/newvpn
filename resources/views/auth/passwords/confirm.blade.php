@@ -1,3 +1,7 @@
+@php
+    $user = user();
+@endphp
+
 @extends('layouts.auth', ['title' => 'Confirm Password'])
 
 @section('content')

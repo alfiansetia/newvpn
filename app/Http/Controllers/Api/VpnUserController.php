@@ -206,7 +206,7 @@ class VpnUserController extends Controller
             'amount' => 'required|in:1,2,3,4,5,6,12'
         ]);
         $user = auth()->user();
-        if ($vpn_user->user_id != $user->id) {
+        if ($vpn_user->user_id != $user->id && !$user->is_admin()) {
             return $this->send_response_not_found();
         }
         $vpn_user->load(['server', 'ports']);
@@ -216,7 +216,7 @@ class VpnUserController extends Controller
         $int_month = intval($month);
         $amount = $server->price * $month;
         if ($month == 12) {
-            $amount = $server->annual_price * $amount;
+            $amount = $server->annual_price;
         }
         if ($user_balance < $amount) {
             return $this->send_response_unauthorize('Your Balance Not Enough, Please topup!');

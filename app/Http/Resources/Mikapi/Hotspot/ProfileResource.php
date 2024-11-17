@@ -14,6 +14,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // return parent::toArray($request);
         return [
             'DT_RowId'              => $this['.id'] ?? 0,
             '.id'                   => $this['.id'] ?? 0,
@@ -30,7 +31,7 @@ class ProfileResource extends JsonResource
             'insert-queue-before'   => $this['insert-queue-before'] ?? null,
             'keepalive-timeout'     => $this['keepalive-timeout'] ?? null,
             'mac-cookie-timeout'    => $this['mac-cookie-timeout'] ?? null,
-            'name'                  => $this['name'],
+            'name'                  => $this['name'] ?? null,
             'on-login'              => $this['on-login'] ?? null,
             'on-logout'             => $this['on-logout'] ?? null,
             'open-status-page'      => $this['open-status-page'] ?? null,
@@ -44,6 +45,8 @@ class ProfileResource extends JsonResource
             'status-autorefresh'    => $this['status-autorefresh'] ?? null,
             'transparent-proxy'     => ($this['transparent-proxy'] ?? false) == "true" ? true : false,
             'session_timeout_parse_array'     =>  dtm_new_array($this['session-timeout'] ?? ''),
+            'scheduler'             => $this['scheduler'] ?? false,
+            'mikhmon'               => $this['mikhmon'] ?? null,
         ];
     }
 }
