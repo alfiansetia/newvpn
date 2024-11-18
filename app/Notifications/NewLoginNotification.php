@@ -12,11 +12,14 @@ class NewLoginNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $ip;
+    protected $userAgent;
 
-    public function __construct($ip)
+    public function __construct($ip, $userAgent)
     {
         $this->ip = $ip;
+        $this->userAgent = $userAgent;
     }
+
 
     public function via($notifiable)
     {
@@ -29,6 +32,7 @@ class NewLoginNotification extends Notification implements ShouldQueue
             ->subject('Login dari IP Baru')
             ->line('Kami mendeteksi login dari alamat IP baru:')
             ->line('IP: ' . $this->ip)
+            ->line('Browser/Device: ' . $this->userAgent)
             ->line('Jika ini bukan Anda, segera periksa akun Anda.');
     }
 }

@@ -45,9 +45,9 @@ class LoginController extends Controller
     function authenticated(Request $request, $user)
     {
         $currentIP = $request->getClientIp();
-
-        if ($user->last_ip !== $currentIP) {
-            Notification::send($user, new NewLoginNotification($currentIP));
+        $userAgent = $request->userAgent();
+        if ($user->last_login_ip !== $currentIP) {
+            Notification::send($user, new NewLoginNotification($currentIP, $userAgent));
             $user->update([
                 'last_login_at' => Carbon::now()->toDateTimeString(),
                 'last_login_ip' => $currentIP
