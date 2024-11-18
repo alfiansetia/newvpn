@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\NewLoginNotification;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class LoginController extends Controller
 {
@@ -42,9 +44,14 @@ class LoginController extends Controller
 
     function authenticated(Request $request, $user)
     {
-        $user->update([
-            'last_login_at' => Carbon::now()->toDateTimeString(),
-            'last_login_ip' => $request->getClientIp()
-        ]);
+        $currentIP = $request->getClientIp();
+
+        if ($user->last_ip !== $currentIP) {
+            Notification::send($user, new NewLoginNotification($currentIP));
+            $user->update([
+                'last_login_at' => Carbon::now()->toDateTimeString(),
+                'last_login_ip' => $currentIP
+            ]);
+        }
     }
 }
