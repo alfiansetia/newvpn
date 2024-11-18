@@ -14,6 +14,14 @@
 @section('content')
     <!--  BEGIN CONTENT AREA  -->
     <div class="row layout-top-spacing">
+
+        <h3 class="mb-2 d-flex justify-content-between  align-items-end">
+            <span>{{ salam() }}</span>
+            <a class="btn btn-primary" href="{{ route('topups.index') }}">
+                <i class="fas fa-dollar-sign"></i> Topup Account
+            </a>
+        </h3>
+
         @include('dashboard.components.card_info')
         @include('dashboard.components.vpn_expired')
         @include('dashboard.components.donut')
