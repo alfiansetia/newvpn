@@ -22,6 +22,15 @@ class AuthController extends Controller
             'last_login_ip' => $request->getClientIp()
         ]);
 
+        if (!$user->status != 'active') {
+            return $this->send_response_unauthenticate('Account Nonactive, Please contact Admin!');
+        }
+
+        if (empty($user->email_verified_at)) {
+            return $this->send_response_unauthenticate('Account Nonactive, Please Verify your email!');
+        }
+
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $this->send_response('Hi ' . $user->name . ', welcome to home', [
