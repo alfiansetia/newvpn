@@ -31,6 +31,7 @@ class NewLoginNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Login dari IP Baru')
             ->line('Kami mendeteksi login dari alamat IP baru:')
+            ->line('Waktu: ' . date('d F Y H:i:s'))
             ->line('IP: ' . $this->ip)
             ->line('Browser/Device: ' . $this->userAgent)
             ->line('Jika ini bukan Anda, segera periksa akun Anda.');
