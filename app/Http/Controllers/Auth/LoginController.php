@@ -44,7 +44,7 @@ class LoginController extends Controller
 
     function authenticated(Request $request, $user)
     {
-        $currentIP = $request->getClientIp();
+        $currentIP = $request->header('CF-Connecting-IP') ?? $request->getClientIp();
         $userAgent = $request->userAgent();
         if ($user->last_login_ip != $currentIP) {
             Notification::send($user, new NewLoginNotification($currentIP, $userAgent));

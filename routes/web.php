@@ -28,9 +28,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/tes', function () {
-
-// });
+Route::get('/tes', function () {
+    return response()->json(request()->headers);
+});
 
 
 Auth::routes([
