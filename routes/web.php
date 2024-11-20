@@ -30,7 +30,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/tes', function (Request $request) {
-    return response()->json($request->headers);
+    $headers = $request->headers->all();
+    return response()->json([
+        'headers' => $headers,
+    ]);
 });
 
 
