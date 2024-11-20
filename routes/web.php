@@ -30,9 +30,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/tes', function (Request $request) {
-    $headers = $request->headers->all();
     return response()->json([
-        'headers' => $headers,
+        'headers' => $request->headers->all(),
+        'cf_connecting_ip' => $request->header('cf-connecting-ip'), // Huruf kecil
+        'CF_Connecting_IP' => $request->header('CF-Connecting-IP') // Huruf besar
     ]);
 });
 
