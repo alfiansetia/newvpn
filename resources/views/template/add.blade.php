@@ -1,7 +1,7 @@
 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_add" style="display: none;">
     <div class="widget-content widget-content-area br-8">
 
-        <form id="form" action="{{ route('api.template.store') }}" method="POST">
+        <form id="form" class="was-validated" action="{{ route('api.template.store') }}" method="POST">
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus me-1 bs-tooltip"

@@ -12,7 +12,7 @@ class VoucherTemplateController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin')->except(['index', 'paginate']);
+        $this->middleware('role:admin')->except(['index', 'show', 'paginate']);
     }
 
     public function paginate(Request $request)
@@ -47,19 +47,19 @@ class VoucherTemplateController extends Controller
         return $this->send_response('Success Insert Data!');
     }
 
-    public function show(VoucherTemplate $voucher)
+    public function show(VoucherTemplate $template)
     {
-        return new VoucherTemplateResource($voucher);
+        return new VoucherTemplateResource($template);
     }
 
-    public function update(Request $request, VoucherTemplate $voucher)
+    public function update(Request $request, VoucherTemplate $template)
     {
         $this->validate($request, [
             'name'      => 'required|max:200',
             'html_up'   => 'required|max:65535',
             'html_vc'   => 'required|max:65535',
         ]);
-        $voucher->update([
+        $template->update([
             'name'      => $request->name,
             'html_up'   => $request->html_up,
             'html_vc'   => $request->html_vc,
@@ -67,9 +67,9 @@ class VoucherTemplateController extends Controller
         return $this->send_response('Success Update Data!');
     }
 
-    public function destroy(VoucherTemplate $voucher)
+    public function destroy(VoucherTemplate $template)
     {
-        $voucher->delete();
+        $template->delete();
         return $this->send_response('Success Delete Data');
     }
 

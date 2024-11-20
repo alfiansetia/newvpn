@@ -7,14 +7,14 @@
                     Detail</h5>
             </div>
             <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-md-6">
+                <div class="row ">
+                    <div class="col-md-6 mb-3">
                         <h3>UP Mode</h3>
-                        <div class="text-center" id="detail_html_up"></div>
+                        <div class="" id="detail_html_up"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <h3>VC Mode</h3>
-                        <div class="text-center" id="detail_html_vc"></div>
+                        <div class="" id="detail_html_vc"></div>
                     </div>
                 </div>
             </div>

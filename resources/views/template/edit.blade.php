@@ -2,7 +2,6 @@
     <div class="widget-content widget-content-area br-8">
 
         <form id="formEdit" class="form-vertical was-validated" action="" method="POST">
-            {{ method_field('PUT') }}
             <div class="card">
                 <div class="card-header">
                     <h5 class="modal-title" id="titleEdit"><i class="fas fa-edit me-1 bs-tooltip"
@@ -32,8 +31,6 @@
                     <div class="row">
                         <div class="col-12">
                             @include('components.form.button_edit')
-                            <button type="button" class="btn btn-info show-detail me-1"><i
-                                    class="fas fa-info me-1 bs-tooltip" title="Detail"></i>Detail</button>
                         </div>
                     </div>
                 </div>
