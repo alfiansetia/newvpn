@@ -24,12 +24,13 @@ use App\Http\Controllers\TopupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherTemplateController;
 use App\Http\Controllers\VpnController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/tes', function () {
-    return response()->json(request()->headers);
+Route::get('/tes', function (Request $request) {
+    return response()->json($request->headers);
 });
 
 
