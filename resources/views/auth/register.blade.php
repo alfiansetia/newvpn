@@ -16,7 +16,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <form action="{{ route('register') }}" method="POST">
+                        <form class="was-validated" action="{{ route('register') }}" method="POST">
                             @csrf
                             <div class="col-md-12 mb-3">
                                 <h2>Sign Up</h2>

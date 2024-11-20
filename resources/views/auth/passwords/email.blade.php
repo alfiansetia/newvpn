@@ -11,7 +11,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <form action="{{ route('password.email') }}" method="POST">
+                        <form class="was-validated" action="{{ route('password.email') }}" method="POST">
                             @csrf
                             <div class="col-md-12 mb-3">
                                 <h2>Password Recovery</h2>

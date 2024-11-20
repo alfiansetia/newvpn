@@ -11,7 +11,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <form action="{{ route('password.update') }}" method="POST">
+                        <form class="was-validated" action="{{ route('password.update') }}" method="POST">
                             @csrf
                             <input type="hidden" name="token" value="{{ $token }}">
                             <div class="col-md-12 mb-3">

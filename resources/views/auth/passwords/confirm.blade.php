@@ -15,7 +15,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <form action="{{ route('password.confirm') }}" method="POST">
+                        <form class="was-validated" action="{{ route('password.confirm') }}" method="POST">
                             @csrf
                             <div class="col-md-12 mb-3">
                                 <div class="text-center mb-2">
