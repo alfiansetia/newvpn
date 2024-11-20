@@ -43,6 +43,13 @@ class RouterApiServices
             self::fail_login($api);
         }
     }
+    public static function get_router()
+    {
+        if (empty(self::$router)) {
+            throw new Exception('Router Not Found!');
+        }
+        return self::$router;
+    }
 
     private static function cek_available(Router $router)
     {

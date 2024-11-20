@@ -61,6 +61,10 @@
                 <button type="button" class="btn btn-block btn-primary" id="btn_filter">
                     <i class="fas fa-filter me-1"></i>Filter
                 </button>
+
+                <button type="button" class="btn btn-block btn-primary" id="btn_print">
+                    <i class="fas fa-print me-1"></i>Print
+                </button>
             </div>
         </div>
 
@@ -80,6 +84,30 @@
         @include('mikapi.hotspot.user.add')
         @include('mikapi.hotspot.user.edit')
         @include('mikapi.hotspot.user.detail')
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select name="" id="template" class="form-control-lg">
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn btn-light-dark" data-bs-dismiss="modal"><i class="flaticon-cancel-12"></i>
+                            Discard</button>
+                        <button type="button" class="btn btn-primary">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @push('jslib')
@@ -114,7 +142,9 @@
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
-
+        $('#btn_print').click(function() {
+            $('#exampleModal').modal('show')
+        })
 
         $('.mask_angka').inputmask({
             alias: 'numeric',
@@ -253,6 +283,35 @@
                         });
                 },
             });
+        });
+
+
+        var tomse_data_template = null;
+        var tomse = new TomSelect('#template', {
+            valueField: 'name',
+            labelField: 'name',
+            searchField: 'name',
+            preload: 'focus',
+            placeholder: "Please Select Template",
+            allowEmptyOption: true,
+            load: function(query, callback) {
+                if (tomse_data_template) {
+                    callback(tomse_data_template);
+                    return;
+                }
+                var url = '{{ route('api.template.index') }}?' + '&limit=' + perpage +
+                    '&name=' +
+                    encodeURIComponent(
+                        query);
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => {
+                        tomse_data_template = json.data
+                        callback(json.data);
+                    }).catch(() => {
+                        callback();
+                    });
+            },
         });
 
         $('#reset').click(function() {

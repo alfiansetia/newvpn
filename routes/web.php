@@ -73,7 +73,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('mikapi/log', [LogController::class, 'index'])->name('mikapi.log.index');
         Route::get('mikapi/hotspot/server', [HotspotController::class, 'server'])->name('mikapi.hotspot.server');
         Route::get('mikapi/hotspot/profile', [HotspotController::class, 'profile'])->name('mikapi.hotspot.profile');
+
         Route::get('mikapi/hotspot/user', [HotspotController::class, 'user'])->name('mikapi.hotspot.user');
+        Route::get('mikapi/hotspot/user/voucher/{template}', [HotspotController::class, 'voucher'])->name('mikapi.hotspot.voucher');
+
         Route::get('mikapi/hotspot/active', [HotspotController::class, 'active'])->name('mikapi.hotspot.active');
         Route::get('mikapi/hotspot/host', [HotspotController::class, 'host'])->name('mikapi.hotspot.host');
         Route::get('mikapi/hotspot/binding', [HotspotController::class, 'binding'])->name('mikapi.hotspot.binding');
@@ -91,7 +94,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         // Profile
         Route::get('setting/profile', [ProfileController::class, 'profile'])->name('setting.profile');
         Route::get('setting/profile/edit', [ProfileController::class, 'profileEdit'])->name('setting.profile.edit');
-
 
 
         // Route::group(['middleware' => ['role:admin']], function () {

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Mikapi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\VoucherTemplateResource;
+use App\Models\VoucherTemplate;
+use App\Services\Mikapi\Hotspot\UserServices;
 use Illuminate\Http\Request;
 
 class HotspotController extends Controller
@@ -46,5 +49,23 @@ class HotspotController extends Controller
     public function cookie()
     {
         return view('mikapi.hotspot.cookie.index');
+    }
+
+    public function voucher(Request $request, string $id)
+    {
+        $t = VoucherTemplate::find($id);
+        if (!$t) {
+            abort(404);
+        }
+        $template = new VoucherTemplateResource($t);
+        $services = UserServices::routerId($request->router)->cache(true);
+        $router = $services->get_router();
+        $cache = $services->from_cache();
+        $data = collect($cache);
+        if ($request->filled('comment')) {
+            $data = $data->where('comment', $request->comment);
+        }
+        $mode = $request->mode;
+        return view('mikapi.hotspot.user.voucher', compact('data', 'router', 'template', 'mode'));
     }
 }
