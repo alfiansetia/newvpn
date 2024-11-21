@@ -4,7 +4,7 @@
      <div class="modal-dialog" role="document">
          <div class="modal-content">
              <div class="modal-header">
-                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                 <h5 class="modal-title" id="exampleModalLabel">Print Voucher</h5>
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                      <i data-feather="x"></i>
                  </button>
@@ -30,9 +30,10 @@
                  </div>
              </div>
              <div class="modal-footer">
-                 <button class="btn btn btn-light-dark" data-bs-dismiss="modal"><i class="flaticon-cancel-12"></i>
-                     Discard</button>
-                 <button id="btn_print_submit" type="button" class="btn btn-primary">Print</button>
+                 <button class="btn btn btn-light-dark" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>
+                     Close</button>
+                 <button id="btn_print_submit" type="button" class="btn btn-primary"><i
+                         class="fas fa-print me-1"></i>Print</button>
              </div>
          </div>
      </div>
