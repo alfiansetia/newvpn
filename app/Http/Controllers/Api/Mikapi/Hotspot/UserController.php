@@ -39,7 +39,14 @@ class UserController extends Controller
         try {
             $service = new UserServices();
             $response = $service->routerId($request->router)->from_cache();
-            $data = collect($response)->unique('comment');
+            // $data = collect($response)->unique('comment');
+            $data = collect($response)
+                ->groupBy('comment')
+                ->map(function ($items, $key) {
+                    $item = $items->first();
+                    $item['count'] = $items->count();
+                    return $item;
+                })->values();
             return $this->send_response('', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

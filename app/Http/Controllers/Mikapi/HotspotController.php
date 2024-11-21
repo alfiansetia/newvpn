@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Mikapi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Mikapi\Hotspot\ProfileResource;
+use App\Http\Resources\Mikapi\Hotspot\UserResource;
 use App\Http\Resources\VoucherTemplateResource;
 use App\Models\VoucherTemplate;
+use App\Services\Mikapi\Hotspot\ProfileServices;
 use App\Services\Mikapi\Hotspot\UserServices;
 use Illuminate\Http\Request;
 
@@ -59,6 +62,8 @@ class HotspotController extends Controller
         }
         $template = new VoucherTemplateResource($t);
         $services = UserServices::routerId($request->router)->cache(true);
+        $profile_data = ProfileServices::routerId($request->router)->get();
+        $profiles = ProfileResource::collection($profile_data)->toArray($request);
         $router = $services->get_router();
         $cache = $services->from_cache();
         $data = collect($cache);
@@ -66,6 +71,8 @@ class HotspotController extends Controller
             $data = $data->where('comment', $request->comment);
         }
         $mode = $request->mode;
-        return view('mikapi.hotspot.user.voucher', compact('data', 'router', 'template', 'mode'));
+        $price = $request->price ?? 0;
+        $data = UserResource::collection($data)->toArray($request);
+        return view('mikapi.hotspot.user.voucher', compact('data', 'router', 'template', 'mode', 'price', 'profiles'));
     }
 }

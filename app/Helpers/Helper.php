@@ -410,6 +410,44 @@ function dtm_new_array($timeString)
     ];
 }
 
+function dtm_array_all($timeString)
+{
+    if (empty($timeString)) {
+        return [
+            'time'  => '00:00:00',
+            'day'   => 0,
+        ];
+    }
+
+    preg_match('/(?:(\d+)w)?(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/', $timeString, $matches);
+    $weeks = isset($matches[1]) ? (int)$matches[1] : 0;
+    $days = isset($matches[2]) ? (int)$matches[2] : 0;
+    $hours = isset($matches[3]) ? (int)$matches[3] : 0;
+    $minutes = isset($matches[4]) ? (int)$matches[4] : 0;
+    $seconds = isset($matches[5]) ? (int)$matches[5] : 0;
+
+    $carbon = Carbon::now()->startOfDay()
+        ->addDays($weeks * 7 + $days)
+        ->addHours($hours)
+        ->addMinutes($minutes)
+        ->addSeconds($seconds);
+
+    $outputParts = [];
+    if ($weeks > 0) {
+        $outputParts[] = "{$weeks}w";
+    }
+    if ($days > 0) {
+        $outputParts[] = "{$days}d";
+    }
+    $day = ($weeks * 7) + $days;
+    return [
+        'd' => $day,
+        'h' => $carbon->hour,
+        'm' => $carbon->minute,
+        's' => $carbon->second,
+    ];
+}
+
 
 function salam(): string
 {

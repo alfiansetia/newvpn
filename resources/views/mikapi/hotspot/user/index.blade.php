@@ -84,30 +84,9 @@
         @include('mikapi.hotspot.user.add')
         @include('mikapi.hotspot.user.edit')
         @include('mikapi.hotspot.user.detail')
+        @include('mikapi.hotspot.user.modal')
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <i data-feather="x"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <select name="" id="template" class="form-control-lg">
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn btn-light-dark" data-bs-dismiss="modal"><i class="flaticon-cancel-12"></i>
-                            Discard</button>
-                        <button type="button" class="btn btn-primary">Print</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 @endsection
 @push('jslib')
@@ -141,9 +120,9 @@
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
-        // $(document).ready(function() {
-        $('#btn_print').click(function() {
-            $('#exampleModal').modal('show')
+        $(document).ready(function() {
+            document.getElementById('filter_profile').tomselect.load('')
+            document.getElementById('filter_comment').tomselect.load('')
         })
 
         $('.mask_angka').inputmask({
@@ -214,10 +193,16 @@
                             callback();
                         });
                 },
+                render: {
+                    option: function(data, escape) {
+                        return `<div>${escape(data.comment)} ${data.profile || ''} [${data.count || 0}]</div>`;
+                    },
+                    item: function(data, escape) {
+                        return `<div>${escape(data.comment)} ${data.profile || ''} [${data.count || 0}]</div>`;
+                    },
+                }
             });
         });
-
-
 
         var tomse_data_profile = null;
         document.querySelectorAll('.tomse-profile').forEach((el) => {
@@ -287,8 +272,8 @@
 
 
         var tomse_data_template = null;
-        var tomse = new TomSelect('#template', {
-            valueField: 'name',
+        var tomse_template = new TomSelect('#template', {
+            valueField: 'id',
             labelField: 'name',
             searchField: 'name',
             preload: 'focus',
@@ -312,11 +297,50 @@
                         callback();
                     });
             },
+            onChange: function(value) {
+                let mode = $('#mode').val()
+                if (value != '') {
+                    let template = tomse_template.options[value];
+                    if (mode == 'vc') {
+                        $('#preview').html(template.html_vc_sample)
+                    } else {
+                        $('#preview').html(template.html_up_sample)
+                    }
+                } else {
+                    $('#preview').html('')
+                }
+
+            },
         });
+
+        $('#mode').change(function() {
+            let currentValue = tomse_template.getValue();
+            tomse_template.setValue(currentValue);
+        })
 
         $('#reset').click(function() {
             document.getElementById('server').tomselect.clear()
             document.getElementById('profile').tomselect.clear()
+        })
+
+
+        $('#btn_print').click(function() {
+            $('#exampleModal').modal('show')
+        })
+
+        $('#btn_print_submit').click(function() {
+            let profile = document.getElementById('filter_profile').tomselect.getValue()
+            let comment = document.getElementById('filter_comment').tomselect.getValue()
+            let temp = document.getElementById('template').tomselect.getValue()
+            let mode = $('#mode').val()
+            if (temp == null || temp == '') {
+                $('#err_template').show()
+                return
+            }
+            $('#err_template').hide()
+            let url = "{{ route('mikapi.hotspot.voucher', '') }}/" +
+                `${temp}${param_router}&mode=${mode}&comment=${comment}&profile=${profile}`
+            window.open(url)
         })
 
         var table = $('#tableData').DataTable({
