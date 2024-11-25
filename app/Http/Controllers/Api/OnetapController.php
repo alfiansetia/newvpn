@@ -17,7 +17,9 @@ class OnetapController extends Controller
         $jwtHeader = json_decode($tokenHeader);
         $jwtPayload = json_decode($tokenPayload);
         $user = $jwtPayload;
-        // return $user;
+        if (!$user->email) {
+            return redirect()->route('login');
+        }
         $user = User::where('email', $user->email)->first();
 
         if ($user != null) {
