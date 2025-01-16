@@ -253,6 +253,15 @@
                 title: "Name",
                 data: 'name',
                 className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        let text =
+                            `<i class="fa fa-ci fa-circle text-${row.scheduler ? 'success' : 'danger'} bs-tooltip" title="Scheduler Mikhmon"></i> ${data}`
+                        return text
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "Shared User",
                 data: 'shared-users',

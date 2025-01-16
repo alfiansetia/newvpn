@@ -124,8 +124,7 @@
                 }
                 if (res.data.routerboard.length > 0) {
                     sys_rb = res.data.resource[0]['board-name'] + ' | ' + (res.data.routerboard[0]
-                        .routerboard ==
-                        'true' ? res.data.routerboard[0].model : 'No Routerboard!')
+                        .routerboard ? res.data.routerboard[0].model : 'No Routerboard!')
                 }
                 $('#sys_ros').text(sys_ros);
                 $('#sys_up').text(sys_up);
