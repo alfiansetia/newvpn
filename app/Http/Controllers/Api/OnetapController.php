@@ -20,23 +20,23 @@ class OnetapController extends Controller
         if (!$user->email) {
             return redirect()->route('login');
         }
-        $user = User::where('email', $user->email)->first();
+        $user_exist = User::where('email', $user->email)->first();
 
-        if ($user != null) {
-            $user->update(['status' => 'active']);
-            $user->markEmailAsVerified();
-            \auth()->login($user, true);
+        if ($user_exist) {
+            $user_exist->update(['status' => 'active']);
+            $user_exist->markEmailAsVerified();
+            \auth()->login($user_exist, true);
             return redirect()->route('home');
         } else {
-            $create = User::Create([
+            $new_user = User::Create([
                 'email'     => $user->email,
                 'name'      => $user->name,
                 'password'  => 0,
                 'role'      => 'user',
                 'status'    => 'active',
             ]);
-            $create->markEmailAsVerified();
-            \auth()->login($create, true);
+            $new_user->markEmailAsVerified();
+            \auth()->login($new_user, true);
             return redirect()->route('home');
         }
     }
