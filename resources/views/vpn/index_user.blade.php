@@ -499,7 +499,7 @@
             text += `Web         : https://kacangan.net\n`;
             text += `Member Area : https://member.kacangan.net\n`;
             text += `Tutorial    : https://blog.kacangan.net\n`;
-            text += `WA Group    : https://chat.whatsapp.com/CCGvRqG3Hv40nYb4zbSZbd\n`;
+            text += `WA Channel  : {{ config('whatsapp.channel_url') }}\n`;
             text += `------------------------------------------------\n`;
             text += `Terima Kasih Telah Menggunakan Layanan Kami\n`;
             text += `============================\n`;

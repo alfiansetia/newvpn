@@ -7,12 +7,12 @@
                     <i class="fab fa-whatsapp" style="font-size: 50px;"></i>
                 </div>
                 <div class="">
-                    <p class="w-value">Whatsapp Group</p>
-                    <h5>Gabung grup informasi layanan kami.</h5>
+                    <p class="w-value">Whatsapp Channel</p>
+                    <h5>Join channel informasi layanan kami.</h5>
                 </div>
                 <div class="ms-auto" style="vertical-align: middle">
-                    <a href="https://chat.whatsapp.com/CCGvRqG3Hv40nYb4zbSZbd" class="btn btn-primary"
-                        target="_blank"><i class="fas fa-user-plus"></i> Join</a>
+                    <a href="{{ config('whatsapp.channel_url') }}" class="btn btn-primary" target="_blank"><i
+                            class="fas fa-user-plus"></i> Join</a>
                 </div>
             </div>
         </div>
