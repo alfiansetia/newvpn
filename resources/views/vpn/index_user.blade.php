@@ -406,7 +406,7 @@
             } else {
                 return '';
             }
-            sc += `disabled=no `;
+            sc += `disabled="no" `;
             sc += `name="tunnel_${vpn.id}_${vpn.server.name}" `
             sc += `connect-to="${vpn.server.domain}" `
             sc += `user="${vpn.username}" `
@@ -414,10 +414,10 @@
 
             sc += `\n/tool netwatch remove [find where host=${vpn.server.netwatch}]; `
             sc += `\n/tool netwatch add `
-            sc += `disabled=no `;
-            sc += `host=${vpn.server.netwatch} `;
+            sc += `disabled="no" `;
+            sc += `host="${vpn.server.netwatch}" `;
             sc += `comment="netwatch_${vpn.server.name}" `;
-            sc += `interval=1m timeout=1s type=simple; \n`
+            sc += `interval="1m" timeout="1s"; \n`
             return sc
         }
 
@@ -499,6 +499,7 @@
             text += `Web         : https://kacangan.net\n`;
             text += `Member Area : https://member.kacangan.net\n`;
             text += `Tutorial    : https://blog.kacangan.net\n`;
+            text += `WA Group    : https://chat.whatsapp.com/CCGvRqG3Hv40nYb4zbSZbd\n`;
             text += `------------------------------------------------\n`;
             text += `Terima Kasih Telah Menggunakan Layanan Kami\n`;
             text += `============================\n`;
