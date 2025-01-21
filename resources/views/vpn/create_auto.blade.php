@@ -99,7 +99,7 @@
                         <div class="row mb-2">
                             <div class="form-group col-md-12">
                                 <label for="server"><i class="fas fa-server me-1 bs-tooltip" title="Server"></i>Server
-                                    :</label>
+                                    : <span class="text-danger">*</span></label>
                                 <select class="form-control-lg tomse-server" name="server" id="server"
                                     style="width: 100%" required>
                                 </select>
@@ -119,11 +119,12 @@
                         <div class="row mb-2">
                             <div class="form-group col-md-12">
                                 <label for="username"><i class="far fa-user me-1 bs-tooltip"
-                                        title="Username Vpn"></i>Username Vpn :</label>
+                                        title="Username Vpn"></i>Username Vpn : <span class="text-danger">*</span></label>
                                 <div class="input-group mb-3">
                                     <input type="text" name="username" class="form-control maxlength" id="username"
                                         placeholder="Please Enter Username" minlength="4" maxlength="50"
-                                        aria-describedby="sufiks" oninput="setLowercase()" required>
+                                        aria-describedby="sufiks" oninput="setLowercase(this)" pattern="[A-Za-z0-9]+"
+                                        required>
                                     <span class="input-group-text" id="sufiks">@kacangan.net</span>
                                 </div>
                                 <span class="error invalid-feedback err_username" style="display: hide;"></span>
@@ -132,9 +133,10 @@
                         <div class="row mb-2">
                             <div class="form-group col-md-12">
                                 <label for="password"><i class="fas fa-fingerprint me-1 bs-tooltip"
-                                        title="Password Vpn"></i>Password Vpn :</label>
+                                        title="Password Vpn"></i>Password Vpn : <span class="text-danger">*</span></label>
                                 <input type="text" name="password" class="form-control maxlength" id="password"
-                                    placeholder="Please Enter Password" minlength="4" maxlength="50" required>
+                                    placeholder="Please Enter Password" minlength="4" maxlength="50"
+                                    pattern="[A-Za-z0-9]+" oninput="setLowercase(this)" required>
                                 <span class="error invalid-feedback err_password" style="display: hide;"></span>
                             </div>
                         </div>
@@ -175,9 +177,8 @@
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
-        function setLowercase() {
-            var inputElement = document.getElementById('username');
-            inputElement.value = inputElement.value.toLowerCase();
+        function setLowercase(el) {
+            el.value = el.value.toLowerCase();
         }
 
         $('.maxlength').maxlength({
