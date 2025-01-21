@@ -1,4 +1,28 @@
 <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+
+    <div class="widget widget-one_hybrid widget-engagement mb-3">
+        <div class="widget-heading mb-0">
+            <div class="w-title mb-0">
+                <div class="w-icon">
+                    <i class="fab fa-whatsapp" style="font-size: 50px;"></i>
+                </div>
+                <div class="">
+                    <p class="w-value">Whatsapp Group</p>
+                    <h5>Gabung grup informasi layanan kami.</h5>
+                </div>
+                <div class="ms-auto" style="vertical-align: middle">
+                    <a href="https://chat.whatsapp.com/CCGvRqG3Hv40nYb4zbSZbd" class="btn btn-primary"
+                        target="_blank"><i class="fas fa-user-plus"></i> Join</a>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content">
+            <div class="w-chart">
+                <div id="hybrid_followers"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="widget widget-table-three p-3">
 
         <div class="widget-heading">
