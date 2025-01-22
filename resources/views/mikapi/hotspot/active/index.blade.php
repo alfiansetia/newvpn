@@ -124,10 +124,12 @@
                         let text = `<div class="form-check form-check-primary d-block new-control">
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.radius) {
-                            text += '<span class="badge me-1 badge-success" title="Radius">R</span>'
+                            text +=
+                                '<span class="badge me-1 badge-success bs-tooltip" title="Radius">R</span>'
                         }
                         if (row.blocked) {
-                            text += '<span class="badge me-1 badge-danger" title="Bloked">B</span>'
+                            text +=
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Bloked">B</span>'
                         }
                         text += `</div>`
                         return text

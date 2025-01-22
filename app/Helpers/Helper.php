@@ -485,3 +485,35 @@ function getrandomclass()
     $class = ['primary', 'secondary', 'warning', 'danger', 'info', 'success', 'dark'];
     return $class[random_int(0, 6)];
 }
+
+
+function get_mikhmon_profile_data($on_login)
+{
+    $mikhmon = null;
+    $getmikhmon = explode(",", $on_login);
+    if (count($getmikhmon) > 6) {
+        $expmode = $getmikhmon[1] ?? null;
+        if ($expmode == "rem") {
+            $mode = "Remove";
+        } elseif ($expmode == "ntf") {
+            $mode = "Notice";
+        } elseif ($expmode == "remc") {
+            $mode = "Remove & Record";
+        } elseif ($expmode == "ntfc") {
+            $mode = "Notice & Record";
+        } else {
+            $mode = null;
+        }
+        $validity = !empty($getmikhmon[3]) ? $getmikhmon[3] : null;
+        $mikhmon['exp_mode'] = $expmode;
+        $mikhmon['exp_mode_parse'] = $mode;
+        $mikhmon['price'] = !empty($getmikhmon[2]) ? $getmikhmon[2] : 0;
+        $mikhmon['selling_price'] = !empty($getmikhmon[4]) ? $getmikhmon[4] : 0;
+        $mikhmon['validity'] = $validity;
+        $mikhmon['validity_parse'] = dtm_new_array($validity);
+        $mikhmon['lock'] = !empty($getmikhmon[6]) ? $getmikhmon[6] : 'Disable';
+        $mikhmon['count'] = count($getmikhmon);
+        $mikhmon['explode'] = $getmikhmon;
+    }
+    return $mikhmon;
+}

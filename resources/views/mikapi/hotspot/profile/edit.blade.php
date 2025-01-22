@@ -12,17 +12,58 @@
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_name">Profile Name :</label>
                             <input type="text" name="name" class="form-control maxlength" id="edit_name"
-                                placeholder="Please Enter Profile Name" minlength="1" maxlength="50" required>
+                                placeholder="Please Enter Profile Name" oninput="remove_space()" minlength="1"
+                                maxlength="50" required>
                             <span class="error invalid-feedback err_name" style="display: hide;"></span>
                         </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_pool">Address Pool :</label>
+                            <select name="pool" id="edit_pool" class="form-control-lg tomse-pool"
+                                style="width: 100%;" required>
+                                <option value="">Please Select Pool!</option>
+                            </select>
+                            <span class="error invalid-feedback err_edit_pool" style="display: hide;"></span>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_shared_users">Shared User :</label>
                             <input type="text" name="shared_users" class="form-control mask_angka"
                                 id="edit_shared_users" placeholder="Please Enter Shared User" value="1" required>
                             <span class="error invalid-feedback err_shared_users" style="display: hide;"></span>
                         </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_rate_limit">Rate Limit [UP/DOWN] :</label>
+                            <input type="text" name="rate_limit" class="form-control" id="edit_rate_limit"
+                                placeholder="1M/1M" minlength="5" maxlength="25">
+                            <span class="error invalid-feedback err_rate_limit" style="display: hide;"></span>
+                        </div>
                     </div>
                     <div class="row">
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_expired_mode">Expired Mode :</label>
+                            <select name="expired_mode" id="edit_expired_mode" class="form-control-lg"
+                                style="width: 100%;" required>
+                                <option value="">Please Select Expired Mode!</option>
+                                <option value="0">None</option>
+                                <option value="rem">Remove</option>
+                                <option value="ntf">Notice</option>
+                                <option value="remc">Remove & Record</option>
+                                <option value="ntfc">Notice & Record</option>
+                            </select>
+                            <span class="error invalid-feedback err_edit_expired_mode" style="display: hide;"></span>
+                        </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_lock_user">Lock User :</label>
+                            <select name="lock_user" id="edit_lock_user" class="form-control-lg" style="width: 100%;"
+                                required>
+                                <option value="Disable">Disable</option>
+                                <option value="Enable">Enable</option>
+                            </select>
+                            <span class="error invalid-feedback err_edit_lock_user" style="display: hide;"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none" id="edit_row_limit">
                         <div class="form-group col-6 mb-2">
                             <label class="control-label" for="edit_data_day">Day Limit :</label>
                             <input type="text" name="data_day" class="form-control mask_angka" id="edit_data_day"
@@ -38,11 +79,20 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6 mb-2">
-                            <label class="control-label" for="edit_rate_limit">Rate Limit [UP/DOWN] :</label>
-                            <input type="text" name="rate_limit" class="form-control" id="edit_rate_limit"
-                                placeholder="1M/1M" minlength="5" maxlength="25">
-                            <span class="error invalid-feedback err_rate_limit" style="display: hide;"></span>
+                            <label class="control-label" for="edit_price">Price :</label>
+                            <input type="text" name="price" class="form-control mask_angka" id="edit_price"
+                                placeholder="Please Enter Price" min="0" value="0" required>
+                            <span class="error invalid-feedback err_edit_price" style="display: hide;"></span>
                         </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_selling_price">Selling Price :</label>
+                            <input type="text" name="selling_price" class="form-control mask_angka"
+                                id="edit_selling_price" placeholder="Please Enter Selling Price" min="0"
+                                value="0" required>
+                            <span class="error invalid-feedback err_edit_selling_price" style="display: hide;"></span>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="edit_parent">Parent Queue :</label>
                             <select name="parent" id="edit_parent" class="form-control-lg tomse-parent"

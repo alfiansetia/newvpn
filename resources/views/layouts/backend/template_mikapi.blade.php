@@ -136,6 +136,10 @@
                 })
             }
         }
+
+        function hrg(x) {
+            return parseInt(x).toLocaleString('id-ID')
+        }
     </script>
     @stack('jslib')
     @stack('js')

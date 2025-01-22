@@ -50,7 +50,7 @@ class ProfileController extends Controller
             'parent'            => 'required',
         ]);
         $param = [
-            'name'              => $request->input('name'),
+            'name'              => (preg_replace('/\s+/', '-', $request->input('name'))),
             'shared-users'      => $request->input('shared_users') == 0 ? 'unlimited' : $request->input('shared_users'),
             'rate-limit'        => $request->input('rate_limit'),
             'session-timeout'   => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
@@ -75,7 +75,7 @@ class ProfileController extends Controller
             'parent'            => 'required',
         ]);
         $param = [
-            'name'              => $request->input('name'),
+            'name'              => (preg_replace('/\s+/', '-', $request->input('name'))),
             'shared-users'      => $request->input('shared_users') == 0 ? 'unlimited' : $request->input('shared_users'),
             'rate-limit'        => $request->input('rate_limit'),
             'session-timeout'   => ($request->data_day ?? 0) . 'd ' . $request->time_limit,

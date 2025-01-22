@@ -11,7 +11,10 @@ class DashboardController extends Controller
     public function get(Request $request)
     {
         try {
-            $data = DashboardServices::routerId($request->router)->get();
+            $services = DashboardServices::routerId($request->router);
+            $data = $services->get();
+            // $router = $services->get_router();
+            // $router->destroy_cache();
             return $this->send_response('', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

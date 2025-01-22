@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Mikapi\Hotspot\ServerProfileController as HotspotSe
 use App\Http\Controllers\Api\Mikapi\Hotspot\UserController as HotspotUserController;
 use App\Http\Controllers\Api\Mikapi\InterfaceController;
 use App\Http\Controllers\Api\Mikapi\LogController;
+use App\Http\Controllers\Api\Mikapi\PoolController;
 use App\Http\Controllers\Api\Mikapi\PPP\ActiveController as PPPActiveController;
 use App\Http\Controllers\Api\Mikapi\PPP\L2tpSecretController as PPPL2tpSecretController;
 use App\Http\Controllers\Api\Mikapi\PPP\ProfileController as PPPProfileController;
@@ -168,6 +169,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('api/mikapi/queues', QueueController::class)
             ->only(['index', 'show', 'store', 'update', 'destroy'])
             ->names('api.mikapi.queues');
+
+        Route::apiResource('api/mikapi/pools', PoolController::class)
+            ->only(['index', 'show'])
+            ->names('api.mikapi.pools');
 
         Route::apiResource('mikapi/ppp/profiles', PPPProfileController::class)
             ->only(['index', 'show', 'store', 'update', 'destroy'])

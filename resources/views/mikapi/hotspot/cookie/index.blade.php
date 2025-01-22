@@ -115,7 +115,7 @@
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row['mac-cookie']) {
                             text +=
-                                '<span class="badge me-1 badge-info" title="Mac Cookie">M</span>'
+                                '<span class="badge me-1 badge-info bs-tooltip" title="Mac Cookie">M</span>'
                         }
                         text += `</div>`
                         return text

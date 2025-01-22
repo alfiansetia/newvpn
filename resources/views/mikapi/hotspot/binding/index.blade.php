@@ -223,14 +223,15 @@
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.disabled) {
                             text +=
-                                '<span class="badge me-1 badge-danger" title="Disabled">X</span>'
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Disabled">X</span>'
                         }
                         if (row.bypassed) {
                             text +=
-                                '<span class="badge me-1 badge-success" title="Bypassed">P</span>'
+                                '<span class="badge me-1 badge-success bs-tooltip" title="Bypassed">P</span>'
                         }
                         if (row.blocked) {
-                            text += '<span class="badge me-1 badge-danger" title="Bloked">B</span>'
+                            text +=
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Bloked">B</span>'
                         }
                         text += `</div>`
                         return text

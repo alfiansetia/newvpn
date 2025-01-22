@@ -20,6 +20,7 @@ class ProfileResource extends JsonResource
             '.id'                   => $this['.id'] ?? 0,
             'add-mac-cookie'        => ($this['add-mac-cookie'] ?? false) == "true" ? true : false,
             'address-list'          => $this['address-list'] ?? null,
+            'address-pool'          => $this['address-pool'] ?? 'none',
             'advertise'             => ($this['advertise'] ?? false) == "true" ? true : false,
             'advertise-interval'    => $this['advertise-interval'] ?? null,
             'advertise-timeout'     => $this['advertise-timeout'] ?? null,
@@ -46,7 +47,8 @@ class ProfileResource extends JsonResource
             'transparent-proxy'     => ($this['transparent-proxy'] ?? false) == "true" ? true : false,
             'session_timeout_parse_array'     =>  dtm_new_array($this['session-timeout'] ?? ''),
             'scheduler'             => $this['scheduler'] ?? false,
-            'mikhmon'               => $this['mikhmon'] ?? null,
+            'mikhmon'               => get_mikhmon_profile_data($this['on-login'] ?? ''),
+            'xxx'                   => explode(",", $this['on-login'] ?? ''),
         ];
     }
 }

@@ -9,7 +9,6 @@ use App\Models\Router;
 use App\Services\RouterApiServices;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 
 class RouterController extends Controller
@@ -121,7 +120,7 @@ class RouterController extends Controller
         if ($request->filled('username')) {
             $param['username'] = $request->username;
         }
-        $this->destroy_cache($id);
+        $router->destroy_cache();
         $router->update($param);
         return $this->send_response('Router Update!');
     }
@@ -132,7 +131,7 @@ class RouterController extends Controller
         if (!$router) {
             return $this->send_response_not_found();
         }
-        $this->destroy_cache($id);
+        $router->destroy_cache();
         $router->delete();
         return $this->send_response('Router Deleted!');
     }
@@ -144,9 +143,6 @@ class RouterController extends Controller
             'id.*'      => 'integer|exists:routers,id',
         ]);
         $ids = $request->id;
-        foreach ($ids ?? [] as $value) {
-            $this->destroy_cache($value);
-        }
         $deleted = Router::whereIn('id', $ids)->where('user_id', auth()->id())->delete();
         $message = 'Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted);
         return $this->send_response($message);
@@ -171,14 +167,5 @@ class RouterController extends Controller
         $filters['user_id'] = auth()->id();
         $router = Router::query()->filter($filters)->find($id);
         return $router;
-    }
-
-    private function destroy_cache(string $id)
-    {
-        $path = storage_path('app/mikapi/hotspot/user');
-        $file = $path . '/' . $id . '.json';
-        if (file_exists($file)) {
-            File::delete($file);
-        }
     }
 }

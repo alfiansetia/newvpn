@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Router extends Model
 {
@@ -56,6 +57,26 @@ class Router extends Model
             return asset('/images/default/logo_vc.svg');
         } else {
             return $value;
+        }
+    }
+
+    public function destroy_cache()
+    {
+        $path = storage_path('app/mikapi/hotspot/user');
+        $file = $path . '/' . $this->id . '.json';
+        if (file_exists($file)) {
+            File::delete($file);
+        }
+    }
+
+    public function destroy_cache_by_ids(array $ids)
+    {
+        $path = storage_path('app/mikapi/hotspot/user');
+        foreach ($ids as $item) {
+            $file = $path . '/' . $item . '.json';
+            if (file_exists($file)) {
+                File::delete($file);
+            }
         }
     }
 }

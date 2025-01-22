@@ -116,23 +116,27 @@
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.authorized) {
                             text +=
-                                '<span class="badge me-1 badge-success" title="Authorized">A</span>'
+                                '<span class="badge me-1 badge-success bs-tooltip" title="Authorized">A</span>'
                         }
                         if (row.bypassed) {
                             text +=
-                                '<span class="badge me-1 badge-success" title="Bypassed">P</span>'
+                                '<span class="badge me-1 badge-success bs-tooltip" title="Bypassed">P</span>'
                         }
                         if (row.blocked) {
-                            text += '<span class="badge me-1 badge-danger" title="Bloked">B</span>'
+                            text +=
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Bloked">B</span>'
                         }
                         if (row.static) {
-                            text += '<span class="badge me-1 badge-secondary" title="Static">S</span>'
+                            text +=
+                                '<span class="badge me-1 badge-secondary bs-tooltip" title="Static">S</span>'
                         }
                         if (row['DHCP']) {
-                            text += '<span class="badge me-1 badge-secondary" title="DHCP">H</span>'
+                            text +=
+                                '<span class="badge me-1 badge-secondary bs-tooltip" title="DHCP">H</span>'
                         }
                         if (row.dynamic) {
-                            text += '<span class="badge me-1 badge-secondary" title="Dynamic">D</span>'
+                            text +=
+                                '<span class="badge me-1 badge-secondary bs-tooltip" title="Dynamic">D</span>'
                         }
                         text += `</div>`
                         return text

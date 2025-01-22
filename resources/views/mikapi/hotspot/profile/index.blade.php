@@ -96,6 +96,28 @@
     <script>
         // $(document).ready(function() {
 
+        function remove_space(el) {
+            let new_name = el.value.replace(/\s/g, "-");
+            el.value = new_name;
+        }
+
+        $('#expired_mode').change(function() {
+            let exp_mode = $(this).val()
+            if (exp_mode == '' || exp_mode == 0) {
+                $('#row_limit').hide()
+            } else {
+                $('#row_limit').show()
+            }
+        })
+
+        $('#edit_expired_mode').change(function() {
+            let exp_mode = $(this).val()
+            if (exp_mode == '' || exp_mode == 0) {
+                $('#edit_row_limit').hide()
+            } else {
+                $('#edit_row_limit').show()
+            }
+        })
 
         $('.mask_angka').inputmask({
             alias: 'numeric',
@@ -168,9 +190,45 @@
             });
         });
 
+        var tomse_pool_data = null;
+        document.querySelectorAll('.tomse-pool').forEach((el) => {
+            var tomse = new TomSelect(el, {
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                preload: 'focus',
+                placeholder: "Please Select Address Pool",
+                allowEmptyOption: true,
+                options: [{
+                    name: 'none'
+                }],
+                load: function(query, callback) {
+                    if (tomse_pool_data) {
+                        callback(tomse_pool_data);
+                        return;
+                    }
+                    var url = '{{ route('api.mikapi.pools.index') }}' + param_router +
+                        '&limit=' +
+                        perpage +
+                        '&name=' +
+                        encodeURIComponent(
+                            query);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            tomse_pool_data = json.data
+                            callback(json.data);
+                        }).catch(() => {
+                            callback();
+                        });
+                },
+            });
+        });
+
 
         $('#reset').click(function() {
             document.getElementById('parent').tomselect.clear()
+            document.getElementById('pool').tomselect.clear()
         })
 
 
@@ -237,11 +295,11 @@
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.disabled) {
                             text +=
-                                '<span class="badge me-1 badge-danger" title="Disabled">X</span>'
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Disabled">X</span>'
                         }
                         if (row.default) {
                             text +=
-                                '<span class="badge me-1 badge-info" title="Default">*</span>'
+                                '<span class="badge me-1 badge-info bs-tooltip" title="Default">*</span>'
                         }
                         text += `</div>`
                         return text
@@ -271,17 +329,71 @@
                 data: 'rate-limit',
                 className: "text-center",
             }, {
-                title: "Session Timeout",
-                data: 'session-timeout',
-                className: "text-center",
+                title: "Expired Mode",
+                data: 'mikhmon',
+                className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
-                        return dtm(data);
+                        if (data != null) {
+                            return data.exp_mode_parse
+                        }
                     } else {
-                        return data;
+                        return '';
                     }
                 }
-            }],
+            }, {
+                title: "Validity",
+                data: 'mikhmon',
+                className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        if (data != null) {
+                            return data.validity
+                        }
+                    } else {
+                        return '';
+                    }
+                }
+            }, {
+                title: "Price",
+                data: 'mikhmon',
+                className: "text-end",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        if (data != null) {
+                            return hrg(data.price)
+                        }
+                    } else {
+                        return '';
+                    }
+                }
+            }, {
+                title: "Selling Price",
+                data: 'mikhmon',
+                className: "text-end",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        if (data != null) {
+                            return hrg(data.selling_price)
+                        }
+                    } else {
+                        return '';
+                    }
+                }
+            }, {
+                title: "Lock User",
+                data: 'mikhmon',
+                className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        if (data != null) {
+                            return data.lock
+                        }
+                    } else {
+                        return 'Disable';
+                    }
+                }
+            }, ],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
                 <div class="form-check form-check-primary d-block new-control">
@@ -321,9 +433,11 @@
                     $('#edit_name').val(result.data.name);
                     $('#edit_shared_users').val(result.data['shared-users']);
                     $('#edit_rate_limit').val(result.data['rate-limit']);
-                    $('#edit_data_day').val(result.data.session_timeout_parse_array.day);
-                    f2.setDate(result.data.session_timeout_parse_array.time);
+
+                    // $('#edit_data_day').val(result.data.session_timeout_parse_array.day);
+                    // f2.setDate(result.data.session_timeout_parse_array.time);
                     let tom = document.getElementById('edit_parent').tomselect
+                    let tom_pool = document.getElementById('edit_pool').tomselect
                     if (result.data['parent-queue'] == null) {
                         tom.clear()
                     } else {
@@ -332,6 +446,31 @@
                         })
                         tom.setValue(result.data['parent-queue'])
                     }
+                    if (result.data['address-pool'] == null) {
+                        tom_pool.clear()
+                    } else {
+                        tom_pool.addOption({
+                            name: result.data['address-pool']
+                        })
+                        tom_pool.setValue(result.data['address-pool'])
+                    }
+
+                    if (result.data.mikhmon == null) {
+                        $('#edit_expired_mode').val(0)
+                        $('#edit_lock_user').val('Disable').change()
+                        $('#edit_data_day').val(0);
+                        f2.setDate('00:00:00');
+                        $('#edit_price').val(0);
+                        $('#edit_selling_price').val(0);
+                    } else {
+                        $('#edit_expired_mode').val(result.data.mikhmon.exp_mode)
+                        $('#edit_lock_user').val(result.data.mikhmon.lock).change()
+                        $('#edit_data_day').val(result.data.mikhmon.validity_parse.day);
+                        f2.setDate(result.data.mikhmon.validity_parse.time);
+                        $('#edit_price').val(result.data.mikhmon.price);
+                        $('#edit_selling_price').val(result.data.mikhmon.selling_price);
+                    }
+                    $('#edit_expired_mode').change()
                     add_detail(result.data, 'tbl_detail')
                     if (show) {
                         show_card_edit()

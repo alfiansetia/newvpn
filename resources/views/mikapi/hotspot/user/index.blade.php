@@ -423,11 +423,11 @@
                         <input class="form-check-input child-chk" type="checkbox" ${row.default ? 'disabled' : ''} name="id[]" value="${data}" >`
                         if (row.disabled) {
                             text +=
-                                '<span class="badge me-1 badge-danger" title="Disabled">X</span>'
+                                '<span class="badge me-1 badge-danger bs-tooltip" title="Disabled">X</span>'
                         }
                         if (row.default) {
                             text +=
-                                '<span class="badge me-1 badge-info" title="Default">*</span>'
+                                '<span class="badge me-1 badge-info bs-tooltip" title="Default">*</span>'
                         }
                         text += `</div>`
                         return text
