@@ -223,6 +223,16 @@
                 </ul>
             </li>
 
+            <li class="menu {{ $title == 'Voucher Template' ? 'active' : '' }}">
+                <a href="{{ route('mikapi.vouchertemplate.index') }}{{ $param_router }}"
+                    aria-expanded="{{ $title == 'Voucher Template' ? 'true' : 'false' }}" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="slack"></i>
+                        <span>Voucher Template</span>
+                    </div>
+                </a>
+            </li>
+
             <li class="menu menu-heading"></li>
             <li class="menu menu-heading"></li>
             <li class="menu menu-heading"></li>

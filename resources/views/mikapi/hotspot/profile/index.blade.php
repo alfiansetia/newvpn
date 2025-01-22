@@ -256,7 +256,7 @@
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         let text =
-                            `<i class="fa fa-ci fa-circle text-${row.scheduler ? 'success' : 'danger'} bs-tooltip" title="Scheduler Mikhmon"></i> ${data}`
+                            `<i class="fa fa-ci fa-circle text-${row.scheduler ? 'success' : 'danger'} bs-tooltip" title="Scheduler Mikhmon ${row.scheduler ? 'Available' : 'Unavailable'}"></i> ${data}`
                         return text
                     } else {
                         return data
@@ -290,7 +290,7 @@
             },
             drawCallback: function(settings) {
                 feather.replace();
-                // tooltip()
+                tooltip()
             },
             initComplete: function() {
                 feather.replace();

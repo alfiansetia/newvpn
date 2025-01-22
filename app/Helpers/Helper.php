@@ -3,6 +3,8 @@
 use App\Models\Company;
 use Illuminate\Support\Carbon;
 
+use function PHPUnit\Framework\returnSelf;
+
 function company()
 {
     return Company::first();
@@ -475,4 +477,11 @@ function getx($profile, $profiles)
     } else {
         return 0;
     }
+}
+
+
+function getrandomclass()
+{
+    $class = ['primary', 'secondary', 'warning', 'danger', 'info', 'success', 'dark'];
+    return $class[random_int(0, 6)];
 }

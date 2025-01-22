@@ -12,6 +12,7 @@ use App\Http\Controllers\Mikapi\LogController;
 use App\Http\Controllers\Mikapi\MonitorController;
 use App\Http\Controllers\Mikapi\PPPController;
 use App\Http\Controllers\Mikapi\SystemController;
+use App\Http\Controllers\Mikapi\VoucherTemplateController as MikapiVoucherTemplateController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\ProfileController;
@@ -94,6 +95,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('mikapi/dhcp/lease', [DHCPController::class, 'lease'])->name('mikapi.dhcp.lease');
 
         Route::get('mikapi/monitor/interface', [MonitorController::class, 'interface'])->name('mikapi.monitor.interface');
+
+        Route::get('mikapi/voucher-template', [MikapiVoucherTemplateController::class, 'index'])->name('mikapi.vouchertemplate.index');
+        Route::get('mikapi/voucher-template/{template}', [MikapiVoucherTemplateController::class, 'show'])->name('mikapi.vouchertemplate.show');
 
         // Route::group(['middleware' => ['role:admin']], function () {
 

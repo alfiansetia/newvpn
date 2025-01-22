@@ -122,6 +122,19 @@
     <script src="{{ asset('backend/src/plugins/src//blockui/jquery.blockUI.min.js') }}"></script>
 
     <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script>
+        function tooltip() {
+            var bsTooltip = document.querySelectorAll('.bs-tooltip')
+            for (let index = 0; index < bsTooltip.length; index++) {
+                var tooltip = new bootstrap.Tooltip(bsTooltip[index], {
+                    delay: {
+                        "show": 100,
+                        "hide": 100
+                    }
+                })
+            }
+        }
+    </script>
     @stack('jslib')
     @stack('js')
 
@@ -198,13 +211,6 @@
                     $('#form_logout').submit();
                 }
             })
-        }
-
-        function tooltip() {
-            var bsTooltip = document.querySelectorAll('.bs-tooltip')
-            for (let index = 0; index < bsTooltip.length; index++) {
-                var tooltip = new bootstrap.Tooltip(bsTooltip[index])
-            }
         }
 
         function redirect(url) {

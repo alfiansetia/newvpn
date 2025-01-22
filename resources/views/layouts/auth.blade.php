@@ -100,7 +100,12 @@
         function tooltip() {
             var bsTooltip = document.querySelectorAll('.bs-tooltip')
             for (let index = 0; index < bsTooltip.length; index++) {
-                var tooltip = new bootstrap.Tooltip(bsTooltip[index])
+                var tooltip = new bootstrap.Tooltip(bsTooltip[index], {
+                    delay: {
+                        "show": 100,
+                        "hide": 100
+                    }
+                })
             }
         }
 
