@@ -15,7 +15,7 @@ class ProfileController extends Controller
         $this->validate($request, [
             'name'      => 'required|max:25|min:3',
             'gender'    => 'in:male,female',
-            'phone'     => 'required|max:25|min:3',
+            'phone'     => 'required|max:15|min:9|regex:/^\+?[0-9#_]{7,15}$/',
             'address'   => 'required|max:100|min:3',
         ]);
         $user->Update([

@@ -15,11 +15,19 @@ class ActiveMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->user()->is_verified() || !auth()->user()->is_active()) {
+        $user = auth()->user();
+        if (!$user->is_verified() || !$user->is_active()) {
             if ($request->ajax() || $request->expectsJson()) {
                 return response()->json(['message' => 'Your account is Nonactive!'], 403);
             }
             return redirect()->route('home')->with('error', 'Your account is Nonactive, Contact Admin!');
+        }
+        $phoneRegex = '/^\+?[0-9#_]{7,15}$/';
+        if (!preg_match($phoneRegex, $user->phone) || empty($user->phone)) {
+            if ($request->ajax() || $request->expectsJson()) {
+                return response()->json(['message' => 'Complete your profile info!'], 403);
+            }
+            return redirect()->route('setting.profile.edit')->with('error', 'Lengkapi Profile Anda dengan Nomor Whatsapp yang valid!');
         }
         return $next($request);
     }

@@ -55,6 +55,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    // Profile
+    Route::get('setting/profile', [ProfileController::class, 'profile'])->name('setting.profile');
+    Route::get('setting/profile/edit', [ProfileController::class, 'profileEdit'])->name('setting.profile.edit');
+
     Route::group(['middleware' => ['active']], function () {
 
 
@@ -90,11 +94,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('mikapi/dhcp/lease', [DHCPController::class, 'lease'])->name('mikapi.dhcp.lease');
 
         Route::get('mikapi/monitor/interface', [MonitorController::class, 'interface'])->name('mikapi.monitor.interface');
-
-        // Profile
-        Route::get('setting/profile', [ProfileController::class, 'profile'])->name('setting.profile');
-        Route::get('setting/profile/edit', [ProfileController::class, 'profileEdit'])->name('setting.profile.edit');
-
 
         // Route::group(['middleware' => ['role:admin']], function () {
 

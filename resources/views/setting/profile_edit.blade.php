@@ -104,7 +104,7 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="phone">Phone</label>
+                                                                    <label for="phone">Phone/Whatsapp</label>
                                                                     <input type="tel"
                                                                         class="form-control mb-3 maxlength" name="phone"
                                                                         id="phone"

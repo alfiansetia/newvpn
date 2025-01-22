@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\NewLoginNotification;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -78,6 +79,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function sendEmailNewLogin($ip, $userAgent)
+    {
+        $this->notify(new NewLoginNotification($ip, $userAgent));
     }
 
     public function scopeFilter($query, array $filters)
