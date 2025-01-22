@@ -1,18 +1,3 @@
-@php
-    function getx($profile, $profiles)
-    {
-        $profile = collect($profiles)->where('name', $profile)->first();
-        if (!$profile) {
-            return 0;
-        }
-        if ($profile['mikhmon']) {
-            return $profile['mikhmon']['selling_price'];
-        } else {
-            return 0;
-        }
-    }
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/default/favicon.ico') }}">
     <title>Document</title>
-    <style>
+    {{-- <style>
         body {
             color: #000000;
             background-color: #FFFFFF;
@@ -79,7 +65,9 @@
             height: 30px;
             margin-top: 1px;
         }
-    </style>
+    </style> --}}
+    {!! $template->header !!}
+    <script src="{{ asset('js/qrious.min.js') }}"></script>
 </head>
 
 <body>
@@ -97,7 +85,7 @@
                 $item['limit-uptime'] ?? '',
                 $item['limit-uptime'] ?? '',
                 $item['limit_byte_total_parse'] ?? '',
-                $template->qr,
+                "id='" . $item['name'] . "'",
                 url('/images/default/logo.svg'),
                 $router->dnsname,
                 $router->contact,
@@ -110,6 +98,22 @@
             {!! $template->generate_up($param) !!}
         @endif
     @endforeach
+
+    {!! $template->footer !!}
 </body>
+
+
+@foreach ($data as $item)
+    <script>
+        (function() {
+            let qr = new QRious({
+                value: "http://{{ $router->dnsname }}/login?username={{ $item['name'] }}&password={{ $item['password'] }}"
+            });
+            let url = qr.toDataURL();
+            document.getElementById('{{ $item['name'] }}').src = url
+        })
+        ();
+    </script>
+@endforeach
 
 </html>

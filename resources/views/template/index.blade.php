@@ -187,7 +187,9 @@
         var perpage = 50
 
         // $(document).ready(function() {
-        var element_ids = ['html_vc', 'html_up', 'edit_html_up', 'edit_html_vc']
+        var element_ids = ['html_vc', 'html_up', 'edit_html_up', 'edit_html_vc', 'header', 'footer', 'edit_header',
+            'edit_footer'
+        ]
 
         element_ids.forEach(element => {
             var editor = CodeMirror.fromTextArea(document.getElementById(element), {
@@ -210,18 +212,18 @@
         });
 
 
-        $('#edit_delete').after(
-            `<button type="button" class="btn btn-info show-detail ms-2 mb-2"><i
-           class="fas fa-info me-1 bs-tooltip" title="Detail"></i>Detail</button>`
-        )
+        // $('#edit_delete').after(
+        //     `<button type="button" class="btn btn-info show-detail ms-2 mb-2"><i
+    //    class="fas fa-info me-1 bs-tooltip" title="Detail"></i>Detail</button>`
+        // )
 
         $('#reset').click(function() {
-            let html_up = $('#html_up').data('CodeMirrorInstance');
-            let html_vc = $('#html_vc').data('CodeMirrorInstance');
-            html_up.setValue('')
-            html_vc.setValue('')
-            html_up.refresh('')
-            html_vc.refresh('')
+
+            let element = ['html_up', 'html_vc', 'header', 'footer'];
+            element.forEach(item => {
+                $(`#${item}`).data('CodeMirrorInstance').setValue('')
+                $(`#${item}`).data('CodeMirrorInstance').refresh('')
+            });
         })
 
         var table = $('#tableData').DataTable({
@@ -271,23 +273,32 @@
             oLanguage: o_lang,
             sPaginationType: 'simple_numbers',
             columns: [{
-                width: "30px",
-                title: 'Id',
-                data: 'id',
-                className: "",
-                orderable: false,
-                searchable: false,
-                render: function(data, type, row, meta) {
-                    return `
+                    width: "30px",
+                    title: 'Id',
+                    data: 'id',
+                    className: "",
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return `
                     <div class="form-check form-check-primary d-block new-control">
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >
                     </div>`
+                    }
+                }, {
+                    title: "Name",
+                    data: 'name',
+                    className: 'text-start',
+                },
+                {
+                    title: "Preview",
+                    data: 'id',
+                    className: 'text-center',
+                    render: function(data, type, row, meta) {
+                        return `<a href="{{ route('template.index') }}/${data}" class="btn btn-sm btn-info" target="_blank" >Preview</a>`
+                    }
                 }
-            }, {
-                title: "Name",
-                data: 'name',
-                className: 'text-start',
-            }],
+            ],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
                 <div class="form-check form-check-primary d-block new-control">
@@ -305,7 +316,7 @@
 
         multiCheck(table);
 
-        $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
+        $('#tableData tbody').on('click', 'tr td:not(:first-child,:last-child)', function() {
             id = table.row(this).id()
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
@@ -324,6 +335,8 @@
 
                     var edit_html_up = $('#edit_html_up').data('CodeMirrorInstance');
                     var edit_html_vc = $('#edit_html_vc').data('CodeMirrorInstance');
+                    var edit_header = $('#edit_header').data('CodeMirrorInstance');
+                    var edit_footer = $('#edit_footer').data('CodeMirrorInstance');
                     if (result.data.html_up) {
                         edit_html_up.setValue(result.data.html_up);
                     } else {
@@ -336,9 +349,20 @@
                         edit_html_vc.setValue('');
                     }
 
+                    if (result.data.header) {
+                        edit_header.setValue(result.data.header);
+                    } else {
+                        edit_header.setValue('');
+                    }
+                    if (result.data.footer) {
+                        edit_footer.setValue(result.data.footer);
+                    } else {
+                        edit_footer.setValue('');
+                    }
 
                     if (show) {
-                        show_card_detail()
+                        show_card_edit()
+                        refresh_code()
                         input_focus('name')
                     }
                 },
@@ -353,13 +377,17 @@
         }
 
         $('.show-edit').click(function() {
-            setTimeout(() => {
-                let edit_html_up = $('#edit_html_up').data('CodeMirrorInstance');
-                let edit_html_vc = $('#edit_html_vc').data('CodeMirrorInstance');
-                edit_html_up.refresh()
-                edit_html_vc.refresh()
-            }, 1);
+            refresh_code()
         })
+
+        function refresh_code() {
+            setTimeout(() => {
+                let element = ['edit_html_up', 'edit_html_vc', 'edit_header', 'edit_footer'];
+                element.forEach(item => {
+                    $(`#${item}`).data('CodeMirrorInstance').refresh()
+                });
+            }, 1);
+        }
 
         // });
     </script>

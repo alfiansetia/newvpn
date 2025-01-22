@@ -463,3 +463,16 @@ function salam(): string
         return 'Selamat Malam ';
     }
 }
+
+function getx($profile, $profiles)
+{
+    $profile = collect($profiles)->where('name', $profile)->first();
+    if (!$profile) {
+        return 0;
+    }
+    if ($profile['mikhmon']) {
+        return $profile['mikhmon']['selling_price'];
+    } else {
+        return 0;
+    }
+}

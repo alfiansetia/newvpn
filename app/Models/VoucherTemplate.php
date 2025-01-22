@@ -47,10 +47,11 @@ class VoucherTemplate extends Model
             '1 Hari',
             '1 Hari',
             '3 GiB',
-            $this->qr,
+            'src="' . $this->qr . '"',
             url('/images/default/logo.svg'),
             'http://wifi.net',
             '082324129752',
+            1
         ];
     }
 

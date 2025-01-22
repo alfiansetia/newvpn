@@ -38,11 +38,15 @@ class VoucherTemplateController extends Controller
             'name'      => 'required|max:200',
             'html_up'   => 'required|max:65535',
             'html_vc'   => 'required|max:65535',
+            'header'    => 'nullable|max:65535',
+            'footer'    => 'nullable|max:65535',
         ]);
         $vc = VoucherTemplate::create([
             'name'      => $request->name,
             'html_up'   => $request->html_up,
             'html_vc'   => $request->html_vc,
+            'header'    => $request->input('header'),
+            'footer'    => $request->input('footer'),
         ]);
         return $this->send_response('Success Insert Data!');
     }
@@ -58,11 +62,15 @@ class VoucherTemplateController extends Controller
             'name'      => 'required|max:200',
             'html_up'   => 'required|max:65535',
             'html_vc'   => 'required|max:65535',
+            'header'    => 'nullable|max:65535',
+            'footer'    => 'nullable|max:65535',
         ]);
         $template->update([
             'name'      => $request->name,
             'html_up'   => $request->html_up,
             'html_vc'   => $request->html_vc,
+            'header'    => $request->input('header'),
+            'footer'    => $request->input('footer'),
         ]);
         return $this->send_response('Success Update Data!');
     }

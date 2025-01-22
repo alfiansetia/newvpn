@@ -15,6 +15,11 @@
                         <span class="error invalid-feedback err_name" style="display: hide;"></span>
                     </div>
                     <div class="form-group mb-2">
+                        <label class="control-label" for="header">Header :</label>
+                        <textarea name="header" class="form-control" id="header" placeholder="Please Enter Header" rows="10" required></textarea>
+                        <span class="error invalid-feedback err_header" style="display: hide;"></span>
+                    </div>
+                    <div class="form-group mb-2">
                         <label class="control-label" for="html_up">HTML UP :</label>
                         <textarea name="html_up" class="form-control" id="html_up" placeholder="Please Enter HTML UP" rows="10" required></textarea>
                         <span class="error invalid-feedback err_html_up" style="display: hide;"></span>
@@ -23,6 +28,11 @@
                         <label class="control-label" for="html_vc">HTML VC :</label>
                         <textarea name="html_vc" class="form-control" id="html_vc" placeholder="Please Enter HTML VC" rows="10" required></textarea>
                         <span class="error invalid-feedback err_html_vc" style="display: hide;"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="control-label" for="footer">Footer :</label>
+                        <textarea name="footer" class="form-control" id="footer" placeholder="Please Enter Footer" rows="10" required></textarea>
+                        <span class="error invalid-feedback err_footer" style="display: hide;"></span>
                     </div>
                 </div>
                 <div class="card-footer text-center">

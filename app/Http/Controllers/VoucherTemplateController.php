@@ -26,9 +26,9 @@ class VoucherTemplateController extends Controller
         return view('template.index');
     }
 
-    public function edit(VoucherTemplate $template)
+    public function show(VoucherTemplate $template)
     {
         $data = $template;
-        return view('tes', compact('data'));
+        return view('template.preview', compact('data'));
     }
 }
