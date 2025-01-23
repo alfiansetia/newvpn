@@ -45,19 +45,32 @@ class ProfileController extends Controller
             'name'              => 'required|min:1|max:50',
             'shared_users'      => 'integer|gte:0',
             'rate_limit'        => 'nullable|min:5|max:25',
-            'data_day'          => 'nullable|integer|between:0,365',
-            'time_limit'        => 'required|date_format:H:i:s',
             'parent'            => 'required',
+            'pool'              => 'required',
+            'price'             => 'required|integer|gte:0',
+            'selling_price'     => 'required|integer|gte:0',
+            'expired_mode'      => 'required|in:0,rem,ntf,remc,ntfc',
+            'lock_user'         => 'required|in:Enable,Disable',
+            'data_day'          => 'nullable|integer|between:0,365',
+            'time_limit'        => 'nullable|date_format:H:i:s',
         ]);
-        $param = [
-            'name'              => (preg_replace('/\s+/', '-', $request->input('name'))),
-            'shared-users'      => $request->input('shared_users') == 0 ? 'unlimited' : $request->input('shared_users'),
-            'rate-limit'        => $request->input('rate_limit'),
-            'session-timeout'   => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
-            'parent-queue'      => $request->input('parent') ?? 'none',
-        ];
+        $expmode = $request->expired_mode;
+        $day = $request->data_day;
+        $time = parse_dtm_to_string($request->time_limit ?? '00:00:00');
+        if ($expmode != 0) {
+            if ($day < 1 && empty($time)) {
+                return response()->json([
+                    'message' => "Validity Required When Expired Mode not None!",
+                    'errors' => [
+                        'data_day'      => ['Day/Time Limit Required'],
+                        'time_limit'    => ['Day/Time Limit Required'],
+                    ]
+                ], 422);
+            }
+        }
+
         try {
-            $data = ProfileServices::routerId($request->router)->store($param);
+            $data = ProfileServices::routerId($request->router)->store($request);
             return $this->send_response('Success Insert Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -70,19 +83,31 @@ class ProfileController extends Controller
             'name'              => 'required|min:1|max:50',
             'shared_users'      => 'integer|gte:0',
             'rate_limit'        => 'nullable|min:5|max:25',
-            'data_day'          => 'required|integer|between:0,365',
-            'time_limit'        => 'required|date_format:H:i:s',
             'parent'            => 'required',
+            'pool'              => 'required',
+            'price'             => 'required|integer|gte:0',
+            'selling_price'     => 'required|integer|gte:0',
+            'expired_mode'      => 'required|in:0,rem,ntf,remc,ntfc',
+            'lock_user'         => 'required|in:Enable,Disable',
+            'data_day'          => 'nullable|integer|between:0,365',
+            'time_limit'        => 'nullable|date_format:H:i:s',
         ]);
-        $param = [
-            'name'              => (preg_replace('/\s+/', '-', $request->input('name'))),
-            'shared-users'      => $request->input('shared_users') == 0 ? 'unlimited' : $request->input('shared_users'),
-            'rate-limit'        => $request->input('rate_limit'),
-            'session-timeout'   => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
-            'parent-queue'      => $request->input('parent') ?? 'none',
-        ];
+        $expmode = $request->expired_mode;
+        $day = $request->data_day;
+        $time = parse_dtm_to_string($request->time_limit ?? '00:00:00');
+        if ($expmode != 0) {
+            if ($day < 1 && empty($time)) {
+                return response()->json([
+                    'message' => "Validity Required When Expired Mode not None!",
+                    'errors' => [
+                        'data_day'      => ['Day/Time Limit Required'],
+                        'time_limit'    => ['Day/Time Limit Required'],
+                    ]
+                ], 422);
+            }
+        }
         try {
-            $data = ProfileServices::routerId($request->router)->update($id, $param);
+            $data = ProfileServices::routerId($request->router)->update($id, $request);
             return $this->send_response('Success Update Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -93,7 +118,7 @@ class ProfileController extends Controller
     {
         try {
             $data = ProfileServices::routerId($request->router)->destroy([$id]);
-            return $this->send_response('Success Delete Data!');
+            return $this->send_response('Success Delete Data, Delete Manually Scheduler!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
@@ -107,7 +132,7 @@ class ProfileController extends Controller
         $id = $request->id;
         try {
             $data = ProfileServices::routerId($request->router)->destroy($id);
-            return $this->send_response('Success Delete Data!');
+            return $this->send_response('Success Delete Data, Delete Manually Scheduler!!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }

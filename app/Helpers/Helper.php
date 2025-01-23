@@ -502,7 +502,8 @@ function get_mikhmon_profile_data($on_login)
         } elseif ($expmode == "ntfc") {
             $mode = "Notice & Record";
         } else {
-            $mode = null;
+            $mode = 'None';
+            $expmode = 0;
         }
         $validity = !empty($getmikhmon[3]) ? $getmikhmon[3] : null;
         $mikhmon['exp_mode'] = $expmode;
@@ -516,4 +517,24 @@ function get_mikhmon_profile_data($on_login)
         $mikhmon['explode'] = $getmikhmon;
     }
     return $mikhmon;
+}
+
+
+function parse_dtm_to_string($time = '00:00:00')
+{
+    if ($time == '00:00:00' || empty($time)) {
+        return '';
+    }
+    list($hours, $minutes, $seconds) = explode(':', $time);
+    $result = '';
+    if ((int)$hours > 0) {
+        $result .= (int)$hours . 'h';
+    }
+    if ((int)$minutes > 0) {
+        $result .= (int)$minutes . 'm';
+    }
+    if ((int)$seconds > 0) {
+        $result .= (int)$seconds . 's';
+    }
+    return $result;
 }

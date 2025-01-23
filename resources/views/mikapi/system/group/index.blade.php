@@ -149,7 +149,7 @@
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.system) {
                             text +=
-                                '<span class="badge me-1 badge-info" title="System">S</span>'
+                                '<span class="badge me-1 badge-info bs-tooltip" title="System">S</span>'
                         }
                         text += `</div>`
                         return text
@@ -182,7 +182,7 @@
             },
             drawCallback: function(settings) {
                 feather.replace();
-                // tooltip()
+                tooltip()
             },
             initComplete: function() {
                 feather.replace();

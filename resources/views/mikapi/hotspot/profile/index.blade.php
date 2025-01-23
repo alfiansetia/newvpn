@@ -101,24 +101,6 @@
             el.value = new_name;
         }
 
-        $('#expired_mode').change(function() {
-            let exp_mode = $(this).val()
-            if (exp_mode == '' || exp_mode == 0) {
-                $('#row_limit').hide()
-            } else {
-                $('#row_limit').show()
-            }
-        })
-
-        $('#edit_expired_mode').change(function() {
-            let exp_mode = $(this).val()
-            if (exp_mode == '' || exp_mode == 0) {
-                $('#edit_row_limit').hide()
-            } else {
-                $('#edit_row_limit').show()
-            }
-        })
-
         $('.mask_angka').inputmask({
             alias: 'numeric',
             groupSeparator: '.',
@@ -148,6 +130,28 @@
             disableMobile: true,
             time_24hr: true,
             enableSeconds: true
+        })
+
+        $('#expired_mode').change(function() {
+            let exp_mode = $(this).val()
+            if (exp_mode == '' || exp_mode == 0) {
+                $('#data_day').val(0)
+                f1.setDate('00:00:00');
+                $('#row_limit').hide()
+            } else {
+                $('#row_limit').show()
+            }
+        })
+
+        $('#edit_expired_mode').change(function() {
+            let exp_mode = $(this).val()
+            if (exp_mode == '' || exp_mode == 0) {
+                $('#edit_data_day').val(0)
+                f2.setDate('00:00:00');
+                $('#edit_row_limit').hide()
+            } else {
+                $('#edit_row_limit').show()
+            }
         })
 
         $('.maxlength').maxlength({
