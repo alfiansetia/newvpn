@@ -490,7 +490,7 @@
             },
             drawCallback: function(settings) {
                 feather.replace();
-                // tooltip()
+                tooltip()
             },
             initComplete: function() {
                 feather.replace();

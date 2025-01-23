@@ -272,12 +272,10 @@
             },
             drawCallback: function(settings) {
                 feather.replace();
-                // tooltip()
-                refresh = false
+                tooltip()
             },
             initComplete: function() {
                 feather.replace();
-                refresh = false
             }
         });
 

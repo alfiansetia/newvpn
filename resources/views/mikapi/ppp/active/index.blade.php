@@ -114,10 +114,12 @@
                         let textt = `<div class="form-check form-check-primary d-block new-control">
                         <input class="form-check-input child-chk" type="checkbox" name="id[]" value="${data}" >`
                         if (row.radius) {
-                            textt += '<span class="badge me-1 badge-secondary" title="Radius">R</span>'
+                            textt +=
+                                '<span class="badge me-1 badge-secondary bs-tooltip" title="Radius">R</span>'
                         }
                         if (row.local) {
-                            textt += '<span class="badge me-1 badge-info" title="Local">L</span>'
+                            textt +=
+                                '<span class="badge me-1 badge-info bs-tooltip" title="Local">L</span>'
                         }
                         textt += `</div>`
                         return textt
@@ -158,7 +160,7 @@
             },
             drawCallback: function(settings) {
                 feather.replace();
-                // tooltip()
+                tooltip()
             },
             initComplete: function() {
                 feather.replace();
