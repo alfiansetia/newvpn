@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\UserResource;
+use App\Services\Mikapi\GenerateRandom;
 use App\Services\Mikapi\Hotspot\UserServices;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -171,6 +172,32 @@ class UserController extends Controller
         try {
             $data = UserServices::routerId($request->router)->destroy($ids);
             return $this->send_response('Success Delete Data!');
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
+
+
+    public function generate(Request $request)
+    {
+        $this->validate($request, [
+            'qty'           => 'required|integer|gte:1|lte:500',
+            'server'        => 'required',
+            'user_mode'     => 'required|in:up,vc',
+            'length'        => 'required|integer|gte:3|lte:8',
+            'prefix'        => 'nullable|alpha_num|max:6',
+            'character'     => 'required|in:num,up,low,uplow,numlow,numup,numlowup',
+            'profile'       => 'required',
+            'data_day'      => 'nullable|integer|between:0,365',
+            'time_limit'    => 'required|date_format:H:i:s',
+            'data_limit'    => 'required|integer|gte:0',
+            'data_type'     => 'nullable|in:K,M,G',
+            'comment'       => 'nullable|max:100|alpha_num',
+        ]);
+
+        try {
+            $data = UserServices::routerId($request->router)->generate($request);
+            return $this->send_response('Success Generate Data!', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }

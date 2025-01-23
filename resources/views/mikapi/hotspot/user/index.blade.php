@@ -27,6 +27,8 @@
     <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
 
+    <link href="{{ asset('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
         type="text/css">
@@ -125,6 +127,83 @@
             document.getElementById('filter_comment').tomselect.load('')
         })
 
+        function random_char() {
+            let mode = $('#gen_user_mode').val();
+            let up = [{
+                    name: "lower",
+                    value: "Random abcd"
+                },
+                {
+                    name: "upper",
+                    value: "Random ABCD"
+                },
+                {
+                    name: "upplow",
+                    value: "Random aBcD"
+                },
+                {
+                    name: "mix",
+                    value: "Random 5ab2c34d"
+                },
+                {
+                    name: "mix1",
+                    value: "Random 5AB2C34D"
+                },
+                {
+                    name: "mix2",
+                    value: "Random 5aB2c34D"
+                },
+            ]
+            let vc = [{
+                    name: 'lower',
+                    value: 'Random abcd2345'
+                },
+                {
+                    name: 'upper',
+                    value: 'Random ABCD2345'
+                },
+                {
+                    name: 'upplow',
+                    value: 'Random aBcD2345'
+                },
+                {
+                    name: 'mix',
+                    value: 'Random 5ab2c34d'
+                },
+                {
+                    name: 'mix1',
+                    value: 'Random 5AB2C34D'
+                },
+                {
+                    name: 'mix2',
+                    value: 'Random 5aB2c34D'
+                },
+                {
+                    name: 'num',
+                    value: 'Random 1234'
+                },
+            ]
+            $('#gen_character').empty()
+            if (mode == 'up') {
+                up.forEach(item => {
+                    $('#gen_character').append('<option value="' + item.name + '">' + item.value + '</option>');
+                });
+            } else {
+                vc.forEach(item => {
+                    $('#gen_character').append('<option value="' + item.name + '">' + item.value + '</option>');
+                });
+
+            }
+        }
+
+
+        document.getElementById("gen_comment").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if (" _!@#$%^&*()+=;|?,.~".indexOf(chr) >= 0)
+                return false;
+        };
+
+
         $('.mask_angka').inputmask({
             alias: 'numeric',
             groupSeparator: '.',
@@ -155,6 +234,16 @@
         })
 
         var f2 = $('#edit_time_limit').flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i:S",
+            defaultDate: "today",
+            disableMobile: true,
+            time_24hr: true,
+            enableSeconds: true
+        })
+
+        var f3 = $('#gen_time_limit').flatpickr({
             enableTime: true,
             noCalendar: true,
             dateFormat: "H:i:S",
@@ -321,6 +410,11 @@
         $('#reset').click(function() {
             document.getElementById('server').tomselect.clear()
             document.getElementById('profile').tomselect.clear()
+        })
+
+        $('#gen_reset').click(function() {
+            document.getElementById('gen_server').tomselect.clear()
+            document.getElementById('gen_profile').tomselect.clear()
         })
 
 
@@ -608,6 +702,27 @@
                 }
             });
         }
+
+        $('#form_gen').submit(function(event) {
+            event.preventDefault();
+        }).validate({
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                $(element).addClass('is-valid');
+            },
+            submitHandler: function(form) {
+                send_ajax('form_gen', 'POST')
+            }
+        });
+
 
         // });
     </script>

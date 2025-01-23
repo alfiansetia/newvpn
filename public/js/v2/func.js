@@ -104,6 +104,9 @@ function handleResponseForm(jqXHR, formID) {
             text: message,
             icon: 'error',
         })
+        if(jqXHR.status == 419){
+            window.location.reload()
+        }
     } else {
         let errors = jqXHR.responseJSON.errors || {};
         let errorKeys = Object.keys(errors);
@@ -239,6 +242,7 @@ function clear_validate(formID) {
 
 function reset() {
     $('#reset').click();
+    $('#gen_reset').click();
 }
 
 function ajax_setup() {

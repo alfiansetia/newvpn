@@ -124,6 +124,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('mikapi/hotspot/profiles', [HotspotProfileController::class, 'destroy_batch'])
             ->name('api.mikapi.hotspot.profiles.destroy.batch');
 
+        Route::post('mikapi/hotspot/user-generate', [HotspotUserController::class, 'generate'])
+            ->name('api.mikapi.hotspot.users.generate');
         Route::get('mikapi/hotspot/user-comment', [HotspotUserController::class, 'comment'])
             ->name('api.mikapi.hotspot.users.comment');
         Route::get('mikapi/hotspot/user-refresh', [HotspotUserController::class, 'refresh'])
