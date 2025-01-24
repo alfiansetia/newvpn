@@ -326,9 +326,9 @@ function send_ajax_url(url, method, data=[], alert = true) {
             unblock()
             if(alert){
                 show_alert(res.message, 'success')
-                if(typeof(table) != 'undefined'){
-                    table.ajax.reload();
-                }
+            }
+            if(typeof(table) != 'undefined'){
+                table.ajax.reload();
             }
         },
         error: function (xhr, status, error) {
