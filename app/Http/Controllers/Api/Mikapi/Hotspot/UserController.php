@@ -199,7 +199,8 @@ class UserController extends Controller
         try {
             // $data = GenerateHotspotUser::dispatch($request->all(), auth()->id());
             $data = UserServices::routerId($request->router)->generate($request);
-            return $this->send_response('Success Generate Data!', $data, 403);
+            return $this->send_response('Success Generate Data!', $data);
+            // return $this->send_response('Success Generate Data!', $data, 403);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }
