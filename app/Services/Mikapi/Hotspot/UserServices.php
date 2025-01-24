@@ -295,7 +295,7 @@ class UserServices extends RouterApiServices
 
         $chunk = get_batch($qty, 200);
         foreach ($chunk as $key => $batch) {
-            $script_name = 'mikhmon_generator_' . $key;
+            $script_name = 'kcn_net_generator_' . $key;
             $old_script = parent::$API->comm('/system/script/print', [
                 '?name' => $script_name,
             ]);
