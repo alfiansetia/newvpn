@@ -103,15 +103,14 @@ class RouterApiServices
 
     public static function cek_exist(string $id)
     {
-        if (empty(static::$user_id)) {
-            $user_id = auth()->id();
-        } else {
-            $user_id = static::$user_id;
-        }
+        $user_id = auth()->id();
+        // if (empty(static::$user_id)) {
+        //     $user_id = auth()->id();
+        // } else {
+        //     $user_id = static::$user_id;
+        // }
         $router = Router::query()->where('user_id', $user_id)
             ->with(['port', 'user', 'port.vpn.server'])->find($id);
-        // $router = Router::query()
-        //     ->with(['port', 'user', 'port.vpn.server'])->find($id);
         if (!$router) {
             throw new Exception('Router Not Found!');
         }

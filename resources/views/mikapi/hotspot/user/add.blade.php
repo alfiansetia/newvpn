@@ -151,7 +151,7 @@
                                         <label class="control-label" for="gen_qty">Qty :</label>
                                         <input type="text" name="qty" class="form-control mask_angka"
                                             id="gen_qty" placeholder="Please Enter Price" min="1"
-                                            max="500" value="1" required>
+                                            max="1000" value="1" required>
                                         <span class="error invalid-feedback err_qty" style="display: hide;"></span>
                                     </div>
                                     <div class="form-group col-md-6 mb-2">
@@ -179,8 +179,8 @@
                                         <select name="length" id="gen_length" class="form-control-lg"
                                             style="width: 100%;" required>
                                             <option value="3">3</option>
-                                            <option value="4" selected>4</option>
-                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="5" selected>5</option>
                                             <option value="6">6</option>
                                             <option value="7">7</option>
                                             <option value="8">8</option>
@@ -204,7 +204,7 @@
                                             <option value="low">Random abcd</option>
                                             <option value="up">Random ABCD</option>
                                             <option value="uplow">Random aBcD</option>
-                                            <option value="numlow">Random 5ab2c34d</option>
+                                            <option value="numlow" selected>Random 5ab2c34d</option>
                                             <option value="numup">Random 5AB2C34D</option>
                                             <option value="numlowup">Random 5aB2c34D</option>
                                         </select>

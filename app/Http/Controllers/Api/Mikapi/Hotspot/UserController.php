@@ -182,7 +182,7 @@ class UserController extends Controller
     public function generate(Request $request)
     {
         $this->validate($request, [
-            'qty'           => 'required|integer|gte:1|lte:500',
+            'qty'           => 'required|integer|gte:1|lte:1000',
             'server'        => 'required',
             'user_mode'     => 'required|in:up,vc',
             'length'        => 'required|integer|gte:3|lte:8',
@@ -197,9 +197,9 @@ class UserController extends Controller
         ]);
 
         try {
-            $data = GenerateHotspotUser::dispatch($request->all(), auth()->id());
-            // $data = UserServices::routerId($request->router)->generate($request);
-            return $this->send_response('Success Generate Data!', $data);
+            // $data = GenerateHotspotUser::dispatch($request->all(), auth()->id());
+            $data = UserServices::routerId($request->router)->generate($request);
+            return $this->send_response('Success Generate Data!', $data, 403);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
         }

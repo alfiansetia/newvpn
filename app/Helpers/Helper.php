@@ -446,3 +446,35 @@ function parse_dtm_to_string($time = '00:00:00')
     }
     return $result;
 }
+
+
+function get_batch($length, $batchSize)
+{
+    // $batches = [];
+    // if ($length <= $batchSize) {
+    //     $batches[] = $length;
+    //     return $batches;
+    // }
+
+    // $totalBatch = ceil($length / $batchSize);
+    // $totalLoop = $totalBatch;
+    // if ($totalBatch * $batchSize > $length) {
+    //     $totalLoop = $totalBatch - 1;
+    // }
+    // for ($i = 0; $i < $totalLoop; $i++) {
+    //     $batches[] = $batchSize;
+    // }
+    // if (($totalLoop * $batchSize) < $length) {
+    //     $batches[$totalBatch] =  $length - ($totalLoop * $batchSize);
+    // }
+    // return $batches;
+    $batches = [];
+
+    while ($length > 0) {
+        $currentBatch = min($length, $batchSize);
+        $batches[] = $currentBatch;
+        $length -= $currentBatch;
+    }
+
+    return $batches;
+}
