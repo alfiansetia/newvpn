@@ -14,6 +14,7 @@ class RouterApiServices
     protected static $name;
     protected static $path;
     protected static $cache;
+    protected static $user_id;
 
     public function __construct() {}
 
@@ -60,7 +61,7 @@ class RouterApiServices
             throw new Exception('Server OFF! Contact Admin!');
         }
         if (!$router->port->vpn->is_active || $router->port->vpn->is_expired()) {
-            throw new Exception('Vpn Not Active!');
+            throw new Exception('Vpn Not Active/Expired!');
         }
         return $router;
     }
@@ -91,8 +92,9 @@ class RouterApiServices
         return self::cek_error($data);
     }
 
-    public static function routerId(string $id)
+    public static function routerId(string $id, $user_id = null)
     {
+        static::$user_id = $user_id;
         $router = self::cek_exist($id);
         self::router($router);
         return new static;
@@ -101,9 +103,15 @@ class RouterApiServices
 
     public static function cek_exist(string $id)
     {
-        $user_id = auth()->id();
+        if (empty(static::$user_id)) {
+            $user_id = auth()->id();
+        } else {
+            $user_id = static::$user_id;
+        }
         $router = Router::query()->where('user_id', $user_id)
             ->with(['port', 'user', 'port.vpn.server'])->find($id);
+        // $router = Router::query()
+        //     ->with(['port', 'user', 'port.vpn.server'])->find($id);
         if (!$router) {
             throw new Exception('Router Not Found!');
         }

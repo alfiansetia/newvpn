@@ -493,7 +493,7 @@
                     text: 'Refresh Data',
                     action: function(e, dt, node, config) {
                         send_ajax_url("{{ route('api.mikapi.hotspot.users.refresh') }}" +
-                            param_router)
+                            param_router, 'GET', [], false)
                     }
                 }]
             }],

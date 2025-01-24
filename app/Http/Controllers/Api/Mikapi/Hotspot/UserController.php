@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Mikapi\Hotspot;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\Hotspot\UserResource;
+use App\Jobs\Mikapi\GenerateHotspotUser;
 use App\Services\Mikapi\GenerateRandom;
 use App\Services\Mikapi\Hotspot\UserServices;
 use Illuminate\Http\Request;
@@ -196,7 +197,8 @@ class UserController extends Controller
         ]);
 
         try {
-            $data = UserServices::routerId($request->router)->generate($request);
+            $data = GenerateHotspotUser::dispatch($request->all(), auth()->id());
+            // $data = UserServices::routerId($request->router)->generate($request);
             return $this->send_response('Success Generate Data!', $data);
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

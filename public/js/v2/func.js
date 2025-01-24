@@ -311,7 +311,7 @@ function send_ajax_only(formID, method) {
     })
 }
 
-function send_ajax_url(url, method, data=[]) {
+function send_ajax_url(url, method, data=[], alert = true) {
     ajax_setup()
     $.ajax({
         url: url,
@@ -324,9 +324,11 @@ function send_ajax_url(url, method, data=[]) {
         },
         success: function (res) {
             unblock()
-            show_alert(res.message, 'success')
-            if(typeof(table) != 'undefined'){
-                table.ajax.reload();
+            if(alert){
+                show_alert(res.message, 'success')
+                if(typeof(table) != 'undefined'){
+                    table.ajax.reload();
+                }
             }
         },
         error: function (xhr, status, error) {
