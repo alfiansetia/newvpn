@@ -167,8 +167,8 @@
                                         <label class="control-label" for="gen_user_mode">User Mode :</label>
                                         <select name="user_mode" id="gen_user_mode"
                                             class="form-select form-control-lg" style="width: 100%;" required>
-                                            <option value="up">Username & Password (Member)</option>
-                                            <option value="vc">Username = Password (Voucher)</option>
+                                            <option value="up">User & Passw (Member)</option>
+                                            <option value="vc">User = Passw (Voucher)</option>
                                         </select>
                                         <span class="error invalid-feedback err_user_mode"
                                             style="display: hide;"></span>
