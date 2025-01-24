@@ -165,8 +165,8 @@
                                 <div class="row">
                                     <div class="form-group col-md-6 mb-2">
                                         <label class="control-label" for="gen_user_mode">User Mode :</label>
-                                        <select name="user_mode" id="gen_user_mode" class="form-control-lg"
-                                            style="width: 100%;" required>
+                                        <select name="user_mode" id="gen_user_mode"
+                                            class="form-select form-control-lg" style="width: 100%;" required>
                                             <option value="up">Username & Password (Member)</option>
                                             <option value="vc">Username = Password (Voucher)</option>
                                         </select>
@@ -176,7 +176,7 @@
 
                                     <div class="form-group col-md-6 mb-2">
                                         <label class="control-label" for="gen_length">Name Length :</label>
-                                        <select name="length" id="gen_length" class="form-control-lg"
+                                        <select name="length" id="gen_length" class="form-select form-control-lg"
                                             style="width: 100%;" required>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
@@ -198,8 +198,8 @@
                                     </div>
                                     <div class="form-group col-md-6 mb-2">
                                         <label class="control-label" for="gen_character">Character :</label>
-                                        <select name="character" id="gen_character" class="form-control-lg"
-                                            style="width: 100%;" required>
+                                        <select name="character" id="gen_character"
+                                            class="form-select form-control-lg" style="width: 100%;" required>
                                             <option value="num">Random 23456</option>
                                             <option value="low">Random abcd</option>
                                             <option value="up">Random ABCD</option>

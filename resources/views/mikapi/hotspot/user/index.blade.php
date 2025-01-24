@@ -125,6 +125,14 @@
         $(document).ready(function() {
             document.getElementById('filter_profile').tomselect.load('')
             document.getElementById('filter_comment').tomselect.load('')
+
+            document.getElementById('filter_comment').tomselect.on('change', function() {
+                table.ajax.reload()
+            })
+
+            document.getElementById('filter_profile').tomselect.on('change', function() {
+                table.ajax.reload()
+            })
         })
 
         function random_char() {
@@ -292,6 +300,9 @@
                 }
             });
         });
+
+
+
 
         var tomse_data_profile = null;
         document.querySelectorAll('.tomse-profile').forEach((el) => {
