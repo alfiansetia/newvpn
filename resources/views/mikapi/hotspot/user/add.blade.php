@@ -16,7 +16,7 @@
                         <button class="nav-link" id="profile-tab-icon" data-bs-toggle="tab"
                             data-bs-target="#profile-tab-icon-pane" type="button" role="tab"
                             aria-controls="profile-tab-icon-pane" aria-selected="false">
-                            <h5><i class="fas fa-plus me-1 bs-tooltip" title="Add Data"></i>Generate</h5>
+                            <h5><i class="fas fa-sync me-1 bs-tooltip" title="Add Data"></i>Generate</h5>
                         </button>
                     </li>
                 </ul>
