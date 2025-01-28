@@ -44,8 +44,8 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="expired_mode">Expired Mode :</label>
-                            <select name="expired_mode" id="expired_mode" class="form-control-lg" style="width: 100%;"
-                                required>
+                            <select name="expired_mode" id="expired_mode" class="form-select form-control-lg"
+                                style="width: 100%;" required>
                                 <option value="">Please Select Expired Mode!</option>
                                 <option value="0">None</option>
                                 <option value="rem">Remove</option>
@@ -57,8 +57,8 @@
                         </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="lock_user">Lock User :</label>
-                            <select name="lock_user" id="lock_user" class="form-control-lg" style="width: 100%;"
-                                required>
+                            <select name="lock_user" id="lock_user" class="form-select form-control-lg"
+                                style="width: 100%;" required>
                                 <option value="Disable">Disable</option>
                                 <option value="Enable">Enable</option>
                             </select>
