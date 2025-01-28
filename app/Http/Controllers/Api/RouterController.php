@@ -77,6 +77,7 @@ class RouterController extends Controller
             'contact'       => $request->contact,
             'url_logo'      => $request->url_logo,
         ]);
+        $router->destroy_cache();
         return $this->send_response('Router Created!');
     }
 
@@ -155,6 +156,7 @@ class RouterController extends Controller
             return $this->send_response_not_found();
         }
         try {
+            $router->destroy_cache();
             $ping  = RouterApiServices::router($router)->ping();
             return $this->send_response('Router Connected!');
         } catch (Exception $e) {
