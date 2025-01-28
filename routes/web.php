@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CompanyController;
@@ -44,6 +45,8 @@ Auth::routes([
     'verify' => true,
     'register' => true,
 ]);
+
+Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/', function () {
     return redirect()->route('login');

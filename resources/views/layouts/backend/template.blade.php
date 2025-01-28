@@ -208,7 +208,8 @@
                 },
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#form_logout').submit();
+                    window.location.href = "{{ route('logout') }}"
+                    // $('#form_logout').submit();
                 }
             })
         }
