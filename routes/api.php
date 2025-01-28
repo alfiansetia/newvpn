@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Mikapi\PPP\L2tpSecretController as PPPL2tpSecretCon
 use App\Http\Controllers\Api\Mikapi\PPP\ProfileController as PPPProfileController;
 use App\Http\Controllers\Api\Mikapi\PPP\SecretController as PPPSecretController;
 use App\Http\Controllers\Api\Mikapi\QueueController;
+use App\Http\Controllers\Api\Mikapi\ReportController;
 use App\Http\Controllers\Api\Mikapi\System\GroupController;
 use App\Http\Controllers\Api\Mikapi\System\PackageController;
 use App\Http\Controllers\Api\Mikapi\System\ResourceController;
@@ -117,6 +118,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
         Route::get('mikapi/dashboard/get-data', [DashboardController::class, 'get'])->name('api.mikapi.dashboard.get');
+
+        Route::apiResource('mikapi/reports', ReportController::class)
+            ->only(['index', 'show', 'destroy'])
+            ->names('api.mikapi.reports');
+        Route::delete('mikapi/reports', [ReportController::class, 'destroy_batch'])
+            ->name('api.mikapi.reports.destroy.batch');
 
         Route::apiResource('mikapi/hotspot/profiles', HotspotProfileController::class)
             ->only(['index', 'show', 'store', 'update', 'destroy'])

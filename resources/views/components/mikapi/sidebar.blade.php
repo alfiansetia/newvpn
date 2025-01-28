@@ -160,6 +160,16 @@
                 </a>
             </li>
 
+            <li class="menu {{ $title == 'Report' ? 'active' : '' }}">
+                <a href="{{ route('mikapi.report') }}{{ $param_router }}"
+                    aria-expanded="{{ $title == 'Report' ? 'true' : 'false' }}" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="dollar-sign"></i>
+                        <span>Report</span>
+                    </div>
+                </a>
+            </li>
+
             <li class="menu menu-heading">
                 <div class="heading">
                     <i data-feather="minus"></i>

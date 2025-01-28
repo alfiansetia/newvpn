@@ -11,6 +11,7 @@ use App\Http\Controllers\Mikapi\HotspotController;
 use App\Http\Controllers\Mikapi\LogController;
 use App\Http\Controllers\Mikapi\MonitorController;
 use App\Http\Controllers\Mikapi\PPPController;
+use App\Http\Controllers\Mikapi\ReportController;
 use App\Http\Controllers\Mikapi\SystemController;
 use App\Http\Controllers\Mikapi\VoucherTemplateController as MikapiVoucherTemplateController;
 use App\Http\Controllers\PageController;
@@ -65,6 +66,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('page/contact', [PageController::class, 'contact'])->name('page.contact');
 
+        Route::get('mikapi/report', [ReportController::class, 'index'])->name('mikapi.report');
         Route::get('mikapi/dashboard', [DashboardController::class, 'index'])->name('mikapi.dashboard');
 
         Route::get('mikapi/system/index', [SystemController::class, 'index'])->name('mikapi.system.index');
