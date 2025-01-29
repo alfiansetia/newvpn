@@ -60,9 +60,9 @@
                 </select>
             </div>
             <div class="col-md-4 mb-2">
-                <button type="button" class="btn btn-block btn-primary" id="btn_filter">
+                {{-- <button type="button" class="btn btn-block btn-primary" id="btn_filter">
                     <i class="fas fa-filter me-1"></i>Filter
-                </button>
+                </button> --}}
 
                 <button type="button" class="btn btn-block btn-primary" id="btn_print">
                     <i class="fas fa-print me-1"></i>Print
