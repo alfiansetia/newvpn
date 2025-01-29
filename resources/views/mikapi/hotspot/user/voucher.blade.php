@@ -31,6 +31,8 @@
                 $router->dnsname,
                 $router->contact,
                 $key,
+                $item['profile'],
+                $router->name,
             ];
         @endphp
         @if ($mode == 'vc')
