@@ -7,70 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/default/favicon.ico') }}">
     <title>Document</title>
-    {{-- <style>
-        body {
-            color: #000000;
-            background-color: #FFFFFF;
-            font-size: 14px;
-            font-family: 'Helvetica', arial, sans-serif;
-            margin: 0px;
-            -webkit-print-color-adjust: exact;
-        }
-
-        table.voucher {
-            display: inline-block;
-            border: 2px solid black;
-            margin: 2px;
-        }
-
-        @page {
-            size: auto;
-            margin-left: 7mm;
-            margin-right: 3mm;
-            margin-top: 9mm;
-            margin-bottom: 3mm;
-        }
-
-        @media print {
-            table {
-                page-break-after: auto
-            }
-
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto
-            }
-
-            td {
-                page-break-inside: avoid;
-                page-break-after: auto
-            }
-
-            thead {
-                display: table-header-group
-            }
-
-            tfoot {
-                display: table-footer-group
-            }
-        }
-
-        #num {
-            float: right;
-            display: inline-block;
-        }
-
-        .qrc {
-            width: 30px;
-            height: 30px;
-            margin-top: 1px;
-        }
-    </style> --}}
     {!! $template->header !!}
     <script src="{{ asset('js/qrious.min.js') }}"></script>
 </head>
 
-<body>
+<body onload="window.print()">
     @php
         $key = 0;
     @endphp

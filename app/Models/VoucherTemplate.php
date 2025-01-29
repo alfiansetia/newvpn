@@ -36,6 +36,8 @@ class VoucherTemplate extends Model
         '%_ROUTER_DNS_%',
         '%_ROUTER_CONTACT_%',
         '%_NUMBER_%',
+        '%_PROFILE_%',
+        '%_ROUTER_NAME_%',
     ];
 
     public function get_sample()
@@ -51,7 +53,9 @@ class VoucherTemplate extends Model
             url('/images/default/logo.svg'),
             'http://wifi.net',
             '082324129752',
-            1
+            1,
+            '7 Hari',
+            'KCN WIFI'
         ];
     }
 

@@ -295,7 +295,7 @@
                     data: 'id',
                     className: 'text-center',
                     render: function(data, type, row, meta) {
-                        return `<a href="{{ route('template.index') }}/${data}" class="btn btn-sm btn-info" target="_blank" >Preview</a>`
+                        return `<a href="{{ route('template.index') }}/${data}" onclick="window.open(this.href, 'newwindow', 'width=500,height=500'); return false;" class="btn btn-sm btn-info" target="_blank" >Preview</a>`
                     }
                 }
             ],
