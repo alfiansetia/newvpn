@@ -178,17 +178,10 @@
                     url: "{{ route('api.mikapi.logs.index') }}" + param_router +
                         '&topics=hotspot,info,debug&buffer=disk',
                     error: function(xhr, error, code) {
-                        if (xhr.status == 500) {
-                            Snackbar.show({
-                                text: 'Server Error!',
-                                pos: 'bottom-left'
-                            });
-                        } else {
-                            Snackbar.show({
-                                text: xhr.responseJSON.message,
-                                pos: 'bottom-left'
-                            });
-                        }
+                        Snackbar.show({
+                            text: xhr.responseJSON.message || 'Server Error!',
+                            pos: 'bottom-left'
+                        });
                     }
                 },
                 dom: "<'table-responsive'tr>" +
