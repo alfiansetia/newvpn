@@ -65,15 +65,23 @@ class HotspotController extends Controller
         if (!$t) {
             abort(404);
         }
-        $template = new VoucherTemplateResource($t);
-        $services = UserServices::routerId($request->router)->cache(true);
-        $profile_data = ProfileServices::routerId($request->router)->get();
-        $profiles = ProfileResource::collection($profile_data)->toArray($request);
-        $router = $services->get_router();
-        $cache = $services->from_cache();
+        try {
+
+            $template = new VoucherTemplateResource($t);
+            $services = UserServices::routerId($request->router)->cache(true);
+            $profile_data = ProfileServices::routerId($request->router)->get();
+            $profiles = ProfileResource::collection($profile_data)->toArray($request);
+            $router = $services->get_router();
+            $cache = $services->from_cache();
+        } catch (\Throwable $th) {
+            return redirect()->route('mikapi.dashboard')->with('error', $th->getMessage());
+        }
         $data = collect($cache);
         if ($request->filled('comment')) {
             $data = $data->where('comment', $request->comment);
+        }
+        if ($request->filled('profile')) {
+            $data = $data->where('profile', $request->profile);
         }
         $mode = $request->mode;
         $price = $request->price ?? 0;
