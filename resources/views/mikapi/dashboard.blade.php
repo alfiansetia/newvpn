@@ -152,8 +152,9 @@
         }
 
         $(document).ready(function() {
-            $('.refresh-data').click(function() {
-                block();
+
+            $('#refresh').click(function() {
+                // block();
                 dashboard();
                 table.ajax.reload();
             })
@@ -168,7 +169,7 @@
             });
 
             var table = $('#tableData').DataTable({
-                processing: true,
+                processing: false,
                 serverSide: false,
                 searching: false,
                 order: [

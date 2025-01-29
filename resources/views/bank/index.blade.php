@@ -83,13 +83,15 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-plus"></i> Add',
-                className: 'btn btn-primary',
+                className: 'btn btn-primary bs-tooltip',
+                attr: {
+                    'title': 'Add New Data'
+                },
                 action: function(e, dt, node, config) {
                     show_card_add()
                     input_focus('name')
@@ -97,7 +99,10 @@
             }, {
                 text: '<i class="fas fa-caret-down"></i>',
                 extend: 'collection',
-                className: 'btn btn-warning',
+                className: 'btn btn-warning bs-tooltip',
+                attr: {
+                    'title': 'More Action'
+                },
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {

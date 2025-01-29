@@ -542,10 +542,9 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-plus"></i> Order VPN',
                 className: 'btn btn-primary',

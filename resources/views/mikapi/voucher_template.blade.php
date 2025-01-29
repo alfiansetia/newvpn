@@ -22,12 +22,13 @@
         <div class="row">
 
             @foreach ($data as $item)
-                <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-6 mx-auto">
+                <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-6 mx-auto mb-3">
 
                     <div class="card bg-{{ getrandomclass() }}">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ $item->name }}</h5>
                             <p class="mb-0"><a href="{{ route('mikapi.vouchertemplate.show', $item->id) }}"
+                                    onclick="window.open(this.href, 'newwindow', 'width=500,height=500'); return false;"
                                     target="_blank">Preview</a></p>
                         </div>
                     </div>

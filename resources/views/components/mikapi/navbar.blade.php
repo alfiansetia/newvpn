@@ -42,8 +42,8 @@
                 </div>
             </li> --}}
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link">
-                    <i data-feather="refresh-cw" class="refresh-data bs-tooltip" title="Refresh Data"></i>
+                <a href="javascript:void(0);" class="nav-link bs-tooltip" id="refresh" title="Refresh Data">
+                    <i data-feather="refresh-cw" class="refresh-data"></i>
                 </a>
             </li>
 
@@ -54,7 +54,7 @@
                 </a>
             </li>
 
-            <li class="nav-item dropdown notification-dropdown">
+            {{-- <li class="nav-item dropdown notification-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="notificationDropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i data-feather="bell"></i>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
 
-            </li>
+            </li> --}}
 
             <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"

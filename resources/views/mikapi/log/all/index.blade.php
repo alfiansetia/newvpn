@@ -73,7 +73,11 @@
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
-        // $(document).ready(function() {
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+        })
 
         const names = [{
                 name: "system"
@@ -339,21 +343,17 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-trash"></i>',
-                className: 'btn btn-danger',
+                className: 'btn btn-danger bs-tooltip',
+                attr: {
+                    'title': 'Delete Data'
+                },
                 action: function(e, dt, node, config) {
                     delete_all()
-                },
-            }, {
-                text: '<i class="fas fa-sync"></i>',
-                className: 'btn btn-info',
-                action: function(e, dt, node, config) {
-                    table.ajax.reload()
                 },
             }],
             dom: dom,

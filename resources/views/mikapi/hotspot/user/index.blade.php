@@ -49,17 +49,22 @@
 
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
             <div class="col-md-4 mb-2">
-                <select class="form-control tomse-comment" name="comment" id="filter_comment">
-                </select>
+                <div class="input-group mb-3">
+                    <select class="form-control tomse-comment" name="comment" id="filter_comment">
+                    </select>
+                    <button class="btn btn-warning" type="button" onclick="reload_comment()"><i
+                            class="fas fa-sync me-1"></i>
+                    </button>
+                </div>
             </div>
             <div class="col-md-4 mb-2">
                 <select class="form-control tomse-profile" name="profile" id="filter_profile">
                 </select>
             </div>
             <div class="col-md-4 mb-2">
-                {{-- <button type="button" class="btn btn-block btn-primary" id="btn_filter">
+                <button type="button" class="btn btn-block btn-primary" id="btn_filter">
                     <i class="fas fa-filter me-1"></i>Filter
-                </button> --}}
+                </button>
 
                 <button type="button" class="btn btn-block btn-primary" id="btn_print">
                     <i class="fas fa-print me-1"></i>Print
@@ -130,6 +135,16 @@
             document.getElementById('filter_profile').tomselect.on('change', function() {
                 table.ajax.reload()
             })
+
+            $('#refresh').click(function() {
+                send_ajax_url("{{ route('api.mikapi.hotspot.users.refresh') }}" +
+                    param_router, 'GET', [], false)
+                document.getElementById('filter_comment').tomselect.clear()
+                // table.ajax.reload()
+                setTimeout(() => {
+                    reload_comment()
+                }, 3000);
+            })
         })
 
         $('.mask_angka').inputmask({
@@ -181,6 +196,7 @@
                 disabledField: '',
                 placeholder: "Please Select Comment",
                 allowEmptyOption: true,
+                maxOptions: null,
                 load: function(query, callback) {
                     if (tomse_data_comment) {
                         callback(tomse_data_comment);
@@ -210,6 +226,15 @@
                 }
             });
         });
+
+        function reload_comment() {
+            $.get("{{ route('api.mikapi.hotspot.users.comment') }}" + param_router).done(function(result) {
+                tomse_data_comment = result.data
+                document.getElementById('filter_comment').tomselect.clearOptions()
+                document.getElementById('filter_comment').tomselect.addOptions(result.data)
+                document.getElementById('filter_comment').tomselect.refreshOptions()
+            })
+        }
 
         var tomse_data_profile = null;
         document.querySelectorAll('.tomse-profile').forEach((el) => {
@@ -380,13 +405,15 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-plus"></i> Add',
-                className: 'btn btn-primary',
+                className: 'btn btn-primary bs-tooltip',
+                attr: {
+                    'title': 'Add New Data'
+                },
                 action: function(e, dt, node, config) {
                     show_card_add()
                     input_focus('name')
@@ -394,17 +421,14 @@
             }, {
                 text: '<i class="fas fa-caret-down"></i>',
                 extend: 'collection',
-                className: 'btn btn-warning',
+                className: 'btn btn-warning bs-tooltip',
+                attr: {
+                    'title': 'More Action'
+                },
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {
                         delete_batch(url_index_api_router);
-                    }
-                }, {
-                    text: 'Refresh Data',
-                    action: function(e, dt, node, config) {
-                        send_ajax_url("{{ route('api.mikapi.hotspot.users.refresh') }}" +
-                            param_router, 'GET', [], false)
                     }
                 }]
             }],
@@ -501,7 +525,6 @@
                 feather.replace();
             }
         });
-
 
         $('#btn_filter').click(function() {
             table.ajax.reload()
@@ -613,7 +636,6 @@
                 }
             });
         }
-
 
         // });
     </script>

@@ -158,10 +158,9 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-plus"></i> Add Backup',
                 className: 'btn btn-primary',
@@ -171,7 +170,10 @@
             }, {
                 text: '<i class="fas fa-caret-down"></i>',
                 extend: 'collection',
-                className: 'btn btn-warning',
+                className: 'btn btn-warning bs-tooltip',
+                attr: {
+                    'title': 'More Action'
+                },
                 buttons: [{
                     text: 'Delete All Data',
                     action: function(e, dt, node, config) {

@@ -59,7 +59,11 @@
     <script src="{{ asset('js/v2/func.js') }}"></script>
 
     <script>
-        // $(document).ready(function() {
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+        })
 
         $('#edit_save').remove()
         $('#edit_delete').remove()
@@ -86,17 +90,10 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
-            }, {
-                text: '<i class="fas fa-sync"></i>',
-                className: 'btn btn-primary',
-                action: function(e, dt, node, config) {
-                    table.ajax.reload()
-                },
-            }, ],
+                className: 'btn btn-sm btn-info bs-tooltip'
+            }],
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,

@@ -50,7 +50,11 @@
     <script src="{{ asset('js/v2/func.js') }}"></script>
 
     <script>
-        // $(document).ready(function() {
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+        })
 
         $('#edit_save').remove()
 
@@ -76,20 +80,16 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-info'
-            }, {
-                text: '<i class="fas fa-sync"></i>',
-                className: 'btn btn-primary',
-                action: function(e, dt, node, config) {
-                    table.ajax.reload()
-                },
+                className: 'btn btn-sm btn-info bs-tooltip'
             }, {
                 text: '<i class="fas fa-caret-down"></i>',
                 extend: 'collection',
-                className: 'btn btn-warning',
+                className: 'btn btn-warning bs-tooltip',
+                attr: {
+                    'title': 'More Action'
+                },
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {

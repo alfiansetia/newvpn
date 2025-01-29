@@ -55,16 +55,10 @@ class UserController extends Controller
         }
     }
 
-    private function refreshData(Request $request)
-    {
-        $data = UserServices::routerId($request->router)->cache(true)->get();
-        return $data;
-    }
-
     public function refresh(Request $request)
     {
         try {
-            $data  = $this->refreshData($request);
+            $data  = UserServices::routerId($request->router)->get_router()->destroy_cache();
             return $this->send_response('Success Refresh Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

@@ -58,7 +58,11 @@
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
-        // $(document).ready(function() {
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+        })
 
         var table = $('#tableData').DataTable({
             processing: true,
@@ -84,16 +88,9 @@
             buttons: [{
                 extend: "pageLength",
                 attr: {
-                    'data-toggle': 'tooltip',
-                    'title': 'Page Length'
+                    'title': 'Change Page Length'
                 },
-                className: 'btn btn-sm btn-primary'
-            }, {
-                text: '<i class="fas fa-sync"></i>',
-                className: 'btn btn-info',
-                action: function(e, dt, node, config) {
-                    table.ajax.reload()
-                },
+                className: 'btn btn-sm btn-primary bs-tooltip'
             }],
             dom: dom,
             stripeClasses: [],
