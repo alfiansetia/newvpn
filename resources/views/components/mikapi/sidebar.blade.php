@@ -65,9 +65,9 @@
             </li>
 
             <li
-                class="menu {{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' ? 'active' : '' }}">
+                class="menu {{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' || $title == 'Generate Hotspot User' ? 'active' : '' }}">
                 <a href="#hotspot_nav" data-bs-toggle="collapse"
-                    aria-expanded="{{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' ? 'true' : 'false' }}"
+                    aria-expanded="{{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' || $title == 'Generate Hotspot User' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="wifi"></i>
@@ -77,13 +77,16 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'Hotspot Profile' || $title == 'Hotspot User' || $title == 'Hotspot Active' || $title == 'Hotspot Host' || $title == 'Hotspot Binding' || $title == 'Hotspot Cookie' || $title == 'Generate Hotspot User' ? 'show' : '' }}"
                     id="hotspot_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'Hotspot Profile' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.hotspot.profile') }}{{ $param_router }}"> Profile </a>
                     </li>
                     <li class="{{ $title == 'Hotspot User' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.hotspot.user') }}{{ $param_router }}"> User </a>
+                    </li>
+                    <li class="{{ $title == 'Generate Hotspot User' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.hotspot.user.generate') }}{{ $param_router }}"> Generate User </a>
                     </li>
                     <li class="{{ $title == 'Hotspot Active' ? 'active' : '' }}">
                         <a href="{{ route('mikapi.hotspot.active') }}{{ $param_router }}"> Active </a>

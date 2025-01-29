@@ -359,6 +359,8 @@ class UserServices extends RouterApiServices
                 '.id'   => $id_script,
             ]);
         }
+
+        parent::$router->destroy_cache();
         return true;
     }
 }

@@ -34,6 +34,11 @@ class HotspotController extends Controller
         return view('mikapi.hotspot.user.index');
     }
 
+    public function user_generate()
+    {
+        return view('mikapi.hotspot.user.generate');
+    }
+
     public function active()
     {
         return view('mikapi.hotspot.active.index');
