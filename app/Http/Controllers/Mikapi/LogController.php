@@ -13,6 +13,17 @@ class LogController extends Controller
 
     public function index()
     {
-        return view('mikapi.log.index');
+        return view('mikapi.log.all.index');
+    }
+
+
+    public function hotspot()
+    {
+        return view('mikapi.log.hotspot.index');
+    }
+
+    public function user()
+    {
+        return view('mikapi.log.user.index');
     }
 }

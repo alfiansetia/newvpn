@@ -130,15 +130,42 @@
                 </ul>
             </li>
 
-            <li class="menu {{ $title == 'Log' ? 'active' : '' }}">
-                <a href="{{ route('mikapi.log.index') }}{{ $param_router }}"
+            <li
+                class="menu {{ $title == 'Hotspot Log' || $title == 'User Log' || $title == 'All Log' ? 'active' : '' }}">
+                <a href="#log_nav" data-bs-toggle="collapse"
+                    aria-expanded="{{ $title == 'Hotspot Log' || $title == 'User Log' || $title == 'All Log' ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="list"></i>
+                        <span> Log </span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $title == 'Hotspot Log' || $title == 'User Log' || $title == 'All Log' ? 'show' : '' }}"
+                    id="log_nav" data-bs-parent="#accordionExample">
+                    <li class="{{ $title == 'Hotspot Log' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.log.hotspot') }}{{ $param_router }}"> Hotspot Log </a>
+                    </li>
+                    <li class="{{ $title == 'User Log' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.log.user') }}{{ $param_router }}"> User Log </a>
+                    </li>
+                    <li class="{{ $title == 'All Log' ? 'active' : '' }}">
+                        <a href="{{ route('mikapi.log.all') }}{{ $param_router }}"> All Log </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- <li class="menu {{ $title == 'Log' ? 'active' : '' }}">
+                <a href="{{ route('mikapi.log.all') }}{{ $param_router }}"
                     aria-expanded="{{ $title == 'Log' ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="list"></i>
                         <span>Log</span>
                     </div>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="menu {{ $title == 'DHCP Lease' ? 'active' : '' }}">
                 <a href="{{ route('mikapi.dhcp.lease') }}{{ $param_router }}"

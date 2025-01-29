@@ -1,4 +1,4 @@
-@extends('layouts.backend.template_mikapi', ['title' => 'Log'])
+@extends('layouts.backend.template_mikapi', ['title' => 'All Log'])
 @push('csslib')
     <!-- DATATABLE -->
     <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        @include('mikapi.log.edit')
+        @include('mikapi.log.all.edit')
     </div>
 @endsection
 @push('jslib')
@@ -63,7 +63,7 @@
 
 @push('js')
     <script>
-        const url_index = "{{ route('mikapi.log.index') }}" + param_router
+        const url_index = "{{ route('mikapi.log.all') }}" + param_router
         const url_index_api = "{{ route('api.mikapi.logs.index') }}"
         const url_index_api_router = "{{ route('api.mikapi.logs.index') }}" + param_router
         var id = 0

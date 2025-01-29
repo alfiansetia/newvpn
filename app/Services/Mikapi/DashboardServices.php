@@ -41,8 +41,8 @@ class DashboardServices extends RouterApiServices
             //throw $th;
         }
         try {
-            $ppp_active = parent::$API->comm('/ppp/secret/print', ['count-only' => '']);
-            parent::cek_error($ppp_active);
+            $ppp_secret = parent::$API->comm('/ppp/secret/print', ['count-only' => '']);
+            parent::cek_error($ppp_secret);
         } catch (\Throwable $th) {
             //throw $th;
         }

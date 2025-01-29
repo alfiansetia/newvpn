@@ -209,6 +209,8 @@
                 ],
                 pageLength: 10,
                 lengthChange: false,
+                info: false,
+                sPaginationType: 'simple_numbers',
                 columns: [{
                     title: "Time",
                     data: 'time'

@@ -1,4 +1,4 @@
-@extends('layouts.backend.template_mikapi', ['title' => 'Report'])
+@extends('layouts.backend.template_mikapi', ['title' => 'User Log'])
 @push('csslib')
     <!-- DATATABLE -->
     <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
@@ -19,9 +19,6 @@
         type="text/css">
     <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
         type="text/css">
-
-    <link href="{{ asset('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-
 
     <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
@@ -86,44 +83,6 @@
             </div>
         </div>
 
-
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-top-spacing layout-spacing mt-2">
-            <div class="row widget-statistic">
-                <div class="col-6">
-                    <div class="widget widget-one_hybrid widget-engagement">
-                        <div class="widget-heading pb-0">
-                            <div class="w-title bs-tooltip">
-                                <div class="w-icon">
-                                    <i data-feather="wifi"></i>
-                                </div>
-                                <div class="">
-                                    <p class="w-value" id="total_vc">Loading...</p>
-                                    <h5 class="">Total Vcr</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6">
-                    <div class="widget widget-one_hybrid widget-followers">
-                        <div class="widget-heading pb-0">
-                            <div class="w-title bs-tooltip">
-                                <div class="w-icon">
-                                    <i data-feather="dollar-sign"></i>
-                                </div>
-                                <div class="">
-                                    <p class="w-value" id="total_sales">Loading...</p>
-                                    <h5 class="">Total Sales</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="col-xl-12 col-lg-12 col-sm-12" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
@@ -137,13 +96,7 @@
             </div>
         </div>
 
-        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_resume">
-            <div class="widget-content widget-content-area br-8 p-3">
-                <div id="resume"></div>
-            </div>
-        </div>
-
-        @include('mikapi.report.detail')
+        @include('mikapi.log.user.detail')
 
     </div>
 @endsection
@@ -151,7 +104,6 @@
     <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
     <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 @endpush
 
@@ -184,62 +136,6 @@
             })
         })
 
-        let chartInstance = null;
-
-        function createAreaChart(elementId, data) {
-            if (chartInstance !== null) {
-                chartInstance.destroy();
-            }
-            let dates = data.map(item => {
-                return `${item.date} : [${item.jumlah} vcr]`
-            });
-            let totals = data.map(item => item.total);
-
-            let options = {
-                chart: {
-                    type: 'area',
-                    height: 350,
-                    animations: {
-                        enabled: true
-                    }
-                },
-                series: [{
-                    name: 'Total Sales',
-                    data: totals,
-                }],
-                xaxis: {
-                    categories: dates,
-                    title: {
-                        text: 'Date',
-                    },
-                    labels: {
-                        show: false,
-                    },
-                },
-                yaxis: {
-                    title: {
-                        text: 'Total Sales',
-                    },
-                    labels: {
-                        formatter: function(value, timestamp, opts) {
-                            return hrg(value);
-                        },
-                    },
-                },
-                title: {
-                    text: 'Resume Report',
-                    align: 'center',
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                stroke: {
-                    curve: 'smooth',
-                },
-            };
-            chartInstance = new ApexCharts(document.querySelector(`#${elementId}`), options);
-            chartInstance.render();
-        }
 
         document.querySelectorAll('.tomse-day').forEach((el) => {
             var tomse = new TomSelect(el, {
@@ -394,16 +290,16 @@
                 data: 'username',
                 className: "text-start",
             }, {
-                title: "Profile",
-                data: 'profile',
+                title: "Address",
+                data: 'ip',
                 className: "text-start",
             }, {
-                title: "Comment",
-                data: 'comment',
+                title: "MAC",
+                data: 'mac',
                 className: "text-start",
             }, {
-                title: "Price",
-                data: 'price',
+                title: "Validity",
+                data: 'validity',
                 className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
@@ -422,33 +318,6 @@
             drawCallback: function(settings) {
                 feather.replace();
                 tooltip()
-                let json = this.api().ajax.json();
-                if (typeof(json) != 'undefined') {
-                    let data = json.data;
-                    let total_sales = 0;
-                    let total_vc = 0;
-                    $.each(data, function(i, v) {
-                        total_sales += v.price;
-                    });
-
-                    $('#total_vc').text(hrg(data.length))
-                    $('#total_sales').text(hrg(total_sales))
-                    let groupedData = {};
-                    data.forEach((item) => {
-                        let date = item.date;
-                        if (!groupedData[date]) {
-                            groupedData[date] = {
-                                date: date,
-                                total: 0,
-                                jumlah: 0,
-                            };
-                        }
-                        groupedData[date].total += item.price;
-                        groupedData[date].jumlah += 1;
-                    });
-                    let result = Object.values(groupedData);
-                    createAreaChart('resume', result);
-                }
             },
             initComplete: function() {
                 feather.replace();

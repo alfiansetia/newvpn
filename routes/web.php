@@ -80,7 +80,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('mikapi/system/package', [SystemController::class, 'package'])->name('mikapi.system.package');
         Route::get('mikapi/system/script', [SystemController::class, 'script'])->name('mikapi.system.script');
 
-        Route::get('mikapi/log', [LogController::class, 'index'])->name('mikapi.log.index');
+        Route::get('mikapi/log-all', [LogController::class, 'index'])->name('mikapi.log.all');
+        Route::get('mikapi/log-user', [LogController::class, 'user'])->name('mikapi.log.user');
+        Route::get('mikapi/log-hotspot', [LogController::class, 'hotspot'])->name('mikapi.log.hotspot');
+
         Route::get('mikapi/hotspot/server', [HotspotController::class, 'server'])->name('mikapi.hotspot.server');
         Route::get('mikapi/hotspot/profile', [HotspotController::class, 'profile'])->name('mikapi.hotspot.profile');
 
