@@ -145,6 +145,13 @@
                     reload_comment()
                 }, 3000);
             })
+
+            document.getElementById("comment").onkeypress = function(e) {
+                var chr = String.fromCharCode(e.which);
+                if (" _!@#$%^&*()+=;|?,.~".indexOf(chr) >= 0)
+                    return false;
+            };
+
         })
 
         $('.mask_angka').inputmask({
