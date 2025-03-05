@@ -300,6 +300,7 @@
                         });
                 },
             });
+            tomse.setValue('all');
         });
 
         var tomse_data_template = null;

@@ -152,6 +152,7 @@
                         });
                 },
             });
+            tomse.setValue('all');
         });
 
         $('#reset').click(function() {

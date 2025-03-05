@@ -67,6 +67,29 @@
                 </a>
             </li>
 
+            <li class="menu {{ $title == 'Speed Test' || $title == 'Isolir' ? 'active' : '' }}">
+                <a href="#generator_nav" data-bs-toggle="collapse"
+                    aria-expanded="{{ $title == 'Speed Test' || $title == 'Isolir' ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="codepen"></i>
+                        <span> Script Gen </span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $title == 'Speed Test' || $title == 'Isolir' ? 'show' : '' }}"
+                    id="generator_nav" data-bs-parent="#accordionExample">
+                    <li class="{{ $title == 'Speed Test' ? 'active' : '' }}">
+                        <a href="{{ route('generate.speed_test') }}"> Speed Test </a>
+                    </li>
+                    <li class="{{ $title == 'Isolir' ? 'active' : '' }}">
+                        <a href="{{ route('generate.isolir') }}"> Isolir </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="menu menu-heading">
                 <div class="heading">
                     <i data-feather="minus"></i>

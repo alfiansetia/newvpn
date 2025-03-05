@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DatabaseBackupController;
+use App\Http\Controllers\GenerateScriptController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Mikapi\DashboardController;
 use App\Http\Controllers\Mikapi\DHCPController;
@@ -68,6 +69,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
 
         Route::get('page/contact', [PageController::class, 'contact'])->name('page.contact');
+        Route::get('generate/speed-test', [GenerateScriptController::class, 'speed_test'])->name('generate.speed_test');
+        Route::get('generate/isolir', [GenerateScriptController::class, 'isolir'])->name('generate.isolir');
 
         Route::get('mikapi/report', [ReportController::class, 'index'])->name('mikapi.report');
         Route::get('mikapi/dashboard', [DashboardController::class, 'index'])->name('mikapi.dashboard');
