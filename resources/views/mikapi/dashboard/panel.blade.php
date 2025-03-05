@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="widget-four" style="height: 50%">
+    <div class="widget-four" style="height: 78%">
         <div class="widget-heading">
             <h5 class="">Panel</h5>
         </div>

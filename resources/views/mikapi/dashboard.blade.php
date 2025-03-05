@@ -98,6 +98,21 @@
         function dashboard() {
             let url = "{{ route('api.mikapi.dashboard.get') }}" + param_router;
             let url_report = "{{ route('api.mikapi.report.summary') }}" + param_router;
+            $('#sys_ros').text('Loading...');
+            $('#sys_up').text('Loading...');
+            $('#sys_rb').text('Loading...');
+
+            $("#cpu_label").text('Loading...');
+            $("#cpu").css('width', '100%')
+            $("#ram_label").text('Loading...')
+            $("#ram").css('width', '100%')
+            $("#disk_label").text('Loading...')
+            $("#disk").css('width', '100%')
+
+            $('#hs_active').text('Loading...');
+            $('#hs_user').text('Loading...');
+            $('#ppp_active').text('Loading...');
+            $('#ppp_secret').text('Loading...');
             $.get(url).done(function(res) {
                 let cpuload = 0
                 let ramtot = 0
@@ -138,10 +153,10 @@
                 $("#disk_label").text("(" + formatBytes(disktot - diskfre) + '/' + formatBytes(disktot) + ')')
                 $("#disk").css('width', diskhas + '%')
 
-                $('#hs_active').text(res.data.hs_active);
-                $('#hs_user').text(res.data.hs_user);
-                $('#ppp_active').text(res.data.ppp_active);
-                $('#ppp_secret').text(res.data.ppp_secret);
+                $('#hs_active').text(hrg(res.data.hs_active));
+                $('#hs_user').text(hrg(res.data.hs_user));
+                $('#ppp_active').text(hrg(res.data.ppp_active));
+                $('#ppp_secret').text(hrg(res.data.ppp_secret));
                 unblock();
             }).fail(function(xhr) {
                 unblock();
@@ -151,8 +166,8 @@
                 });
             })
 
-            $('#report_today').text('Loading..')
-            $('#report_month').text('Loading..')
+            $('#report_today').text('Loading...')
+            $('#report_month').text('Loading...')
             $.get(url_report).done(function(res) {
                 $('#report_today').text(`Today ${res.data.today.vc} vcr : ${hrg(res.data.today.total)}`);
                 $('#report_month').text(`This Month ${res.data.month.vc} vcr : ${hrg(res.data.month.total)}`);
