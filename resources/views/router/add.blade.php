@@ -47,7 +47,8 @@
                             <label class="control-label" for="username"><i class="fas fa-user me-1 bs-tooltip"
                                     title="Username"></i>Username :</label>
                             <input type="text" name="username" class="form-control maxlength" id="username"
-                                placeholder="Please Enter Username" minlength="3" maxlength="50" required>
+                                placeholder="Please Enter Username" minlength="3" maxlength="50"
+                                autocomplete="username" required>
                             <span id="" class="error invalid-feedback err_username"
                                 style="display: hide;"></span>
                         </div>
@@ -55,7 +56,8 @@
                             <label class="control-label" for="password"><i class="fas fa-lock me-1 bs-tooltip"
                                     title="Password"></i>Password :</label>
                             <input type="password" name="password" class="form-control maxlength" id="password"
-                                placeholder="Please Enter Password" minlength="5" maxlength="100" required>
+                                placeholder="Please Enter Password" minlength="5" maxlength="100"
+                                autocomplete="current-password" required>
                             <span id="" class="error invalid-feedback err_password"
                                 style="display: hide;"></span>
                         </div>

@@ -45,7 +45,8 @@
                             <label class="control-label" for="edit_username"><i class="fas fa-user me-1 bs-tooltip"
                                     title="Username"></i>Username :</label>
                             <input type="text" name="username" class="form-control maxlength" id="edit_username"
-                                placeholder="Please Enter Username" minlength="3" maxlength="50">
+                                placeholder="Please Enter Username" minlength="3" maxlength="50"
+                                autocomplete="username">
                             <div class="mt-1">
                                 <span class="badge badge-primary w-100 text-start">
                                     <small id="sh-text4" class="form-text mt-0">Kosongkan jika tidak ingin
@@ -59,7 +60,8 @@
                             <label class="control-label" for="edit_password"><i class="fas fa-lock me-1 bs-tooltip"
                                     title="Password"></i>Password :</label>
                             <input type="password" name="password" class="form-control maxlength" id="edit_password"
-                                placeholder="Please Enter Password" minlength="0" maxlength="100">
+                                placeholder="Please Enter Password" minlength="0" maxlength="100"
+                                autocomplete="current-password">
                             <div class="mt-1">
                                 <span class="badge badge-primary w-100 text-start">
                                     <small id="sh-text4" class="form-text mt-0 ">Kosongkan jika tidak ingin

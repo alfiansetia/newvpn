@@ -97,6 +97,7 @@
 
         function dashboard() {
             let url = "{{ route('api.mikapi.dashboard.get') }}" + param_router;
+            let url_report = "{{ route('api.mikapi.report.summary') }}" + param_router;
             $.get(url).done(function(res) {
                 let cpuload = 0
                 let ramtot = 0
@@ -149,6 +150,21 @@
                     pos: 'bottom-left'
                 });
             })
+
+            $('#report_today').text('Loading..')
+            $('#report_month').text('Loading..')
+            $.get(url_report).done(function(res) {
+                $('#report_today').text(`Today ${res.data.today.vc} vcr : ${hrg(res.data.today.total)}`);
+                $('#report_month').text(`This Month ${res.data.month.vc} vcr : ${hrg(res.data.month.total)}`);
+                unblock();
+            }).fail(function(xhr) {
+                unblock();
+                Snackbar.show({
+                    text: xhr.responseJSON.message || 'Server Error!',
+                    pos: 'bottom-left'
+                });
+            })
+
         }
 
         $(document).ready(function() {

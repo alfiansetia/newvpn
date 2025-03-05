@@ -68,4 +68,31 @@ class ReportController extends Controller
             return $this->send_error('Error : ' . $th->getMessage());
         }
     }
+
+    public function summary(Request $request)
+    {
+        try {
+            $date = date('d');
+            $month = strtolower(date('M'));
+            $year = date('Y');
+            $today_service = ReportServices::routerId($request->router)->getByDay("$month/$date/$year");
+            $month_service = ReportServices::routerId($request->router)->getByMonth("$month$year");
+            $today_data = collect(ReportResource::collection($today_service)->toArray($request));
+            $month_data = collect(ReportResource::collection($month_service)->toArray($request));
+            return response()->json([
+                'data' => [
+                    'today' => [
+                        'vc'    => $today_data->count(),
+                        'total' => $today_data->sum('price')
+                    ],
+                    'month' => [
+                        'vc'    => $month_data->count(),
+                        'total' => $month_data->sum('price')
+                    ]
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
 }

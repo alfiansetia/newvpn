@@ -28,22 +28,11 @@
         type="text/css">
     <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
         type="text/css">
-
-    <link href="{{ asset('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
-            <h5>
-                <button type="button" class="btn btn-primary" onclick="add_data()"><i class="fas fa-plus"></i> Add
-                    Router</button>
-                <button type="button" class="btn btn-seconday" onclick="reload_data()"><i class="fas fa-sync"></i>
-                    Reload</button>
-            </h5>
-            <div class="row" id="row_content"></div>
-
-            <div class="widget-content widget-content-area br-8" style="display: none">
+            <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
                     <table id="tableData" class="table dt-table-hover table-hover" style="width:100%; cursor: pointer;">
                         <thead>
@@ -54,13 +43,11 @@
                 </form>
             </div>
         </div>
-
         @include('router.add')
         @include('router.edit')
     </div>
 @endsection
 @push('jslib')
-    {{-- <script src="{{ asset('js/pagination.js') }}"></script> --}}
     <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
 
     <!-- END PAGE LEVEL SCRIPTS -->
@@ -87,91 +74,6 @@
         const url_index_api = "{{ route('api.routers.index') }}"
         var id = 0
         var perpage = 50
-
-        // get_data()
-
-        function add_data() {
-            show_card_add()
-            input_focus('name')
-        }
-
-        function reload_data() {
-            table.ajax.reload()
-        }
-
-        function img_valid(image_url = "") {
-            let default_image = "{{ asset('images/default/logo.svg') }}"
-            try {
-                const response = fetch(image_url, {
-                    method: 'HEAD',
-                    cache: "no-store"
-                });
-                if (!response.ok) {
-                    return default_image;
-                }
-                return image_url;
-            } catch (error) {
-                return default_image;
-            }
-        }
-
-        function parse_div(data) {
-            $('#row_content').html('')
-            if (data.length < 1) {
-                $('#row_content').html(`<div class="p-3"><div class="alert alert-light-primary alert-dismissible fade show border-0 mb-4 ms-2 p-3" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="close" data-feather="x"></i></button>
-                    <strong>No data!</strong></button>
-                </div></div> `)
-            }
-            data.forEach(item => {
-                let html = `<div class="col-md-6 col-lg-4 mb-2">
-                            <div class="card style-4">
-                                <div class="card-body pt-3 pb-1">
-                                    <div class="media mt-0">
-                                        <div class="">
-                                            <div class="avatar avatar-md avatar-indicators avatar-online me-3">
-                                                <img alt="avatar" src="${img_valid(item.url_logo)}"
-                                                    class="rounded-circle">
-                                            </div>
-                                        </div>
-                                        <div class="media-body">
-                                            <h4 class="media-heading mb-0"><strong>${item.name}</strong></h4>
-                                            <p class="media-text mb-0">${item.hsname}</p>
-                                            <p class="media-text">${item.dnsname}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pt-0  text-center pb-2">
-                                    <button type="button" onclick="ping(${item.id})" class="btn btn-sm btn-info">
-                                        <i data-feather="alert-octagon"></i> <span class="btn-text-inner ">Ping</span>
-                                    </button>
-                                    <button type="button" onclick="open_router(${item.id})" class="btn btn-sm btn-secondary">
-                                        <i data-feather="send"></i> <span class="btn-text-inner ">Open</span>
-                                    </button>
-                                    <button type="button" onclick="edit_data(${item.id})" class="btn btn-sm btn-warning w-33">
-                                        <i data-feather="edit"></i> <span class="btn-text-inner ">Edit</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        `
-                $('#row_content').append(html)
-            });
-            feather.replace();
-        }
-
-        function get_data() {
-            $.get(url_index_api).done(function(res) {
-                console.log(res);
-                parse_div(res.data)
-            })
-        }
-
-        function edit_data(idt) {
-            id = idt
-            $('#formEdit').attr('action', url_index_api + "/" + id)
-            edit(true)
-        }
 
         $('.maxlength').maxlength({
             alwaysShow: true,
@@ -279,7 +181,6 @@
                     }
                 }]
             }],
-            paging: false,
             dom: dom,
             stripeClasses: [],
             lengthMenu: length_menu,
@@ -334,12 +235,6 @@
             drawCallback: function(settings) {
                 feather.replace();
                 tooltip()
-                try {
-                    let data = this.api().ajax.json().data
-                    parse_div(data)
-                } catch (error) {
-                    parse_div([])
-                }
             },
             initComplete: function() {
                 feather.replace();
@@ -390,34 +285,22 @@
             });
         }
 
-        // $('#edit_delete').after(
-        //     `<button type="button" class="btn btn-info ms-2 mb-2" id="edit_ping">
-    //         <i class="fas fa-plug me-1 bs-tooltip" title="Ping"></i>Ping
-    //     </button>
-    //     <button type="button" class="btn btn-secondary mb-2" id="btn_open">
-    //         <i class="fas fa-rocket me-1 bs-tooltip" title="Open"></i>Open
-    //     </button>`
-        // )
-
-
+        $('#edit_delete').after(
+            `<button type="button" class="btn btn-info ms-2 mb-2" id="edit_ping">
+                <i class="fas fa-plug me-1 bs-tooltip" title="Ping"></i>Ping
+            </button>
+            <button type="button" class="btn btn-secondary mb-2" id="btn_open">
+                <i class="fas fa-rocket me-1 bs-tooltip" title="Open"></i>Open
+            </button>`
+        )
 
 
         $('#btn_open').on('click', function() {
-            open_router(id)
+            let url = "{{ route('mikapi.dashboard') }}?router=" + id;
+            window.open(url, '_blank');
         });
 
         $('#edit_ping').click(function() {
-            ping(id)
-        })
-
-        function open_router(idt) {
-            id = idt
-            let url = "{{ route('mikapi.dashboard') }}?router=" + id;
-            window.open(url, '_blank');
-        }
-
-        function ping(idt) {
-            id = idt
             ajax_setup()
             $.ajax({
                 url: `${url_index_api}/${id}/ping`,
@@ -436,7 +319,7 @@
                     handleResponse(xhr)
                 }
             })
-        }
+        })
 
         // });
     </script>

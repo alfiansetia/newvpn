@@ -3,7 +3,7 @@
         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 layout-spacing">
             <div class="widget widget-one_hybrid widget-engagement">
                 <div class="widget-heading">
-                    <div class="w-title bs-tooltip" title="Open"
+                    <div class="w-title bs-tooltip" title="Open Hotspot Active"
                         onclick="window.location.href = `{{ route('mikapi.hotspot.active') }}${param_router}`"
                         style="cursor: pointer">
                         <div class="w-icon">
@@ -20,7 +20,7 @@
         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 layout-spacing">
             <div class="widget widget-one_hybrid widget-followers">
                 <div class="widget-heading">
-                    <div class="w-title bs-tooltip" title="Open"
+                    <div class="w-title bs-tooltip" title="Open Hotspot User"
                         onclick="window.location.href = `{{ route('mikapi.hotspot.user') }}${param_router}`"
                         style="cursor: pointer">
                         <div class="w-icon">
@@ -37,7 +37,7 @@
         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 layout-spacing">
             <div class="widget widget-one_hybrid widget-engagement">
                 <div class="widget-heading">
-                    <div class="w-title bs-tooltip" title="Open"
+                    <div class="w-title bs-tooltip" title="Open PPP Active"
                         onclick="window.location.href = `{{ route('mikapi.ppp.active') }}${param_router}`"
                         style="cursor: pointer">
                         <div class="w-icon">
@@ -54,7 +54,7 @@
         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 layout-spacing">
             <div class="widget widget-one_hybrid widget-followers">
                 <div class="widget-heading">
-                    <div class="w-title bs-tooltip" title="Open"
+                    <div class="w-title bs-tooltip" title="Open PPP Secret"
                         onclick="window.location.href = `{{ route('mikapi.ppp.secret') }}${param_router}`"
                         style="cursor: pointer">
                         <div class="w-icon">

@@ -158,7 +158,7 @@ class RouterController extends Controller
         try {
             $router->destroy_cache();
             $ping  = RouterApiServices::router($router)->ping();
-            return $this->send_response('Router Connected!');
+            return $this->send_response('Router ' . $router->name . ' Connected!');
         } catch (Exception $e) {
             return $this->send_response('Router Not Connect : ' . $e->getMessage(), null, 500);
         }

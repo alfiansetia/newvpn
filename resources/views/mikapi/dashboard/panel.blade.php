@@ -1,5 +1,20 @@
 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-    <div class="widget-four">
+    <div class="widget widget-one_hybrid widget-followers mb-2">
+        <div class="widget-heading mb-0">
+            <div class="w-title bs-tooltip" title="Open report"
+                onclick="window.location.href = `{{ route('mikapi.report') }}${param_router}`" style="cursor: pointer">
+                <div class="w-icon">
+                    <i data-feather="dollar-sign"></i>
+                </div>
+                <div class="">
+                    <p class="w-value" id="report_today">Loading...</p>
+                    <h5 class="" id="report_month">Loading...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-four" style="height: 50%">
         <div class="widget-heading">
             <h5 class="">Panel</h5>
         </div>

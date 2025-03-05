@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::get('mikapi/dashboard/get-data', [DashboardController::class, 'get'])->name('api.mikapi.dashboard.get');
 
+        Route::get('mikapi/report-summary', [ReportController::class, 'summary'])->name('api.mikapi.report.summary');
         Route::apiResource('mikapi/reports', ReportController::class)
             ->only(['index', 'show', 'destroy'])
             ->names('api.mikapi.reports');

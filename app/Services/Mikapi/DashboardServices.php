@@ -57,4 +57,13 @@ class DashboardServices extends RouterApiServices
         ];
         return $data;
     }
+
+    public static function tes()
+    {
+        $data = static::$API->comm('/tool/user-manager/profile/print', [
+            'as-value' => '',
+            'detail' => ''
+        ]);
+        return $data;
+    }
 }

@@ -60,7 +60,7 @@
                             'may' => 'May',
                             'jun' => 'June',
                             'jul' => 'July',
-                            'agu' => 'August',
+                            'aug' => 'August',
                             'sep' => 'September',
                             'oct' => 'October',
                             'nov' => 'November',
