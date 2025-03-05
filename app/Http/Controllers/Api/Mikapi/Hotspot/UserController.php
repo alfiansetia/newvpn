@@ -137,7 +137,7 @@ class UserController extends Controller
             'mac-address'        => $request->input('mac') ?? '00:00:00:00:00:00',
             'limit-uptime'       => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
             'limit-bytes-total'  => $request->data_limit . $request->data_type,
-            'comment'            => $request->input('comment'),
+            'comment'            => 'vc-' . $request->input('comment'),
             'disabled'           => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
         try {
