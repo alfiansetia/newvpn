@@ -80,19 +80,21 @@ class Vpn extends Model
 
     public function origin()
     {
+        $service = new VpnServices();
         try {
-            $service = new VpnServices();
             $detail = $service->server($this->server)->show($this);
-            $active = $service->server($this->server)->active($this);
-            return [
-                'detail' => $detail,
-                'active' => $active,
-            ];
         } catch (\Throwable $th) {
-            return [
-                'detail' => null,
-                'active' => null,
-            ];
+            $detail = null;
         }
+        try {
+            $active = $service->server($this->server)->active($this);
+        } catch (\Throwable $th) {
+            $active = null;
+        }
+
+        return [
+            'detail' => $detail,
+            'active' => $active,
+        ];
     }
 }
