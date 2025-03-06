@@ -92,27 +92,29 @@
 
 
     <script>
+        $.fn.DataTable.ext.pager.numbers_length = 5;
+
         var count = 0;
         var routerId = "{{ request()->query('router') }}";
 
         function dashboard() {
             let url = "{{ route('api.mikapi.dashboard.get') }}" + param_router;
             let url_report = "{{ route('api.mikapi.report.summary') }}" + param_router;
-            $('#sys_ros').text('Loading...');
-            $('#sys_up').text('Loading...');
-            $('#sys_rb').text('Loading...');
+            // $('#sys_ros').text('Loading...');
+            // $('#sys_up').text('Loading...');
+            // $('#sys_rb').text('Loading...');
 
-            $("#cpu_label").text('Loading...');
-            $("#cpu").css('width', '100%')
-            $("#ram_label").text('Loading...')
-            $("#ram").css('width', '100%')
-            $("#disk_label").text('Loading...')
-            $("#disk").css('width', '100%')
+            // $("#cpu_label").text('Loading...');
+            // $("#cpu").css('width', '100%')
+            // $("#ram_label").text('Loading...')
+            // $("#ram").css('width', '100%')
+            // $("#disk_label").text('Loading...')
+            // $("#disk").css('width', '100%')
 
-            $('#hs_active').text('Loading...');
-            $('#hs_user').text('Loading...');
-            $('#ppp_active').text('Loading...');
-            $('#ppp_secret').text('Loading...');
+            // $('#hs_active').text('Loading...');
+            // $('#hs_user').text('Loading...');
+            // $('#ppp_active').text('Loading...');
+            // $('#ppp_secret').text('Loading...');
             $.get(url).done(function(res) {
                 let cpuload = 0
                 let ramtot = 0
@@ -166,8 +168,8 @@
                 });
             })
 
-            $('#report_today').text('Loading...')
-            $('#report_month').text('Loading...')
+            // $('#report_today').text('Loading...')
+            // $('#report_month').text('Loading...')
             $.get(url_report).done(function(res) {
                 $('#report_today').text(`Today ${res.data.today.vc} vcr : ${hrg(res.data.today.total)}`);
                 $('#report_month').text(`This Month ${res.data.month.vc} vcr : ${hrg(res.data.month.total)}`);
@@ -191,6 +193,10 @@
             })
 
             dashboard();
+            setInterval(() => {
+                dashboard();
+            }, 10000);
+
 
             var i;
             var j;
@@ -217,7 +223,7 @@
                     }
                 },
                 dom: "<'table-responsive'tr>" +
-                    "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                    "<'dt--bottom-section  text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
                 oLanguage: {
                     "oPaginate": {
                         "sPrevious": '<i data-feather="arrow-left"></i>',
