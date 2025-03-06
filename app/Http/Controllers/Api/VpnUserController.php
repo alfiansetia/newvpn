@@ -45,7 +45,8 @@ class VpnUserController extends Controller
         if ($vpn_user->user_id != auth()->id()) {
             return $this->send_response_not_found();
         }
-        return new VpnResource($vpn_user->load(['user', 'server', 'ports']));
+        $data = new VpnResource($vpn_user->load(['user', 'server', 'ports']));
+        return  $data->additional(['data' => ['origin' => $vpn_user->origin()]]);
     }
 
     public  function store(Request $request)

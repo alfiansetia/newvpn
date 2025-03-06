@@ -234,6 +234,71 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xs-12 col-md-6 col-xl-6 mb-2">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <section class="mb-0 mt-0">
+                                                            <div role="menu" class="collapsed"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#iconAccordionFive"
+                                                                aria-expanded="true"
+                                                                aria-controls="iconAccordionFive">
+                                                                <div class="accordion-icon">
+                                                                    <i data-feather="activity"></i>
+                                                                </div>
+                                                                Info Connection
+                                                                <div class="icons">
+                                                                    <i data-feather="chevron-down"></i>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                    <div id="iconAccordionFive"
+                                                        class="accordion-collapse collapse show">
+                                                        <div class="card-body p-0">
+                                                            <table class="table"
+                                                                style="width: 100%; table-layout: fixed;">
+                                                                <tr>
+                                                                    <td class="tba">Service</td>
+                                                                    <td class="tbb clipboard bs-tooltip"
+                                                                        title="Click to copy!" data-container="body"
+                                                                        data-clipboard-action="copy"
+                                                                        data-clipboard-target="#detail_con_serv"
+                                                                        id="detail_con_serv">Loading..
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tba">Caller ID</td>
+                                                                    <td class="tbb clipboard bs-tooltip"
+                                                                        title="Click to copy!" data-container="body"
+                                                                        data-clipboard-action="copy"
+                                                                        data-clipboard-target="#detail_con_call"
+                                                                        id="detail_con_call">Loading..
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tba">Uptime</td>
+                                                                    <td class="tbb clipboard bs-tooltip"
+                                                                        title="Click to copy!" data-container="body"
+                                                                        data-clipboard-action="copy"
+                                                                        data-clipboard-target="#detail_con_up"
+                                                                        id="detail_con_up">Loading..
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="tba">Last Logout</td>
+                                                                    <td class="tbb clipboard bs-tooltip"
+                                                                        title="Click to copy!" data-container="body"
+                                                                        data-clipboard-action="copy"
+                                                                        data-clipboard-target="#detail_con_last"
+                                                                        id="detail_con_last">Loading..
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>

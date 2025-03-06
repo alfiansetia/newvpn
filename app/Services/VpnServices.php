@@ -23,6 +23,20 @@ class VpnServices extends ServerServices
         return $data[0];
     }
 
+    public function active(Vpn $vpn)
+    {
+        if (empty(parent::$server)) {
+            throw new Exception('Server Not Found!');
+        }
+        $data = parent::$API->comm('/ppp/active/print', [
+            '?name' => $vpn->username
+        ]);
+        if (empty($data)) {
+            throw new Exception('Data Not Found!');
+        }
+        return $data[0];
+    }
+
     public function store(Vpn $vpn)
     {
         if (empty(self::$server)) {

@@ -45,7 +45,8 @@ class VpnController extends Controller
 
     public function show(Vpn $vpn)
     {
-        return new VpnResource($vpn->load(['user', 'server', 'ports']));
+        $data = new VpnResource($vpn->load(['user', 'server', 'ports']));
+        return  $data->additional(['data' => ['origin' => $vpn->origin()]]);
     }
 
     public function store(Request $request)

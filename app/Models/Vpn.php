@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\ServerServices;
+use App\Services\VpnServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -74,5 +76,23 @@ class Vpn extends Model
             }
         }
         return false;
+    }
+
+    public function origin()
+    {
+        try {
+            $service = new VpnServices();
+            $detail = $service->server($this->server)->show($this);
+            $active = $service->server($this->server)->active($this);
+            return [
+                'detail' => $detail,
+                'active' => $active,
+            ];
+        } catch (\Throwable $th) {
+            return [
+                'detail' => null,
+                'active' => null,
+            ];
+        }
     }
 }
