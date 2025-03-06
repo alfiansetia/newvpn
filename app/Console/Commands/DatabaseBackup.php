@@ -33,6 +33,10 @@ class DatabaseBackup extends Command
         }
         $defaultConnection = Config::get('database.default');
         $defaultConfig = Config::get('database.connections.' . $defaultConnection);
+        if ($defaultConfig != 'mysql') {
+            $this->info('DB Not MYSQL, Skipped!');
+            return;
+        }
         $host = $defaultConfig['host'];
         $database = $defaultConfig['database'];
         $username = $defaultConfig['username'];
