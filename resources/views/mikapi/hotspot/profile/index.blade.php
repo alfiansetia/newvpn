@@ -196,6 +196,7 @@
                         });
                 },
             });
+            tomse.setValue('none')
         });
 
         var tomse_pool_data = null;
@@ -231,6 +232,7 @@
                         });
                 },
             });
+            tomse.setValue('none')
         });
 
 

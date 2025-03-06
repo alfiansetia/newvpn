@@ -128,6 +128,7 @@
                         });
                 },
             });
+            tomse.setValue('none')
         });
 
         $('#reset').click(function() {
