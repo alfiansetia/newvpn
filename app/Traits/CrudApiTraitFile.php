@@ -3,12 +3,10 @@
 namespace App\Traits;
 
 use Exception;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
-trait CrudApiTrait
+trait CrudApiTraitFile
 {
-    public static $expired = 3600;
 
     public static function get(array $filters = [])
     {
@@ -75,19 +73,22 @@ trait CrudApiTrait
 
     public static function from_cache($filters = [])
     {
-        $id = parent::$router->id;
-        $cacheKey = "router_cache_{$id}";
-        // return Cache::get($cacheKey);
-        return Cache::remember($cacheKey, static::$expired, function () use ($filters) {
-            return static::get($filters);
-        });
+        $file = parent::$path . '/' . parent::$router->id . '.json';
+        if (!file_exists($file)) {
+            $data = static::get($filters);
+        } else {
+            $file = file_get_contents($file);
+            $data = json_decode($file, true);
+        }
+        return $data;
     }
 
     public static function to_cache($data)
     {
-        $id = parent::$router->id;
-        $cacheKey = "router_cache_{$id}";
-        Cache::put($cacheKey, $data, static::$expired);
+        if (!File::exists(parent::$path)) {
+            File::makeDirectory(parent::$path, 755, true);
+        }
+        File::put(parent::$path . '/' . parent::$router->id . '.json', json_encode($data, JSON_PRETTY_PRINT));
         return new static;
     }
 
@@ -99,32 +100,29 @@ trait CrudApiTrait
 
     public static function remove_from_cache(array $ids)
     {
-        $id = parent::$router->id;
-        $cacheKey = "router_cache_{$id}";
-        $data = collect(Cache::get($cacheKey, []));
-        $filteredData = $data->reject(function ($item) use ($ids) {
+        $data = collect(static::from_cache());
+        $data = $data->reject(function ($item) use ($ids) {
             return isset($item['.id']) && in_array($item['.id'], $ids);
         });
-        Cache::put($cacheKey, $filteredData->values()->toArray(), static::$expired);
+        static::to_cache($data->values()->toArray());
     }
 
     public static function store_item_to_cache($new_data)
     {
-        $id = parent::$router->id;
-        $cacheKey = "router_cache_{$id}";
-        $data = collect(Cache::get($cacheKey, []));
+        $data = collect(static::from_cache());
         $data->push($new_data);
-        Cache::put($cacheKey, $data->values()->toArray(), static::$expired);
+        static::to_cache($data->values()->toArray());
     }
 
     public static function update_item_to_cache($id, $new_data)
     {
-        $routerId = parent::$router->id;
-        $cacheKey = "router_cache_{$routerId}";
-        $data = collect(Cache::get($cacheKey, []));
+        $data = collect(static::from_cache());
         $data = $data->map(function ($item) use ($id, $new_data) {
-            return (isset($item['.id']) && $item['.id'] === $id) ? $new_data : $item;
+            if (isset($item['.id']) && $item['.id'] === $id) {
+                return $new_data;
+            }
+            return $item;
         });
-        Cache::put($cacheKey, $data->values()->toArray(), static::$expired);
+        static::to_cache($data->values()->toArray());
     }
 }

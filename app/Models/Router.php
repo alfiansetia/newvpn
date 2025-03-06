@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class Router extends Model
@@ -54,7 +55,7 @@ class Router extends Model
     public function getUrlLogoAttribute($value)
     {
         if (!$value) {
-            return asset('/images/default/logo_vc.svg');
+            return asset('images/default/logo.svg');
         } else {
             return $value;
         }
@@ -62,21 +63,25 @@ class Router extends Model
 
     public function destroy_cache()
     {
-        $path = storage_path('app/mikapi/hotspot/user');
-        $file = $path . '/' . $this->id . '.json';
-        if (file_exists($file)) {
-            File::delete($file);
-        }
+        // $path = storage_path('app/mikapi/hotspot/user');
+        // $file = $path . '/' . $this->id . '.json';
+        // if (file_exists($file)) {
+        //     File::delete($file);
+        // }
+        Cache::forget('router_cache_' . $this->id);
     }
 
     public function destroy_cache_by_ids(array $ids)
     {
-        $path = storage_path('app/mikapi/hotspot/user');
+        // $path = storage_path('app/mikapi/hotspot/user');
+        // foreach ($ids as $item) {
+        //     $file = $path . '/' . $item . '.json';
+        //     if (file_exists($file)) {
+        //         File::delete($file);
+        //     }
+        // }
         foreach ($ids as $item) {
-            $file = $path . '/' . $item . '.json';
-            if (file_exists($file)) {
-                File::delete($file);
-            }
+            Cache::forget('router_cache_' . $item);
         }
     }
 }
