@@ -152,6 +152,17 @@
                     return false;
             };
 
+            document.getElementById('profile').tomselect.on('change', function(value) {
+                if (!value) return;
+                let selectedData = this.options[value];
+                $('#profile_helper').text('')
+                if (selectedData.mikhmon != null) {
+                    $('#profile_helper').text(
+                        `Validity : ${selectedData.mikhmon.validity} | Price : ${hrg(selectedData.mikhmon.price)} | Selling Price ${hrg(selectedData.mikhmon.selling_price)} : | Lock User : ${selectedData.mikhmon.lock}`
+                    )
+                }
+            });
+
         })
 
         $('.mask_angka').inputmask({

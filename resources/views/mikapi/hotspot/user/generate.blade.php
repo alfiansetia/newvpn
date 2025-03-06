@@ -122,6 +122,7 @@
                                     <select name="profile" id="gen_profile" class="form-control-lg tomse-profile"
                                         style="width: 100%;" required>
                                     </select>
+                                    <small id="profile_helper" class="form-text text-muted"></small>
                                     <span class="error invalid-feedback err_profile" style="display: hide;"></span>
                                 </div>
                             </div>
@@ -216,6 +217,19 @@
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            document.getElementById('gen_profile').tomselect.on('change', function(value) {
+                if (!value) return;
+                let selectedData = this.options[value];
+                $('#profile_helper').text('')
+                if (selectedData.mikhmon != null) {
+                    $('#profile_helper').text(
+                        `Validity : ${selectedData.mikhmon.validity} | Price : ${hrg(selectedData.mikhmon.price)} | Selling Price ${hrg(selectedData.mikhmon.selling_price)} : | Lock User : ${selectedData.mikhmon.lock}`
+                    )
+                }
+            });
+        })
+
         document.getElementById("gen_comment").onkeypress = function(e) {
             var chr = String.fromCharCode(e.which);
             if (" _!@#$%^&*()+=;|?,.~".indexOf(chr) >= 0)

@@ -24,6 +24,7 @@
                                 style="width: 100%;" required>
                             </select>
                             <span class="error invalid-feedback err_profile" style="display: hide;"></span>
+                            <small id="profile_helper" class="form-text text-muted"></small>
                         </div>
                     </div>
                     <div class="row">
