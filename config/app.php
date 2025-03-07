@@ -123,6 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'cdn' => env('CDN_URL', asset(''))
+    'cdn' => env('CDN_URL')
 
 ];
