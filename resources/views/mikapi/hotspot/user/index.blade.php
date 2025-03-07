@@ -49,7 +49,7 @@
 
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
             <div class="col-md-4 mb-2">
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <select class="form-control tomse-comment" name="comment" id="filter_comment">
                     </select>
                     <button class="btn btn-warning" type="button" onclick="reload_comment()"><i
@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing mt-1" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
                     <table id="tableData" class="table dt-table-hover table-hover" style="width:100%; cursor: pointer;">
@@ -387,7 +387,7 @@
                 return
             }
             $('#err_template').hide()
-            let url = "{{ route('mikapi.hotspot.voucher', '') }}/" +
+            let url = "{{ url('mikapi/hotspot/user/voucher') }}/" +
                 `${temp}${param_router}&mode=${mode}&comment=${comment}&profile=${profile}`
             window.open(url)
         })

@@ -84,22 +84,22 @@
 
         <div class="row layout-top-spacing layout-spacing pb-0" id="card_filter">
             <div class="col-md-4 mb-2">
-                <select class="form-control" name="status" id="select_status">
+                <select class="form-control form-control-sm" name="status" id="select_status">
                     <option value="">All</option>
                     <option value="1">Active</option>
                     <option value="0">Nonactive</option>
                 </select>
             </div>
             <div class="col-md-4 mb-2">
-                <select class="form-control" name="trial" id="select_trial">
+                <select class="form-control form-control-sm" name="trial" id="select_trial">
                     <option value="">All</option>
                     <option value="1">Trial</option>
                     <option value="0">Paid</option>
                 </select>
             </div>
             <div class="col-md-2 mb-2">
-                <input type="text" class="form-control mask_angka" name="search_port" id="search_port"
-                    placeholder="DST Port">
+                <input type="text" class="form-control form-control-sm mask_angka" name="search_port"
+                    id="search_port" placeholder="DST Port">
             </div>
             <div class="col-md-2 mb-2">
                 <button type="button" class="btn btn-block btn-primary" id="btn_filter">
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing mt-1" id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
                     <table id="tableData" class="table dt-table-hover table-hover" style="width:100%; cursor: pointer;">
