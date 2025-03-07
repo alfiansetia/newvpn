@@ -1,8 +1,8 @@
 @extends('layouts.auth', ['title' => 'Sign Up'])
 
 @push('csslib')
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/src/assets/css/light/elements/alert.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/src/assets/css/dark/elements/alert.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ cdn('backend/src/assets/css/light/elements/alert.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ cdn('backend/src/assets/css/dark/elements/alert.css') }}">
     <!--  END CUSTOM STYLE FILE  -->
 @endpush
 @section('content')

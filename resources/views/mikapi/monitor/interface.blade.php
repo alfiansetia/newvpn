@@ -1,24 +1,21 @@
 @extends('layouts.backend.template_mikapi', ['title' => 'Monitor Interface'])
 @push('csslib')
-    <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/notification/snackbar/snackbar.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/light/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/light/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/dark/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/dark/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
         type="text/css" />
 
 
-    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
-        type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
@@ -56,12 +53,12 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/moment/moment-with-locales.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/moment/moment-with-locales.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 @endpush
 @push('js')

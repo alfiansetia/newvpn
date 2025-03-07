@@ -24,31 +24,29 @@
         var dark_logo = "{{ $company->logo_dark }}";
     </script>
 
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet"
-        type="text/css" />
-    <script src="{{ asset('backend/layouts/modern-light-menu/loader.js') }}"></script>
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ cdn('backend/layouts/modern-light-menu/loader.js') }}"></script>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('backend/src/plugins/src/font-icons/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ cdn('backend/src/plugins/src/font-icons/fontawesome-free/css/all.min.css') }}">
 
-    <link href="{{ asset('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/plugins/src/animate/animate.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet">
-    <link href="{{ asset('backend/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet">
+    <link href="{{ cdn('backend/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/dark/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/dark/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
         type="text/css" />
 
-    <link href="{{ asset('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- END GLOBAL MANDATORY STYLES -->
 
@@ -110,16 +108,16 @@
     </form>
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend/src/plugins/src/global/vendors.min.js') }}"></script>
-    <script src="{{ asset('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/waves/waves.min.js') }}"></script>
-    <script src="{{ asset('backend/layouts/modern-light-menu/app.js') }}"></script>
-    <script src="{{ asset('backend/src/assets/js/custom.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/font-icons/feather/feather.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src//blockui/jquery.blockUI.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/global/vendors.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/waves/waves.min.js') }}"></script>
+    <script src="{{ cdn('backend/layouts/modern-light-menu/app.js') }}"></script>
+    <script src="{{ cdn('backend/src/assets/js/custom.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/font-icons/feather/feather.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src//blockui/jquery.blockUI.min.js') }}"></script>
 
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <script>

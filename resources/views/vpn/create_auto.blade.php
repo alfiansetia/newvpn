@@ -1,17 +1,13 @@
 @extends('layouts.backend.template', ['title' => 'Order Vpn'])
 @push('csslib')
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/pricing-table/css/component.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/dark/pricing-table/css/component.css') }}" rel="stylesheet"
-        type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/light/pricing-table/css/component.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/dark/pricing-table/css/component.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
-        type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/dark/tomSelect/custom-tomSelect.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
     <div class="middle-content container-xxl p-0">
@@ -163,12 +159,12 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/tomSelect/tom-select.base.js') }}"></script>
 @endpush
 
 

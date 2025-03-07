@@ -1,11 +1,11 @@
 @extends('layouts.app', ['title' => 'Data User'])
 @push('css')
-    <link href="{{ asset('backend/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('backend/assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+    <link href="{{ cdn('backend/assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
         rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/assets/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/assets/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css">
 @endpush
 @section('content')
     <div class="row">
@@ -54,7 +54,7 @@
                                 <td>
                                     <div class="d-flex justify-content-start align-items-center gap-3">
                                         <div class="avatar-md">
-                                            <img src="{{ asset('backend/assets/images/products/p-1.png') }}" alt="Product-1"
+                                            <img src="{{ cdn('backend/assets/images/products/p-1.png') }}" alt="Product-1"
                                                 class="img-fluid rounded-2">
                                         </div>
                                         Men White Slim Fit T-shirt
@@ -89,7 +89,7 @@
                                 <td>
                                     <div class="d-flex justify-content-start align-items-center gap-3">
                                         <div class="avatar-md">
-                                            <img src="{{ asset('backend/assets/images/products/p-2.png') }}" alt="Product-1"
+                                            <img src="{{ cdn('backend/assets/images/products/p-2.png') }}" alt="Product-1"
                                                 class="img-fluid rounded-2">
                                         </div>
                                         55 L Laptop Backpack fits upto 16 In..
@@ -147,10 +147,10 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{ asset('backend/assets/js/function.js') }}"></script>
-    <script src="{{ asset('backend/assets/vendor/datatables.net/js/dataTables.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-    {{-- <script src="{{ asset('backend/assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script> --}}
+    <script src="{{ cdn('backend/assets/js/function.js') }}"></script>
+    <script src="{{ cdn('backend/assets/vendor/datatables.net/js/dataTables.min.js') }}"></script>
+    <script src="{{ cdn('backend/assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    {{-- <script src="{{ cdn('backend/assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script> --}}
     <script>
         var url_index = "{{ route('users.index') }}"
         var url_index_api = "{{ route('api.users.index') }}"

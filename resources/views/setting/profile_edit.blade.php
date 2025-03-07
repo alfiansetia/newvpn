@@ -4,16 +4,16 @@
 @extends('layouts.backend.template', ['title' => 'Setting Profile'])
 
 @push('css')
-    <link href="{{ asset('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -356,10 +356,10 @@
 @endsection
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 @endpush
 
 @push('js')

@@ -1,48 +1,48 @@
 @extends('layouts.backend.template_mikapi', ['title' => 'Dashboard'])
 
 @push('csslib')
-    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css"
-        href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
-    <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
+        href="{{ cdn('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
+    <link href="{{ cdn('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css" />
 
 
-    <link href="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/notification/snackbar/snackbar.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/light/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/light/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/dark/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/dark/notification/snackbar/custom-snackbar.css') }}" rel="stylesheet"
         type="text/css" />
 
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -66,18 +66,18 @@
 
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/select2/custom-select2.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
 @endpush
 @push('js')
     <script src="{{ asset('js/v2/func.js') }}"></script>

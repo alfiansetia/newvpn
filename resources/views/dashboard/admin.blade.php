@@ -1,14 +1,14 @@
 @extends('layouts.backend.template', ['title' => 'Dashboard'])
 
 @push('css')
-    <link href="{{ asset('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_2.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @section('content')
@@ -31,8 +31,8 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('backend/src/assets/js/dashboard/dash_2.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/assets/js/dashboard/dash_2.js') }}"></script>
 
     <script>
         var options = {

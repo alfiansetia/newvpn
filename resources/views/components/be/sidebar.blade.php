@@ -125,7 +125,7 @@
 
         <!-- Help Box -->
         <div class="help-box text-center">
-            <img src="{{ asset('backend/assets/images/coffee-cup.svg') }}" height="90" alt="Helper Icon Image" />
+            <img src="{{ cdn('backend/assets/images/coffee-cup.svg') }}" height="90" alt="Helper Icon Image" />
             <h5 class="mt-3 fw-semibold fs-16">Unlimited Access</h5>
             <p class="mb-3 text-muted">Upgrade to plan to get access to unlimited reports</p>
             <a href="javascript: void(0);" class="btn btn-danger btn-sm">Upgrade</a>

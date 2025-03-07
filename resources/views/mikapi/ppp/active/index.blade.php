@@ -1,16 +1,16 @@
 @extends('layouts.backend.template_mikapi', ['title' => 'PPP Active'])
 @push('csslib')
     <!-- DATATABLE -->
-    <link href="{{ asset('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/datatable/datatables.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/plugins/css/light/table/datatable/dt-global_style.css') }}" rel="stylesheet"
         type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css"
-        href="{{ asset('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
-    <link href="{{ asset('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
+        href="{{ cdn('backend/src/plugins/css/dark/table/datatable/dt-global_style.css') }}">
+    <link href="{{ cdn('backend/src/assets/css/dark/apps/invoice-list.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
@@ -32,7 +32,7 @@
     </div>
 @endsection
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/datatable/datatables.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/datatable/datatables.min.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 @endpush
 

@@ -27,29 +27,28 @@
         var dark_logo = "{{ $company->logo_dark }}";
     </script>
 
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet"
-        type="text/css" />
-    <script src="{{ asset('backend/layouts/modern-light-menu/loader.js') }}"></script>
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ cdn('backend/layouts/modern-light-menu/loader.js') }}"></script>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="{{ asset('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/light/authentication/auth-cover.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/assets/css/light/authentication/auth-cover.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/authentication/auth-cover.css') }}" rel="stylesheet"
-        type="text/css" />
-
-    <link href="{{ asset('backend/src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet">
-    <link href="{{ asset('backend/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/assets/css/dark/authentication/auth-cover.css') }}" rel="stylesheet"
         type="text/css" />
 
-    <link href="{{ asset('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/plugins/src/sweetalerts2/sweetalerts2.css') }}" rel="stylesheet">
+    <link href="{{ cdn('backend/src/plugins/css/light/sweetalerts2/custom-sweetalert.css') }}" rel="stylesheet"
+        type="text/css" />
+
+    <link href="{{ cdn('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     @stack('csslib')
     @stack('css')
@@ -82,14 +81,14 @@
     </form>
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/libs/jquery-3.1.1.min.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/font-icons/feather/feather.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/font-icons/feather/feather.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
 
     @stack('jslib')
     @stack('js')

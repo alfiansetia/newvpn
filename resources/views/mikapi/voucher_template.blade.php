@@ -1,19 +1,19 @@
 @extends('layouts.backend.template_mikapi', ['title' => 'Voucher Template'])
 
 @push('csslib')
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/assets/css/light/components/media_object.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/media_object.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/media_object.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/media_object.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -51,18 +51,18 @@
 
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/table/datatable/datatables.js') }}"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/select2/custom-select2.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/select2/custom-select2.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/apex/apexcharts.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/notification/snackbar/snackbar.min.js') }}"></script>
 @endpush
 @push('js')
     <script src="{{ asset('js/v2/func.js') }}"></script>

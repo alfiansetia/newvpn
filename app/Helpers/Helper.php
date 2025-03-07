@@ -3,7 +3,11 @@
 use App\Models\Company;
 use Illuminate\Support\Carbon;
 
-use function PHPUnit\Framework\returnSelf;
+function cdn($path = '')
+{
+    $cdn_url = rtrim(config('app.cdn'), '/') . '/';
+    return empty($cdn_url) ? asset($path) : ($cdn_url . $path);
+}
 
 function company()
 {

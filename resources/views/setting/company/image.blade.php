@@ -4,24 +4,23 @@
 @extends('layouts.backend.template', ['title' => 'Setting Company'])
 
 @push('css')
-    <link href="{{ asset('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/light/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/src/assets/css/dark/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/components/tabs.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/light/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/components/tabs.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/components/list-group.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/users/account-setting.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/src/plugins/src/filepond/filepond.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImagePreview.min.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/src/filepond/filepond.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImagePreview.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/light/filepond/custom-filepond.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/src/plugins/css/light/filepond/custom-filepond.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/plugins/css/dark/filepond/custom-filepond.css') }}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ cdn('backend/src/plugins/css/dark/filepond/custom-filepond.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -141,17 +140,17 @@
 @endsection
 
 @push('jslib')
-    <script src="{{ asset('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/jquery-validation/additional-methods.min.js') }}"></script>
 
-    <script src="{{ asset('backend/src/plugins/src/filepond/filepond.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginFileValidateType.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImagePreview.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImageCrop.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImageResize.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
-    <script src="{{ asset('backend/src/plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/filepond.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginFileValidateType.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImagePreview.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImageCrop.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImageResize.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
 @endpush
 
 @push('js')

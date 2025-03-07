@@ -42,46 +42,46 @@
                 <div class="dropdown">
                     <button class="topbar-link" data-bs-toggle="dropdown" data-bs-offset="0,25" type="button"
                         aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('backend/assets/images/flags/us.svg') }}" alt="user-image"
+                        <img src="{{ cdn('backend/assets/images/flags/us.svg') }}" alt="user-image"
                             class="w-100 rounded" height="18" id="selected-language-image">
                     </button>
 
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="en">
-                            <img src="{{ asset('backend/assets/images/flags/us.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/us.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18" data-translator-image> <span
                                 class="align-middle">English</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="hi">
-                            <img src="{{ asset('backend/assets/images/flags/in.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/in.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18" data-translator-image> <span
                                 class="align-middle">Hindi</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('backend/assets/images/flags/de.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/de.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18"> <span class="align-middle">German</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('backend/assets/images/flags/it.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/it.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18"> <span class="align-middle">Italian</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('backend/assets/images/flags/es.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/es.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18"> <span class="align-middle">Spanish</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item">
-                            <img src="{{ asset('backend/assets/images/flags/ru.svg') }}" alt="user-image"
+                            <img src="{{ cdn('backend/assets/images/flags/ru.svg') }}" alt="user-image"
                                 class="me-1 rounded" height="18"> <span class="align-middle">Russian</span>
                         </a>
 

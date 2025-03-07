@@ -13,22 +13,19 @@
         var light_logo = "{{ asset('images/default/logo.svg') }}";
         var dark_logo = "{{ asset('images/default/logo2.svg') }}";
     </script>
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet"
-        type="text/css" />
-    <script src="{{ asset('backend/layouts/modern-light-menu/loader.js') }}"></script>
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ cdn('backend/layouts/modern-light-menu/loader.js') }}"></script>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="{{ asset('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/light/plugins.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/light/pages/error/error.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/light/pages/error/error.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('backend/src/assets/css/dark/pages/error/error.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/layouts/modern-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/pages/error/error.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <style>
@@ -84,7 +81,7 @@
         </div>
     </div>
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 </body>
 
