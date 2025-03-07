@@ -799,7 +799,7 @@
                             $('#detail_con_call').html(result.data.origin.active['caller-id'])
                             $('#detail_con_up').html(result.data.origin.active.uptime)
                         }
-                        if (result.data.origin.active != null) {
+                        if (result.data.origin.detail != null) {
                             $('#detail_con_last').html(result.data.origin.detail['last-logged-out'])
                         }
                     }
