@@ -156,7 +156,7 @@
         });
 
         $('#reset').click(function() {
-            document.getElementById('server').tomselect.clear()
+            document.getElementById('server').tomselect.setValue('all');
         })
 
 

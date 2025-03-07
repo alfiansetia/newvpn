@@ -132,7 +132,7 @@
         });
 
         $('#reset').click(function() {
-            document.getElementById('parent').tomselect.clear()
+            document.getElementById('parent').tomselect.setValue('none');
         })
 
         var f1 = $('#time_limit').flatpickr({

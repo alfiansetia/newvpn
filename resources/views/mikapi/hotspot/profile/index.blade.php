@@ -237,8 +237,8 @@
 
 
         $('#reset').click(function() {
-            document.getElementById('parent').tomselect.clear()
-            document.getElementById('pool').tomselect.clear()
+            document.getElementById('parent').tomselect.setValue('none');
+            document.getElementById('pool').tomselect.setValue('none');
         })
 
 

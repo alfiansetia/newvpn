@@ -334,7 +334,7 @@
         });
 
         $('#reset').click(function() {
-            document.getElementById('gen_server').tomselect.clear()
+            document.getElementById('gen_server').tomselect.setValue('all');
             document.getElementById('gen_profile').tomselect.clear()
         })
 
