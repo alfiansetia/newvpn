@@ -5,8 +5,9 @@ use Illuminate\Support\Carbon;
 
 function cdn($path = '')
 {
-    $cdn_url = rtrim(config('app.cdn'), '/') . '/';
-    return empty($cdn_url) ? asset($path) : ($cdn_url . $path);
+    $cdn_url = config('app.cdn');
+    $url = rtrim($cdn_url, '/') . '/';
+    return empty($cdn_url) ? asset($path) : ($url . $path);
 }
 
 function company()
