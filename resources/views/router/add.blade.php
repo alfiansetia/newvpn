@@ -71,6 +71,13 @@
                                 placeholder="Please Enter Url Logo" minlength="4" maxlength="100" required>
                             <span class="error invalid-feedback err_url_logo" style="display: hide;"></span>
                         </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="currency"><i class="fas fa-link me-1 bs-tooltip"
+                                    title="Currency"></i>Currency :</label>
+                            <input type="text" name="currency" class="form-control maxlength" id="currency"
+                                placeholder="Please Enter Currency" minlength="0" maxlength="5" value="Rp">
+                            <span class="error invalid-feedback err_currency" style="display: hide;"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-center">

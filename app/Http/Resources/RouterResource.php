@@ -28,6 +28,7 @@ class RouterResource extends JsonResource
             'port'          => new PortResource($this->whenLoaded('port')),
             'created_at'    => $this->created_at,
             'updated_at'    => $this->updated_at,
+            'currency'      => $this->currency,
         ];
     }
 }

@@ -369,6 +369,7 @@
                     $('#edit_password').val('');
                     $('#edit_contact').val(result.data.contact);
                     $('#edit_url_logo').val(result.data.url_logo);
+                    $('#edit_currency').val(result.data.currency);
                     let tom = document.getElementById('edit_vpn').tomselect
                     tom.clear()
                     if (result.data.port_id != null) {

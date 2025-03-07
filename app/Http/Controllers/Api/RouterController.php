@@ -58,6 +58,7 @@ class RouterController extends Controller
             'dnsname'   => 'required|min:3|max:30',
             'contact'   => 'required|numeric|min:10',
             'url_logo'  => 'required|max:100',
+            'currency'  => 'nullable|max:5',
         ]);
         $port = Port::whereRelation('vpn', 'user_id', $user->id)
             ->whereRelation('vpn', 'is_active', 1)
@@ -76,6 +77,7 @@ class RouterController extends Controller
             'password'      => encrypt($request->password),
             'contact'       => $request->contact,
             'url_logo'      => $request->url_logo,
+            'currency'      => $request->currency,
         ]);
         $router->destroy_cache();
         return $this->send_response('Router Created!');
@@ -95,6 +97,7 @@ class RouterController extends Controller
             'hsname'    => 'required|min:3|max:30',
             'contact'   => 'required|numeric|min:10',
             'url_logo'  => 'required|max:100',
+            'currency'  => 'nullable|max:5',
         ]);
         $port = Port::whereRelation('vpn', 'user_id', auth()->id())
             ->whereRelation('vpn', 'is_active', 1)
@@ -114,6 +117,7 @@ class RouterController extends Controller
             'dnsname'       => $request->dnsname,
             'contact'       => $request->contact,
             'url_logo'      => $request->url_logo,
+            'currency'      => $request->currency,
         ];
         if ($request->filled('password')) {
             $param['password'] = encrypt($request->password);
