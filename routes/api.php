@@ -25,8 +25,6 @@ use App\Http\Controllers\Api\Mikapi\QueueController;
 use App\Http\Controllers\Api\Mikapi\ReportController;
 use App\Http\Controllers\Api\Mikapi\System\GroupController;
 use App\Http\Controllers\Api\Mikapi\System\PackageController;
-use App\Http\Controllers\Api\Mikapi\System\ResourceController;
-use App\Http\Controllers\Api\Mikapi\System\RouterboardController;
 use App\Http\Controllers\Api\Mikapi\System\SchedulerController;
 use App\Http\Controllers\Api\Mikapi\System\ScriptController;
 use App\Http\Controllers\Api\Mikapi\System\SystemController;
@@ -44,6 +42,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoucherTemplateController;
 use App\Http\Controllers\Api\VpnController;
 use App\Http\Controllers\Api\VpnUserController;
+use App\Http\Controllers\Api\WhatsappTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +110,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('topups', TopupController::class)->names('api.topups');
         Route::apiResource('topup-user', TopupUserController::class)->names('api.topups.user')->only(['index', 'show', 'store', 'destroy']);
 
+        Route::get('router-paginate', [WhatsappTokenController::class, 'paginate'])->name('api.wa_tokens.paginate');
+        Route::post('wa-tokens-sync', [WhatsappTokenController::class, 'sync'])->name('api.wa_tokens.sync');
+        Route::delete('wa-tokens', [WhatsappTokenController::class, 'destroyBatch'])->name('api.wa_tokens.destroy.batch');
+        Route::apiResource('wa-tokens', WhatsappTokenController::class)->names('api.wa_tokens');
 
 
         Route::delete('setting/databases', [DatabaseBackupController::class, 'destroyBatch'])->name('api.setting.databases.destroy.batch');

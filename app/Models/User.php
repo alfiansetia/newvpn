@@ -190,4 +190,9 @@ class User extends Authenticatable implements MustVerifyEmail
         ]);
         return true;
     }
+
+    public function wa_tokens()
+    {
+        return $this->hasMany(WhatsappToken::class);
+    }
 }

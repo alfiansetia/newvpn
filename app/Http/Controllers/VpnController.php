@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Vpn;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class VpnController extends Controller
 {

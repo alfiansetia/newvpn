@@ -28,6 +28,7 @@ use App\Http\Controllers\TopupController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherTemplateController;
 use App\Http\Controllers\VpnController;
+use App\Http\Controllers\WhatsappTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -124,6 +125,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('routers', [RouterController::class, 'index'])->name('routers.index');
 
         Route::get('topups', [TopupController::class, 'index'])->name('topups.index');
+        Route::get('wa-tokens', [WhatsappTokenController::class, 'index'])->name('wa_tokens.index');
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
         Route::resource('template', VoucherTemplateController::class)->except(['create']);

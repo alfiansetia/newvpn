@@ -127,7 +127,7 @@ class RouterController extends Controller
         }
         $router->destroy_cache();
         $router->update($param);
-        return $this->send_response('Router Update!');
+        return $this->send_response('Router Updated!');
     }
 
     public function destroy(string $id)

@@ -215,9 +215,9 @@
                 </div>
             </li>
             <li
-                class="menu {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'active' : '' }}">
+                class="menu {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' || $title == 'Whatsapp Token' ? 'active' : '' }}">
                 <a href="#setting_nav" data-bs-toggle="collapse"
-                    aria-expanded="{{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'true' : 'false' }}"
+                    aria-expanded="{{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' || $title == 'Whatsapp Token' ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="settings"></i>
@@ -227,13 +227,16 @@
                         <i data-feather="chevron-right"></i>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ $title == 'Setting Company' || $title == 'Setting Profile' || $title == 'Profile' || $title == 'Whatsapp Token' ? 'show' : '' }}"
                     id="setting_nav" data-bs-parent="#accordionExample">
                     <li class="{{ $title == 'Profile' ? 'active' : '' }}">
                         <a href="{{ route('setting.profile') }}"> Profile </a>
                     </li>
                     <li class="{{ $title == 'Setting Profile' ? 'active' : '' }}">
                         <a href="{{ route('setting.profile.edit') }}"> Account </a>
+                    </li>
+                    <li class="{{ $title == 'Whatsapp Token' ? 'active' : '' }}">
+                        <a href="{{ route('wa_tokens.index') }}"> Whatsapp Token </a>
                     </li>
                     @if ($user->is_admin())
                         <li class="{{ $title == 'Setting Company' ? 'active' : '' }}">

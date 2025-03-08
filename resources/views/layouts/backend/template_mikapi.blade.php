@@ -135,6 +135,12 @@
             }
         }
 
+        setInterval(() => {
+            document.querySelectorAll('.bs-tooltip').forEach(tooltip => {
+                bootstrap.Tooltip.getInstance(tooltip)?.dispose();
+            });
+        }, 10000);
+
         function hrg(x) {
             return parseInt(x).toLocaleString('id-ID')
         }
