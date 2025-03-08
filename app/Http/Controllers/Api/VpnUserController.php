@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VpnResource;
-use App\Mail\DetailVpnMail;
-use App\Models\BalanceHistory;
 use App\Models\Server;
 use App\Models\TemporaryIp;
 use App\Models\Vpn;
@@ -13,7 +11,6 @@ use App\Services\VpnServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -177,22 +174,10 @@ class VpnUserController extends Controller
             }
             $vpn->ports()->createMany($ports);
             if ($total > 0) {
-                $user->update([
-                    'balance' => $user_balance  - $total,
-                ]);
-                BalanceHistory::create([
-                    'date'      => date('Y-m-d H:i:s'),
-                    'user_id'   => $user->id,
-                    'amount'    => $total,
-                    'type'      => 'min',
-                    'before'    => $user_balance,
-                    'after'     => $user_balance - $total,
-                    'desc'      => 'Order VPN ' . $vpn->username . ' ' . $qty . ' Month',
-                ]);
+                $user->min_balance($total, 'Order VPN ' . $vpn->username . ' ' . $qty . ' Month');
             }
             $service = VpnServices::server($server)->store($vpn->fresh());
-            Mail::to($user->email)->queue(new DetailVpnMail($vpn));
-
+            $vpn->send_notif($user->email);
             DB::commit();
             return $this->send_response('Success Create VPN!');
         } catch (Throwable $th) {
@@ -239,20 +224,8 @@ class VpnUserController extends Controller
             ]);
             $new = $vpn_user->fresh();
             $service = VpnServices::server($server)->update($old, $new);
-            $new_balance =  $user_balance - $amount;
-            $user->update([
-                'balance' => $new_balance,
-            ]);
-            BalanceHistory::create([
-                'date'      => date('Y-m-d H:i:s'),
-                'user_id'   => $user->id,
-                'amount'    => $amount,
-                'type'      => 'min',
-                'before'    => $user_balance,
-                'after'     => $new_balance,
-                'desc'      => 'Extend VPN ' . $vpn_user->username . ' ' . $month . ' Month',
-            ]);
-            Mail::to($user->email)->queue(new DetailVpnMail($vpn_user));
+            $user->min_balance($amount, 'Extend VPN ' . $vpn_user->username . ' ' . $month . ' Month');
+            $vpn_user->send_notif($user->email);
             DB::commit();
             return $this->send_response('Success Extend Vpn ' . $month . ' Month!');
         } catch (\Throwable $th) {

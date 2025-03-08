@@ -152,4 +152,42 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(NotificationUser::class)->where('is_read', 'no');
     }
+
+    public function min_balance($amount, $desc = '')
+    {
+        $user_balance = $this->balance;
+        $new_user_balance_min = $user_balance - $amount;
+        $this->update([
+            'balance' => $new_user_balance_min,
+        ]);
+        BalanceHistory::create([
+            'date'      => date('Y-m-d H:i:s'),
+            'user_id'   => $this->id,
+            'amount'    => $amount,
+            'type'      => 'min',
+            'before'    => $user_balance,
+            'after'     => $new_user_balance_min,
+            'desc'      => $desc,
+        ]);
+        return true;
+    }
+
+    public function plus_balance($amount, $desc = '')
+    {
+        $user_balance = $this->balance;
+        $new_user_balance_plus = $user_balance + $amount;
+        $this->update([
+            'balance' => $new_user_balance_plus,
+        ]);
+        BalanceHistory::create([
+            'date'      => date('Y-m-d H:i:s'),
+            'user_id'   => $this->id,
+            'amount'    => $amount,
+            'type'      => 'plus',
+            'before'    => $user_balance,
+            'after'     => $new_user_balance_plus,
+            'desc'      => $desc,
+        ]);
+        return true;
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Mail\DetailTopupMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Topup extends Model
 {
@@ -37,6 +39,12 @@ class Topup extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function send_notif()
+    {
+        Mail::to($this->user->email)->queue(new DetailTopupMail($this));
+        return true;
     }
 
     public function getImageAttribute($value)

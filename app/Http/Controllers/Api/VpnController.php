@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VpnResource;
-use App\Mail\DetailVpnMail;
-use App\Models\BalanceHistory;
 use App\Models\Server;
 use App\Models\TemporaryIp;
 use App\Models\Vpn;
@@ -13,9 +11,7 @@ use App\Services\VpnServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -123,7 +119,7 @@ class VpnController extends Controller
             if ($request->sync == 'on') {
                 $service = VpnServices::server($vpn->server)->update($old, $new);
             }
-            Mail::to($vpn->user->email)->queue(new DetailVpnMail($new));
+            $new->send_notif($vpn->user->email);
             return $this->send_response('Success Update Data');
         } catch (Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());
@@ -183,7 +179,7 @@ class VpnController extends Controller
         ]);
         $to = $request->email;
         try {
-            Mail::to($to)->queue(new DetailVpnMail($vpn));
+            $vpn->send_notif($to);
             $vpn->update(['last_email' => date('Y-m-d H:i:s')]);
             return $this->send_response('Success Send Email to ' . $to);
         } catch (\Throwable $th) {

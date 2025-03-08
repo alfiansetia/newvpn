@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
-use App\Mail\DetailTopupMail;
 use App\Models\Topup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class TopupUserController extends Controller
@@ -56,8 +54,8 @@ class TopupUserController extends Controller
             'bank_id'   => $request->bank,
             'amount'    => $request->amount,
         ];
-        $topup = Topup::create($param);
-        Mail::to($user->email)->queue(new DetailTopupMail($topup));
+        $topup_user = Topup::create($param);
+        $topup_user->send_notif();
         return $this->send_response('Success Insert Data');
     }
 
@@ -75,7 +73,7 @@ class TopupUserController extends Controller
         $topup_user->update([
             'status' => 'cancel',
         ]);
-        Mail::to(auth()->user()->email)->queue(new DetailTopupMail($topup_user));
+        $topup_user->send_notif();
         return $this->send_response('Success cancel data!');
     }
 }

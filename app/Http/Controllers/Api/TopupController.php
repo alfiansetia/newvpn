@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
-use App\Mail\DetailTopupMail;
-use App\Models\BalanceHistory;
 use App\Models\Topup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 class TopupController extends Controller
@@ -66,7 +63,7 @@ class TopupController extends Controller
             'desc'      => $request->desc,
         ]);
         $topup->load(['bank', 'user']);
-        Mail::to($topup->user->email)->queue(new DetailTopupMail($topup));
+        $topup->send_notif();
         return $this->send_response('Success Insert Data');
     }
 
@@ -125,42 +122,18 @@ class TopupController extends Controller
             $user = $topup->user;
             $user_balance = $user->balance;
             if ($topstatus == 'pending' && $reqstatus == 'done') {
-                $new_user_balance_plus = $user_balance + $amount;
-                $user->update([
-                    'balance' => $new_user_balance_plus,
-                ]);
-                BalanceHistory::create([
-                    'date'      => date('Y-m-d H:i:s'),
-                    'user_id'   => $topup->user_id,
-                    'amount'    => $amount,
-                    'type'      => 'plus',
-                    'before'    => $user_balance,
-                    'after'     => $new_user_balance_plus,
-                    'desc'      => 'Topup ' . $topup->number,
-                ]);
+                $user->plus_balance($amount, 'Topup ' . $topup->number);
             }
             if ($topstatus == 'done' && $reqstatus == 'cancel') {
                 if ($user_balance < $amount) {
                     return $this->send_response_unauthorize('Balance user not enough!');
                 }
-                $new_user_balance_min = $user_balance - $amount;
-                $user->update([
-                    'balance' => $new_user_balance_min,
-                ]);
-                BalanceHistory::create([
-                    'date'      => date('Y-m-d H:i:s'),
-                    'user_id'   => $topup->user_id,
-                    'amount'    => $amount,
-                    'type'      => 'min',
-                    'before'    => $user_balance,
-                    'after'     => $new_user_balance_min,
-                    'desc'      => 'Cancel topup ' . $topup->number,
-                ]);
+                $user->min_balance($amount, 'Cancel topup ' . $topup->number);
             }
             $topup->update([
                 'status' => $reqstatus,
             ]);
-            Mail::to($user->email)->queue(new DetailTopupMail($topup));
+            $topup->send_notif();
             DB::commit();
             return $this->send_response('Success Update Status : ' . $topup->number . ' to : ' . $reqstatus);
         } catch (\Throwable $th) {

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Services\ServerServices;
+use App\Mail\DetailVpnMail;
 use App\Services\VpnServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class Vpn extends Model
 {
@@ -76,6 +77,12 @@ class Vpn extends Model
             }
         }
         return false;
+    }
+
+    public function send_notif($email)
+    {
+        Mail::to($email)->queue(new DetailVpnMail($this));
+        return true;
     }
 
     public function origin()
