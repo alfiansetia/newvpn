@@ -31,6 +31,14 @@
                                 minlength="0" maxlength="100"></textarea>
                             <span id="err_desc" class="error invalid-feedback" style="display: hide;"></span>
                         </div>
+                        <div class="form-group col-md-6 mb-2">
+                            <label class="control-label" for="edit_status"><i class="fas fa-link me-1 bs-tooltip"
+                                    title="Device Status"></i>Device Status :</label>
+                            <input type="text" name="status" class="form-control maxlength" id="edit_status"
+                                placeholder="Please Enter Device Status" minlength="3" maxlength="100"
+                                value="Disconnect">
+                            <span class="error invalid-feedback err_status" style="display: hide;"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-center">

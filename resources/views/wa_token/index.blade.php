@@ -215,6 +215,11 @@
                     $('#edit_from').val(result.data.from);
                     $('#edit_value').val(result.data.value);
                     $('#edit_desc').val(result.data.desc);
+                    if (result.data.detail != null) {
+                        $('#edit_status').val(result.data.detail.device_status);
+                    } else {
+                        $('#edit_status').val('Token Not Valid!');
+                    }
                     let tom = document.getElementById('edit_from').tomselect
                     tom.clear()
                     if (result.data.from != null) {

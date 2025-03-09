@@ -48,6 +48,11 @@ class WhatsappTokenController extends Controller
             'from'  => 'required|in:FONNTE',
             'desc'  => 'nullable|max:100',
         ]);
+        $token_exist = WhatsappToken::query()->where('user_id', $user_id)
+            ->where('value', $request->value)->first();
+        if ($token_exist) {
+            return $this->send_response_unauthorize('Token Already Exist!');
+        }
         $token = WhatsappToken::create([
             'user_id'   => $user_id,
             'value'     => $request->value,
@@ -85,6 +90,11 @@ class WhatsappTokenController extends Controller
             'from'  => 'required|in:FONNTE',
             'desc'  => 'nullable|max:100',
         ]);
+        $token_exist = WhatsappToken::query()->where('user_id', $user_id)
+            ->where('value', $request->value)->whereKeyNot($id)->first();
+        if ($token_exist) {
+            return $this->send_response_unauthorize('Token Already Exist!');
+        }
         $token->update([
             'user_id'   => $user_id,
             'value'     => $request->value,
