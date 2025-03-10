@@ -93,7 +93,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('mikapi/hotspot/user-generate', [HotspotController::class, 'user_generate'])->name('mikapi.hotspot.user.generate');
         Route::get('mikapi/hotspot/user', [HotspotController::class, 'user'])->name('mikapi.hotspot.user');
-        Route::get('mikapi/hotspot/user/voucher/{template}', [HotspotController::class, 'voucher'])->name('mikapi.hotspot.voucher');
+
+        Route::get('mikapi/hotspot/voucher-generate/{template}', [HotspotController::class, 'generate'])->name('mikapi.voucher.generate');
+        Route::get('mikapi/hotspot/voucher', [HotspotController::class, 'voucher'])->name('mikapi.voucher.index');
 
         Route::get('mikapi/hotspot/active', [HotspotController::class, 'active'])->name('mikapi.hotspot.active');
         Route::get('mikapi/hotspot/host', [HotspotController::class, 'host'])->name('mikapi.hotspot.host');

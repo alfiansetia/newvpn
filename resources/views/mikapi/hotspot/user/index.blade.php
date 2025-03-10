@@ -384,7 +384,7 @@
                 return
             }
             $('#err_template').hide()
-            let url = "{{ url('mikapi/hotspot/user/voucher') }}/" +
+            let url = "{{ url('mikapi/hotspot/voucher-generate') }}/" +
                 `${temp}${param_router}&mode=${mode}&comment=${comment}&profile=${profile}`
             window.open(url)
         })

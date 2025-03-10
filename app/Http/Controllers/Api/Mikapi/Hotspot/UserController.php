@@ -41,11 +41,20 @@ class UserController extends Controller
             $response = $service->routerId($request->router)->from_cache();
             // $data = collect($response)->unique('comment');
             $data = collect($response)
+                ->whereNotNull('profile')
+                ->whereNotNull('comment')
+                ->filter(function ($item) {
+                    return isset($item['comment']) && preg_match('/^(up-|vc-)/', $item['comment']);
+                })
                 ->groupBy('comment')
                 ->map(function ($items, $key) {
                     $item = $items->first();
-                    $item['count'] = $items->count();
-                    return $item;
+                    $data['id'] = $item['.id'];
+                    $data['count'] = $items->count();
+                    $data['comment'] = $item['comment'] ?? '';
+                    $data['profile'] = $item['profile'];
+                    $data['class'] = getrandomclass();
+                    return $data;
                 })->values();
             return $this->send_response('', $data);
         } catch (\Throwable $th) {
@@ -164,6 +173,20 @@ class UserController extends Controller
         $ids = $request->id;
         try {
             $data = UserServices::routerId($request->router)->destroy($ids);
+            return $this->send_response('Success Delete Data!');
+        } catch (\Throwable $th) {
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
+    }
+
+
+    public function destroy_comment(Request $request)
+    {
+        $this->validate($request, [
+            'comment' => 'required'
+        ]);
+        try {
+            $data = UserServices::routerId($request->router)->destroy_by('comment', $request->comment);
             return $this->send_response('Success Delete Data!');
         } catch (\Throwable $th) {
             return $this->send_error('Error : ' . $th->getMessage());

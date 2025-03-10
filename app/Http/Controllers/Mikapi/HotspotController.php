@@ -59,7 +59,12 @@ class HotspotController extends Controller
         return view('mikapi.hotspot.cookie.index');
     }
 
-    public function voucher(Request $request, string $id)
+    public function voucher()
+    {
+        return view('mikapi.hotspot.user.voucher');
+    }
+
+    public function generate(Request $request, string $id)
     {
         $t = VoucherTemplate::find($id);
         if (!$t) {
@@ -86,6 +91,6 @@ class HotspotController extends Controller
         $mode = $request->mode;
         $price = $request->price ?? 0;
         $data = UserResource::collection($data)->toArray($request);
-        return view('mikapi.hotspot.user.voucher', compact('data', 'router', 'template', 'mode', 'price', 'profiles'));
+        return view('mikapi.hotspot.user.template', compact('data', 'router', 'template', 'mode', 'price', 'profiles'));
     }
 }

@@ -73,6 +73,24 @@ trait CrudApiTrait
         return $data;
     }
 
+    public static function destroy_by($key, $param)
+    {
+        $data = parent::$API->comm(parent::$command . "print", [
+            "?$key" => $param
+        ]);
+        parent::cek_error($data);
+        if (!empty($data)) {
+            $ids = array_column($data, '.id');
+            $dataremove = parent::$API->comm(parent::$command . "remove", [
+                '.id' => implode(',', $ids)
+            ]);
+            if (parent::$cache) {
+                $cache = static::remove_from_cache($ids);
+            }
+        }
+        return true;
+    }
+
     public static function from_cache($filters = [])
     {
         $id = parent::$router->id;

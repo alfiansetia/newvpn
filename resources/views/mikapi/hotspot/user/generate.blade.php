@@ -164,7 +164,7 @@
                             <div class="card-footer text-center">
                                 <div class="row">
                                     <div class="col-12">
-                                        <a href="{{ route('mikapi.hotspot.user') }}{{ $param_router }}"
+                                        <a href="{{ route('mikapi.voucher.index') }}{{ $param_router }}"
                                             class="btn btn-secondary mb-2">
                                             <i class="fas fa-arrow-left me-1 bs-tooltip"
                                                 title="Back to User List"></i>Back</a>

@@ -136,6 +136,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('mikapi/hotspot/profiles', [HotspotProfileController::class, 'destroy_batch'])
             ->name('api.mikapi.hotspot.profiles.destroy.batch');
 
+        Route::delete('mikapi/hotspot/users', [HotspotUserController::class, 'destroy_batch'])
+            ->name('api.mikapi.hotspot.users.destroy.batch');
+        Route::delete('mikapi/hotspot/user-comment', [HotspotUserController::class, 'destroy_comment'])
+            ->name('api.mikapi.hotspot.users.destroy.comment');
         Route::post('mikapi/hotspot/user-generate', [HotspotUserController::class, 'generate'])
             ->name('api.mikapi.hotspot.users.generate');
         Route::get('mikapi/hotspot/user-comment', [HotspotUserController::class, 'comment'])
@@ -145,8 +149,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('mikapi/hotspot/users', HotspotUserController::class)
             ->only(['index', 'show', 'store', 'update', 'destroy'])
             ->names('api.mikapi.hotspot.users');
-        Route::delete('mikapi/hotspot/users', [HotspotUserController::class, 'destroy_batch'])
-            ->name('api.mikapi.hotspot.users.destroy.batch');
 
         Route::apiResource('mikapi/hotspot/actives', HotspotActiveController::class)
             ->only(['index', 'show', 'destroy'])
