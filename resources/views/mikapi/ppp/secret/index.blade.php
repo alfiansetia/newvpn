@@ -41,7 +41,7 @@
     <div class="row" id="cancel-row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-top-spacing layout-spacing pb-0">
             <div class="row widget-statistic">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-followers">
                         <div class="widget-heading">
                             <div class="w-title bs-tooltip" title="Open Hotspot Active" id="filter_all"
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-engagement">
                         <div class="widget-heading">
                             <div class="w-title bs-tooltip" title="Open Hotspot User" id="filter_online"
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-referral">
                         <div class="widget-heading">
                             <div class="w-title bs-tooltip" title="Open PPP Active" id="filter_offline"
