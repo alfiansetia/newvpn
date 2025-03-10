@@ -73,6 +73,7 @@
         const url_index = "{{ route('wa_tokens.index') }}"
         const url_index_api = "{{ route('api.wa_tokens.index') }}"
         const url_sync_token = "{{ route('api.wa_tokens.sync') }}"
+        const url_test_token = "{{ route('api.wa_tokens.test', '') }}"
         var id = 0
         var perpage = 50
 
@@ -180,6 +181,17 @@
             }, {
                 title: "Desc",
                 data: 'desc',
+            }, {
+                title: 'Action',
+                data: 'id',
+                className: "text-center",
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return `
+                    <button type="button" class="btn btn-info btn-sm" onclick="tes_data(${data})"><i class="fab fa-telegram-plane"></i> Tes</button>
+                   `
+                }
             }, ],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
@@ -198,7 +210,7 @@
 
         multiCheck(table);
 
-        $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
+        $('#tableData tbody').on('click', 'tr td:not(:first-child,:last-child)', function() {
             id = table.row(this).id()
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
@@ -310,6 +322,25 @@
                 },
                 success: function(res) {
                     table.ajax.reload()
+                    show_alert('Success', 'success')
+                    unblock();
+                },
+                error: function(xhr, status, error) {
+                    unblock();
+                    handleResponse(xhr)
+                }
+            });
+        }
+
+        function tes_data(id) {
+            ajax_setup();
+            $.ajax({
+                type: 'POST',
+                url: url_test_token + '/' + id,
+                beforeSend: function() {
+                    block();
+                },
+                success: function(res) {
                     show_alert('Success', 'success')
                     unblock();
                 },

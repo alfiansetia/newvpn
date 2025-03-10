@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::get('router-paginate', [WhatsappTokenController::class, 'paginate'])->name('api.wa_tokens.paginate');
         Route::post('wa-tokens-sync', [WhatsappTokenController::class, 'sync'])->name('api.wa_tokens.sync');
+        Route::post('wa-tokens-test/{id}', [WhatsappTokenController::class, 'test'])->name('api.wa_tokens.test');
         Route::delete('wa-tokens', [WhatsappTokenController::class, 'destroyBatch'])->name('api.wa_tokens.destroy.batch');
         Route::apiResource('wa-tokens', WhatsappTokenController::class)->names('api.wa_tokens');
 

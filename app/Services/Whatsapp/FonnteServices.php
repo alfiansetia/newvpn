@@ -3,6 +3,7 @@
 namespace App\Services\Whatsapp;
 
 use App\Models\Server;
+use App\Models\WhatsappToken;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
@@ -46,19 +47,33 @@ class FonnteServices
         }
     }
 
-    private static function cek_available(Server $server)
+    public static function test(WhatsappToken $token)
     {
-        if (!$server->is_active) {
-            throw new Exception('Server Nonactive!');
+        $message = 'This is test connection from ' . config('app.name');
+        $user_phone = $token->user->phone;
+        if (!$user_phone) {
+            throw new Exception('Your Phone Whatsapp Not Valid!');
         }
-        return $server;
+        return static::send_message($token->value, $user_phone, $message);
     }
 
-    public static function cek_error($api)
+    public static function send_message($token, $target, $message)
     {
-        if (isset($api['!trap'])) {
-            throw new Exception('Error : ' . $api['!trap'][0]['message']);
+        $req = Http::withHeaders([
+            'Authorization' => $token,
+            'accept' => 'application/json',
+        ])->post('https://api.fonnte.com/send', [
+            'message'   => $message,
+            'target'    => $target,
+        ]);
+        if (!$req->successful()) {
+            $req->throw();
+        } else {
+            $json = $req->json();
+            if (!$json['status']) {
+                throw new Exception($json['reason'] ?? 'Device Not Connect!');
+            }
+            return $json;
         }
-        return $api;
     }
 }

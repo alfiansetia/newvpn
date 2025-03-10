@@ -145,4 +145,18 @@ class WhatsappTokenController extends Controller
             return $this->send_error($th->getMessage());
         }
     }
+
+    public function test(string $id)
+    {
+        $token = WhatsappToken::where('user_id', auth()->id())->find($id);
+        if (!$token) {
+            return $this->send_response_not_found();
+        }
+        try {
+            $data = FonnteServices::test($token);
+            return $this->send_response('', $data);
+        } catch (\Throwable $th) {
+            return $this->send_error($th->getMessage());
+        }
+    }
 }

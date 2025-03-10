@@ -391,7 +391,7 @@
 
         var table = $('#tableData').DataTable({
             processing: true,
-            serverSide: true,
+            serverSide: false,
             ajax: {
                 url: url_index_api_router,
                 data: function(d) {
