@@ -70,6 +70,16 @@
     <script>
         // $(document).ready(function() {
 
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+
+            setInterval(() => {
+                table.ajax.reload()
+            }, 10000);
+        })
+
         Inputmask("ip").mask($(".mask_ip"));
 
         $('.maxlength').maxlength({

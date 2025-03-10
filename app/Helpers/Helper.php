@@ -329,8 +329,10 @@ function dtm_array_all($timeString)
 {
     if (empty($timeString)) {
         return [
-            'time'  => '00:00:00',
-            'day'   => 0,
+            'd' => 0,
+            'h' => 0,
+            'm' => 0,
+            's' => 0,
         ];
     }
 

@@ -92,6 +92,16 @@
     <script src="{{ asset('js/v2/func.js') }}"></script>
     <script>
         // $(document).ready(function() {
+        $(document).ready(function() {
+            $('#refresh').click(function() {
+                table.ajax.reload()
+            })
+
+            setInterval(() => {
+                table.ajax.reload()
+            }, 10000);
+        })
+
         var tomse_data = null;
         document.querySelectorAll('.tomse-parent').forEach((el) => {
             var tomse = new TomSelect(el, {

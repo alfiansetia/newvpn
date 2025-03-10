@@ -31,6 +31,7 @@ class ActiveResource extends JsonResource
             'session-id'            => $this['session-id'] ?? null,
             'uptime'                => $this['uptime'] ?? null,
             'uptime_parse'          => dtm_new($this['uptime'] ?? ''),
+            'uptime_parse_all'      => dtm_array_all($this['uptime'] ?? ''),
         ];
     }
 }

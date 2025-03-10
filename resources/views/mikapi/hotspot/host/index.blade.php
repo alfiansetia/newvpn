@@ -44,6 +44,7 @@
         const url_index_api_router = "{{ route('api.mikapi.hotspot.hosts.index') }}" + param_router
         var id = 0
         var perpage = 50
+        var intervalIds = {};
     </script>
     <script src="{{ asset('js/v2/var.js') }}"></script>
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
@@ -54,6 +55,10 @@
             $('#refresh').click(function() {
                 table.ajax.reload()
             })
+
+            setInterval(() => {
+                table.ajax.reload()
+            }, 10000);
         })
 
         $('#edit_save').remove()
@@ -203,6 +208,8 @@
             },
             initComplete: function() {
                 feather.replace();
+                tooltip()
+                startUpdatingTime()
             }
         });
 
@@ -234,6 +241,64 @@
                 }
             });
         }
+
+        function clearAllIntervals() {
+            Object.values(intervalIds).forEach(clearInterval);
+            intervalIds = {};
+        }
+
+        function startUpdatingTime() {
+            let data = table.rows().data().toArray(); // Ambil data terbaru dari DataTables
+
+            data.forEach((element, index) => {
+                let rowId = element.DT_RowId;
+
+                // Cek apakah interval untuk row ini sudah berjalan, kalau belum, buat yang baru
+                if (!intervalIds[rowId]) {
+                    let uptime = element.uptime_parse_all.s +
+                        (element.uptime_parse_all.m * 60) +
+                        (element.uptime_parse_all.h * 3600) +
+                        (element.uptime_parse_all.d * 86400);
+
+                    let intervalId = setInterval(() => {
+                        uptime++;
+
+                        let uptimeDays = Math.floor(uptime / 86400);
+                        let uptimeHours = Math.floor((uptime % 86400) / 3600);
+                        let uptimeMinutes = Math.floor((uptime % 3600) / 60);
+                        let uptimeSeconds = uptime % 60;
+
+                        // Format angka agar selalu dua digit
+                        let formattedUptime =
+                            `${uptimeDays > 0 ? uptimeDays + 'd ' : ''}${String(uptimeHours).padStart(2, '0')}:${String(uptimeMinutes).padStart(2, '0')}:${String(uptimeSeconds).padStart(2, '0')}`;
+
+                        // Cek apakah row masih ada di DataTable sebelum update
+                        let row = table.row(`#${rowId}`);
+                        if (row.length) {
+                            let rowData = row.data();
+                            rowData.uptime_parse = formattedUptime;
+                            row.data(rowData).invalidate().draw(false);
+                        } else {
+                            clearInterval(intervalIds[rowId]);
+                            delete intervalIds[rowId];
+                        }
+
+                    }, 1000);
+
+                    intervalIds[rowId] = intervalId;
+                }
+            });
+        }
+
+        table.on('preXhr.dt', function() {
+            clearAllIntervals();
+        });
+
+        table.on('xhr.dt', function() {
+            setTimeout(() => {
+                startUpdatingTime();
+            }, 1000);
+        });
 
         // });
     </script>

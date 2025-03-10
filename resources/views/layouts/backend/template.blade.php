@@ -137,7 +137,7 @@
             document.querySelectorAll('.bs-tooltip').forEach(tooltip => {
                 bootstrap.Tooltip.getInstance(tooltip)?.dispose();
             });
-        }, 10000);
+        }, 5000);
     </script>
     @stack('jslib')
     @stack('js')

@@ -53,6 +53,8 @@
         const url_index_api_router = "{{ route('api.mikapi.hotspot.actives.index') }}" + param_router
         var id = 0
         var perpage = 50
+
+        var intervalIds = {};
     </script>
     <script src="{{ asset('js/v2/var.js') }}"></script>
     <script src="{{ asset('js/v2/navigation.js') }}"></script>
@@ -63,6 +65,10 @@
             $('#refresh').click(function() {
                 table.ajax.reload()
             })
+
+            setInterval(() => {
+                table.ajax.reload()
+            }, 10000);
         })
 
         $('#edit_save').remove()
@@ -200,6 +206,8 @@
             },
             initComplete: function() {
                 feather.replace();
+                tooltip()
+                startUpdatingTime()
             }
         });
 
@@ -235,6 +243,81 @@
                 }
             });
         }
+
+        function clearAllIntervals() {
+            Object.values(intervalIds).forEach(clearInterval);
+            intervalIds = {};
+        }
+
+        function startUpdatingTime() {
+            let data = table.rows().data().toArray(); // Ambil data terbaru dari DataTables
+
+            data.forEach((element, index) => {
+                let rowId = element.DT_RowId;
+
+                // Cek apakah interval untuk row ini sudah berjalan, kalau belum, buat yang baru
+                if (!intervalIds[rowId]) {
+                    let uptime = element.uptime_parse_all.s +
+                        (element.uptime_parse_all.m * 60) +
+                        (element.uptime_parse_all.h * 3600) +
+                        (element.uptime_parse_all.d * 86400);
+
+                    let sessionTimeLeft = element.session_time_left_parse_all.s +
+                        (element.session_time_left_parse_all.m * 60) +
+                        (element.session_time_left_parse_all.h * 3600) +
+                        (element.session_time_left_parse_all.d * 86400);
+
+                    let intervalId = setInterval(() => {
+                        uptime++;
+                        sessionTimeLeft = Math.max(sessionTimeLeft - 1, 0); // Tidak boleh negatif
+
+                        let uptimeDays = Math.floor(uptime / 86400);
+                        let uptimeHours = Math.floor((uptime % 86400) / 3600);
+                        let uptimeMinutes = Math.floor((uptime % 3600) / 60);
+                        let uptimeSeconds = uptime % 60;
+
+                        let sessionDays = Math.floor(sessionTimeLeft / 86400);
+                        let sessionHours = Math.floor((sessionTimeLeft % 86400) / 3600);
+                        let sessionMinutes = Math.floor((sessionTimeLeft % 3600) / 60);
+                        let sessionSeconds = sessionTimeLeft % 60;
+
+                        // Format angka agar selalu dua digit
+                        let formattedUptime =
+                            `${uptimeDays > 0 ? uptimeDays + 'd ' : ''}${String(uptimeHours).padStart(2, '0')}:${String(uptimeMinutes).padStart(2, '0')}:${String(uptimeSeconds).padStart(2, '0')}`;
+                        let formattedSessionLeft =
+                            `${sessionDays > 0 ? sessionDays + 'd ' : ''}${String(sessionHours).padStart(2, '0')}:${String(sessionMinutes).padStart(2, '0')}:${String(sessionSeconds).padStart(2, '0')}`;
+
+                        // Cek apakah row masih ada di DataTable sebelum update
+                        let row = table.row(`#${rowId}`);
+                        if (row.length) {
+                            let rowData = row.data();
+                            rowData.uptime_parse = formattedUptime;
+                            rowData.session_time_left_parse = formattedSessionLeft;
+                            row.data(rowData).invalidate().draw(
+                                false); // **Gunakan invalidate() agar DataTables membaca ulang data**
+                        } else {
+                            clearInterval(intervalIds[
+                                rowId]); // Hentikan interval kalau row sudah tidak ada
+                            delete intervalIds[rowId];
+                        }
+
+                    }, 1000);
+
+                    intervalIds[rowId] = intervalId;
+                }
+            });
+        }
+
+        table.on('preXhr.dt', function() {
+            clearAllIntervals();
+        });
+
+        table.on('xhr.dt', function() {
+            setTimeout(() => {
+                startUpdatingTime();
+            }, 1000);
+        });
+
 
         // });
     </script>
