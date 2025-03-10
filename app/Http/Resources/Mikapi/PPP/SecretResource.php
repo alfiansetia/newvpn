@@ -34,6 +34,7 @@ class SecretResource extends JsonResource
             'remote-address'            => $this['remote-address'] ?? null,
             'routes'                    => $this['routes'] ?? null,
             'service'                   => $this['service'] ?? 'any',
+            'online'                    => $this['online'] ?? false,
         ];
     }
 }

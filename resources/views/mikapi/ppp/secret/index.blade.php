@@ -18,6 +18,9 @@
     <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+
     <link href="{{ cdn('backend/src/plugins/src/tomSelect/tom-select.default.min.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ cdn('backend/src/plugins/css/light/tomSelect/custom-tomSelect.css') }}" rel="stylesheet"
@@ -36,7 +39,60 @@
 @endpush
 @section('content')
     <div class="row" id="cancel-row">
-        <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-top-spacing layout-spacing pb-0">
+            <div class="row widget-statistic">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-followers">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Open Hotspot Active" id="filter_all"
+                                style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="key"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_all">Loading...</p>
+                                    <h5 class="">Total Secret</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-engagement">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Open Hotspot User" id="filter_online"
+                                style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="link-2"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_online">Loading...</p>
+                                    <h5 class="">Total Online</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-referral">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Open PPP Active" id="filter_offline"
+                                style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="link"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_offline">Loading...</p>
+                                    <h5 class="">Total Offline</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-12 col-lg-12 col-sm-12 " id="card_table">
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
                     <table id="tableData" class="table dt-table-hover table-hover" style="width:100%; cursor: pointer;">
@@ -147,11 +203,11 @@
                 defaultContent: '',
                 targets: "_all"
             }],
-            createdRow: function(row, data, dataIndex) {
-                if (data.disabled == true) {
-                    $('td', row).css('background-color', 'rgb(218, 212, 212)');
-                }
-            },
+            // createdRow: function(row, data, dataIndex) {
+            //     if (data.disabled == true) {
+            //         $('td', row).css('background-color', 'rgb(218, 212, 212)');
+            //     }
+            // },
             lengthChange: false,
             buttons: [{
                 extend: "pageLength",
@@ -219,6 +275,15 @@
                 title: "Name",
                 data: 'name',
                 className: 'text-start',
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        let text =
+                            `${data} <span class="badge badge-${row.online ? 'success' : 'danger'}">${row.online ? 'online' : 'offline'}</span>`
+                        return text
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "Profile",
                 data: 'profile',
@@ -243,6 +308,10 @@
                 title: "Comment",
                 data: 'comment',
                 className: 'text-start',
+            }, {
+                title: "Status",
+                data: "online",
+                visible: false
             }],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
@@ -253,9 +322,11 @@
             drawCallback: function(settings) {
                 feather.replace();
                 tooltip()
+                summary(settings.api.data().toArray())
             },
             initComplete: function() {
                 feather.replace();
+                tooltip()
             }
         });
 
@@ -310,6 +381,38 @@
                     handleResponse(xhr)
                 }
             });
+        }
+
+        function filterTable(status) {
+            if (status === 'all') {
+                table.column(8).search('').draw(); // Cari online (true)
+                table.search('').draw();
+            } else if (status === 'online') {
+                table.column(8).search('true').draw(); // Cari online (true)
+            } else if (status === 'offline') {
+                table.column(8).search('false').draw(); // Cari offline (false)
+            }
+        }
+
+        $('#filter_all').on('click', function() {
+            filterTable('all');
+        });
+
+        $('#filter_online').on('click', function() {
+            filterTable('online');
+        });
+
+        $('#filter_offline').on('click', function() {
+            filterTable('offline');
+        });
+
+        function summary(data) {
+            let all = data.length
+            let online = data.filter(item => item.online === true).length;
+            let offline = data.filter(item => item.online === false).length;
+            $('#data_all').text(all)
+            $('#data_online').text(online)
+            $('#data_offline').text(offline)
         }
 
         // });
