@@ -203,11 +203,11 @@
                 defaultContent: '',
                 targets: "_all"
             }],
-            // createdRow: function(row, data, dataIndex) {
-            //     if (data.disabled == true) {
-            //         $('td', row).css('background-color', 'rgb(218, 212, 212)');
-            //     }
-            // },
+            createdRow: function(row, data, dataIndex) {
+                if (data.disabled == true) {
+                    $('td', row).css('background-color', 'rgb(218, 212, 212)');
+                }
+            },
             lengthChange: false,
             buttons: [{
                 extend: "pageLength",
@@ -265,7 +265,8 @@
                             text +=
                                 '<span class="badge me-1 badge-danger bs-tooltip" title="Disabled">X</span>'
                         }
-                        text += `</div>`
+                        text +=
+                            `</div>`
                         return text
                     } else {
                         return data
@@ -278,7 +279,7 @@
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
                         let text =
-                            `${data} <span class="badge badge-${row.online ? 'success' : 'danger'}">${row.online ? 'online' : 'offline'}</span>`
+                            `<i class="fas fa-circle bs-tooltip text-${row.online ? 'success' : 'danger'} " title="${row.online ? 'Online' : 'Offline'}"></i> ${data}`
                         return text
                     } else {
                         return data
