@@ -59,7 +59,7 @@
 
             setInterval(() => {
                 table.ajax.reload()
-            }, 10000);
+            }, 20000);
         })
 
         $('#edit_save').remove()
@@ -160,6 +160,14 @@
                 title: "Uptime",
                 data: 'uptime_parse',
                 className: 'text-start',
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        let text = `<span id="up_${row.DT_RowId}">${data}</span>`
+                        return text
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "Comment",
                 data: 'comment',
@@ -217,12 +225,9 @@
         }
 
         function startUpdatingTime() {
-            let data = table.rows().data().toArray(); // Ambil data terbaru dari DataTables
-
+            let data = table.rows().data().toArray();
             data.forEach((element, index) => {
                 let rowId = element.DT_RowId;
-
-                // Cek apakah interval untuk row ini sudah berjalan, kalau belum, buat yang baru
                 if (!intervalIds[rowId]) {
                     let uptime = element.uptime_parse_all.s +
                         (element.uptime_parse_all.m * 60) +
@@ -231,7 +236,6 @@
 
                     let intervalId = setInterval(() => {
                         uptime++;
-
                         let uptimeDays = Math.floor(uptime / 86400);
                         let uptimeHours = Math.floor((uptime % 86400) / 3600);
                         let uptimeMinutes = Math.floor((uptime % 3600) / 60);
@@ -240,33 +244,26 @@
                         // Format angka agar selalu dua digit
                         let formattedUptime =
                             `${uptimeDays > 0 ? uptimeDays + 'd ' : ''}${String(uptimeHours).padStart(2, '0')}:${String(uptimeMinutes).padStart(2, '0')}:${String(uptimeSeconds).padStart(2, '0')}`;
-
-                        // Cek apakah row masih ada di DataTable sebelum update
                         let row = table.row(`#${rowId}`);
                         if (row.length) {
-                            let rowData = row.data();
-                            rowData.uptime_parse = formattedUptime;
-                            row.data(rowData).invalidate().draw(false);
+                            $(`#up_\\${element.DT_RowId}`).text(formattedUptime)
                         } else {
                             clearInterval(intervalIds[rowId]);
                             delete intervalIds[rowId];
                         }
 
                     }, 1000);
-
                     intervalIds[rowId] = intervalId;
                 }
             });
         }
 
-        table.on('preXhr.dt', function() {
-            clearAllIntervals();
-        });
-
         table.on('xhr.dt', function() {
+            Object.values(intervalIds).forEach(clearInterval);
+            intervalIds = {};
             setTimeout(() => {
                 startUpdatingTime();
-            }, 1000);
+            }, 500);
         });
 
         // });

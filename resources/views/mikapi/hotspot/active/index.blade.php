@@ -66,9 +66,9 @@
                 table.ajax.reload()
             })
 
-            setInterval(() => {
-                table.ajax.reload()
-            }, 10000);
+            // setInterval(() => {
+            //     table.ajax.reload()
+            // }, 10000);
         })
 
         $('#edit_save').remove()
@@ -163,10 +163,26 @@
                 title: "Uptime",
                 data: 'uptime_parse',
                 className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        let text = `<span id="up_${row.DT_RowId}">${data}</span>`
+                        return text
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "Time Left",
                 data: 'session_time_left_parse',
                 className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        let text = `<span id="stl_${row.DT_RowId}">${data}</span>`
+                        return text
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "IN",
                 data: 'bytes-in',
@@ -250,12 +266,9 @@
         }
 
         function startUpdatingTime() {
-            let data = table.rows().data().toArray(); // Ambil data terbaru dari DataTables
-
+            let data = table.rows().data().toArray();
             data.forEach((element, index) => {
                 let rowId = element.DT_RowId;
-
-                // Cek apakah interval untuk row ini sudah berjalan, kalau belum, buat yang baru
                 if (!intervalIds[rowId]) {
                     let uptime = element.uptime_parse_all.s +
                         (element.uptime_parse_all.m * 60) +
@@ -269,7 +282,7 @@
 
                     let intervalId = setInterval(() => {
                         uptime++;
-                        sessionTimeLeft = Math.max(sessionTimeLeft - 1, 0); // Tidak boleh negatif
+                        sessionTimeLeft = Math.max(sessionTimeLeft - 1, 0);
 
                         let uptimeDays = Math.floor(uptime / 86400);
                         let uptimeHours = Math.floor((uptime % 86400) / 3600);
@@ -287,17 +300,12 @@
                         let formattedSessionLeft =
                             `${sessionDays > 0 ? sessionDays + 'd ' : ''}${String(sessionHours).padStart(2, '0')}:${String(sessionMinutes).padStart(2, '0')}:${String(sessionSeconds).padStart(2, '0')}`;
 
-                        // Cek apakah row masih ada di DataTable sebelum update
                         let row = table.row(`#${rowId}`);
                         if (row.length) {
-                            let rowData = row.data();
-                            rowData.uptime_parse = formattedUptime;
-                            rowData.session_time_left_parse = formattedSessionLeft;
-                            row.data(rowData).invalidate().draw(
-                                false); // **Gunakan invalidate() agar DataTables membaca ulang data**
+                            $(`#up_\\${element.DT_RowId}`).text(formattedUptime)
+                            $(`#stl_\\${element.DT_RowId}`).text(formattedSessionLeft)
                         } else {
-                            clearInterval(intervalIds[
-                                rowId]); // Hentikan interval kalau row sudah tidak ada
+                            clearInterval(intervalIds[rowId]);
                             delete intervalIds[rowId];
                         }
 
@@ -308,14 +316,12 @@
             });
         }
 
-        table.on('preXhr.dt', function() {
-            clearAllIntervals();
-        });
-
         table.on('xhr.dt', function() {
+            Object.values(intervalIds).forEach(clearInterval);
+            intervalIds = {};
             setTimeout(() => {
                 startUpdatingTime();
-            }, 1000);
+            }, 500);
         });
 
 

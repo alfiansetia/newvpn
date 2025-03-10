@@ -145,7 +145,7 @@
 
             setInterval(() => {
                 table.ajax.reload()
-            }, 10000);
+            }, 20000);
         })
 
         Inputmask("ip").mask($(".mask_ip"));

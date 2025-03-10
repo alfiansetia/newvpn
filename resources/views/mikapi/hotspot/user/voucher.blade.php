@@ -73,9 +73,9 @@
                 table.ajax.reload()
             })
 
-            setInterval(() => {
-                table.ajax.reload()
-            }, 10000);
+            // setInterval(() => {
+            //     table.ajax.reload()
+            // }, 10000);
         })
 
         const url_index = "{{ route('mikapi.voucher.index') }}"

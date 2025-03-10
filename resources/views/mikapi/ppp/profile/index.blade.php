@@ -99,7 +99,7 @@
 
             setInterval(() => {
                 table.ajax.reload()
-            }, 10000);
+            }, 20000);
         })
 
         var tomse_data = null;
