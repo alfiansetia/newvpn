@@ -17,6 +17,7 @@ class ResourceResource extends JsonResource
         // return parent::toArray($request);
         return [
             'uptime_parse'      => dtm_new($this['uptime']),
+            'uptime_parse_all'  => dtm_array_all($this['uptime']),
             'uptime'            => $this['uptime'],
             'version'           => $this['version'],
             'build-time'        => $this['build-time'],

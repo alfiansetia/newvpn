@@ -1,5 +1,5 @@
 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-    <div class="widget widget-one_hybrid widget-followers mb-2">
+    <div class="widget widget-one_hybrid widget-followers mb-4">
         <div class="widget-heading mb-0">
             <div class="w-title bs-tooltip" title="Open report"
                 onclick="window.location.href = `{{ route('mikapi.report') }}${param_router}`" style="cursor: pointer">
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="widget-four" style="height: 78%">
+    <div class="widget-four" style="height: 75%">
         <div class="widget-heading">
             <h5 class="">Panel</h5>
         </div>

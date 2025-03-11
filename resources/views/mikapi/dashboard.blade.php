@@ -96,8 +96,11 @@
 
         var count = 0;
         var routerId = "{{ request()->query('router') }}";
+        var interval;
 
         function dashboard() {
+            clearInterval(interval);
+
             let url = "{{ route('api.mikapi.dashboard.get') }}" + param_router;
             let url_report = "{{ route('api.mikapi.report.summary') }}" + param_router;
             // $('#sys_ros').text('Loading...');
@@ -127,6 +130,12 @@
                 let sys_ros = 'No data!'
                 let sys_up = 'No data!'
                 let sys_rb = 'No data!'
+                let sys_up_all = {
+                    'd': 0,
+                    'h': 0,
+                    'm': 0,
+                    's': 0
+                }
                 if (res.data.resource.length > 0) {
                     cpuload = Math.round(res.data.resource[0]['cpu-load']);
                     ramtot = res.data.resource[0]['total-memory'];
@@ -139,6 +148,7 @@
 
                     sys_ros = res.data.resource[0].version
                     sys_up = res.data.resource[0].uptime_parse
+                    sys_up_all = res.data.resource[0].uptime_parse_all
                 }
                 if (res.data.routerboard.length > 0) {
                     sys_rb = res.data.resource[0]['board-name'] + ' | ' + (res.data.routerboard[0]
@@ -147,6 +157,20 @@
                 $('#sys_ros').text(sys_ros);
                 $('#sys_up').text(sys_up);
                 $('#sys_rb').text(sys_rb);
+                let uptime = sys_up_all.s + (sys_up_all.m * 60) + (sys_up_all.h * 3600) + (sys_up_all.d * 86400);
+                interval = setInterval(() => {
+                    uptime++;
+
+                    let uptimeDays = Math.floor(uptime / 86400);
+                    let uptimeHours = Math.floor((uptime % 86400) / 3600);
+                    let uptimeMinutes = Math.floor((uptime % 3600) / 60);
+                    let uptimeSeconds = uptime % 60;
+
+                    // Format angka agar selalu dua digit
+                    let formattedUptime =
+                        `${uptimeDays > 0 ? uptimeDays + 'd ' : ''}${String(uptimeHours).padStart(2, '0')}:${String(uptimeMinutes).padStart(2, '0')}:${String(uptimeSeconds).padStart(2, '0')}`;
+                    $('#sys_up').text(formattedUptime);
+                }, 1000);
 
                 $("#cpu_label").text(cpuload + '%');
                 $("#cpu").css('width', cpuload + '%')
