@@ -6,7 +6,7 @@
                     <div class="w-title bs-tooltip" title="Open Hotspot Active"
                         onclick="window.location.href = `{{ route('mikapi.hotspot.active') }}${param_router}`"
                         style="cursor: pointer">
-                        <div class="w-icon">
+                        <div class="w-icon me-1">
                             <i data-feather="wifi"></i>
                         </div>
                         <div class="">
@@ -23,7 +23,7 @@
                     <div class="w-title bs-tooltip" title="Open Hotspot User"
                         onclick="window.location.href = `{{ route('mikapi.hotspot.user') }}${param_router}`"
                         style="cursor: pointer">
-                        <div class="w-icon">
+                        <div class="w-icon me-1">
                             <i data-feather="users"></i>
                         </div>
                         <div class="">
@@ -40,7 +40,7 @@
                     <div class="w-title bs-tooltip" title="Open PPP Active"
                         onclick="window.location.href = `{{ route('mikapi.ppp.active') }}${param_router}`"
                         style="cursor: pointer">
-                        <div class="w-icon">
+                        <div class="w-icon me-1">
                             <i data-feather="airplay"></i>
                         </div>
                         <div class="">
@@ -57,7 +57,7 @@
                     <div class="w-title bs-tooltip" title="Open PPP Secret"
                         onclick="window.location.href = `{{ route('mikapi.ppp.secret') }}${param_router}`"
                         style="cursor: pointer">
-                        <div class="w-icon">
+                        <div class="w-icon me-1">
                             <i data-feather="list"></i>
                         </div>
                         <div class="">
