@@ -55,8 +55,13 @@
                 </div>
             </div>
             <div class="col-md-4 mb-2">
-                <select class="form-control tomse-profile" name="profile" id="filter_profile">
-                </select>
+                <div class="input-group">
+                    <select class="form-control tomse-profile" name="profile" id="filter_profile">
+                    </select>
+                    <button class="btn btn-warning" type="button" onclick="reload_profile()"><i
+                            class="fas fa-sync me-1"></i>
+                    </button>
+                </div>
             </div>
             <div class="col-md-4 mb-2">
                 <button type="button" class="btn btn-block btn-primary" id="btn_filter">
@@ -245,10 +250,15 @@
         function reload_comment() {
             $.get("{{ route('api.mikapi.hotspot.users.comment') }}" + param_router).done(function(result) {
                 tomse_data_comment = result.data
+                document.getElementById('filter_comment').tomselect.setValue('')
                 document.getElementById('filter_comment').tomselect.clearOptions()
                 document.getElementById('filter_comment').tomselect.addOptions(result.data)
                 document.getElementById('filter_comment').tomselect.refreshOptions()
             })
+        }
+
+        function reload_profile() {
+            document.getElementById('filter_profile').tomselect.setValue('')
         }
 
         var tomse_data_profile = null;

@@ -438,6 +438,12 @@
             })
         }
 
+        $(document).ajaxStart(function() {
+            block()
+        }).ajaxStop(function() {
+            unblock()
+        });
+
         // });
     </script>
     <script src="{{ asset('js/v2/trigger.js') }}"></script>
