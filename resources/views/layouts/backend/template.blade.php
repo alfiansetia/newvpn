@@ -48,6 +48,8 @@
     <link href="{{ cdn('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ cdn('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
 
+    <link href="{{ cdn('backend/src/plugins/pace/themes/blue/pace-theme-minimal.css') }}" rel="stylesheet"
+        type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!--  BEGIN CUSTOM STYLE FILE  -->
@@ -117,7 +119,8 @@
     <script src="{{ cdn('backend/src/assets/js/custom.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/src/font-icons/feather/feather.min.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
-    <script src="{{ cdn('backend/src/plugins/src//blockui/jquery.blockUI.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/src/blockui/jquery.blockUI.min.js') }}"></script>
+    <script src="{{ cdn('backend/src/plugins/pace/pace.min.js') }}"></script>
 
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <script>
