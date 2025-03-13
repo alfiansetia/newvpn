@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Mikapi\Customer;
+use App\Models\Mikapi\Odp;
+use App\Models\Mikapi\Package;
 use App\Notifications\NewLoginNotification;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
@@ -194,5 +197,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function wa_tokens()
     {
         return $this->hasMany(WhatsappToken::class);
+    }
+
+    public function odps()
+    {
+        return $this->hasMany(Odp::class);
+    }
+
+    public function packages()
+    {
+        return $this->hasMany(Package::class);
+    }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
     }
 }

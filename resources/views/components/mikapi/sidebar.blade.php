@@ -50,6 +50,39 @@
             <li class="menu menu-heading">
                 <div class="heading">
                     <i data-feather="minus"></i>
+                    <span>BILLING</span>
+                </div>
+            </li>
+            <li
+                class="menu {{ $title == 'Data Odp' || $title == 'Data Customer' || $title == 'Data Package' ? 'active' : '' }}">
+                <a href="#billing_nav" data-bs-toggle="collapse"
+                    aria-expanded="{{ $title == 'Data Odp' || $title == 'Data Customer' || $title == 'Data Package' ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="database"></i>
+                        <span>Master Data</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $title == 'Data Odp' || $title == 'Data Customer' || $title == 'Data Package' ? 'show' : '' }}"
+                    id="billing_nav" data-bs-parent="#accordionExample">
+                    <li class="{{ $title == 'Data Package' ? 'active' : '' }}">
+                        <a href="{{ route('packages.index') }}{{ $param_router }}"> Package </a>
+                    </li>
+                    <li class="{{ $title == 'Data Odp' ? 'active' : '' }}">
+                        <a href="{{ route('odps.index') }}{{ $param_router }}"> Odp </a>
+                    </li>
+                    <li class="{{ $title == 'Data Customer' ? 'active' : '' }}">
+                        <a href="{{ route('customers.index') }}{{ $param_router }}"> Customer </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu menu-heading">
+                <div class="heading">
+                    <i data-feather="minus"></i>
                     <span>SERVICE</span>
                 </div>
             </li>

@@ -7,11 +7,14 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DatabaseBackupController;
 use App\Http\Controllers\GenerateScriptController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Mikapi\CustomerController;
 use App\Http\Controllers\Mikapi\DashboardController;
 use App\Http\Controllers\Mikapi\DHCPController;
 use App\Http\Controllers\Mikapi\HotspotController;
 use App\Http\Controllers\Mikapi\LogController;
 use App\Http\Controllers\Mikapi\MonitorController;
+use App\Http\Controllers\Mikapi\OdpController;
+use App\Http\Controllers\Mikapi\PackageController;
 use App\Http\Controllers\Mikapi\PPPController;
 use App\Http\Controllers\Mikapi\ReportController;
 use App\Http\Controllers\Mikapi\SystemController;
@@ -152,6 +155,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::get('tools/phpinfo', [ToolController::class, 'php_info'])->name('tool.phpinfo');
         // });
+
+        Route::get('mikapi/odps', [OdpController::class, 'index'])->name('odps.index');
+        Route::get('mikapi/customers', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('mikapi/packages', [PackageController::class, 'index'])->name('packages.index');
     });
 });
 

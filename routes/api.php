@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BalanceHistoryController;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\DatabaseBackupController;
+use App\Http\Controllers\Api\Mikapi\CustomerController;
 use App\Http\Controllers\Api\Mikapi\DashboardController;
 use App\Http\Controllers\Api\Mikapi\DHCP\LeasesController as DHCPLeasesController;
 use App\Http\Controllers\Api\Mikapi\Hotspot\ActiveController as HotspotActiveController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\Api\Mikapi\Hotspot\ServerProfileController as HotspotSe
 use App\Http\Controllers\Api\Mikapi\Hotspot\UserController as HotspotUserController;
 use App\Http\Controllers\Api\Mikapi\InterfaceController;
 use App\Http\Controllers\Api\Mikapi\LogController;
+use App\Http\Controllers\Api\Mikapi\OdpController;
+use App\Http\Controllers\Api\Mikapi\PackageController as MikapiPackageController;
 use App\Http\Controllers\Api\Mikapi\PoolController;
 use App\Http\Controllers\Api\Mikapi\PPP\ActiveController as PPPActiveController;
 use App\Http\Controllers\Api\Mikapi\PPP\L2tpSecretController as PPPL2tpSecretController;
@@ -269,5 +272,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::delete('mikapi/logs', [LogController::class, 'destroy'])->name('api.mikapi.logs.destroy');
         Route::apiResource('mikapi/logs', LogController::class)->only(['index', 'show'])->names('api.mikapi.logs');
+
+
+        Route::delete('mikapi/odps', [OdpController::class, 'destroy'])->name('api.mikapi.odps.destroy');
+        Route::apiResource('mikapi/odps', OdpController::class)->names('api.mikapi.odps');
+
+        Route::delete('mikapi/packages', [MikapiPackageController::class, 'destroy'])->name('api.mikapi.packages.destroy');
+        Route::apiResource('mikapi/packages', MikapiPackageController::class)->names('api.mikapi.packages');
+
+        Route::delete('mikapi/customers', [CustomerController::class, 'destroy'])->name('api.mikapi.customers.destroy');
+        Route::apiResource('mikapi/customers', CustomerController::class)->names('api.mikapi.customers');
     });
 });
