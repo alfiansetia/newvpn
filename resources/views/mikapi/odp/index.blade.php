@@ -206,6 +206,7 @@
                             <br>Use : ${element.customers_count}
                             <br>Remain : ${element.max_port-element.customers_count}
                             <br>Desc : ${element.desc || ''}
+                            <br>Line Color : <span class="" style="background-color:${element.line_color}">${element.line_color}</span>
                             `
                         );
                         markers.push(mark);

@@ -94,6 +94,7 @@
         })
         const url_index = "{{ route('mikapi.maps.index') }}"
         const url_index_api = "{{ route('api.mikapi.maps.index') }}" + param_router
+        const url_index_api_odp = "{{ route('api.mikapi.odps.index') }}" + param_router
         const image_online = "{{ asset('images/default/map_online.png') }}?"
         const image_offline = "{{ asset('images/default/map_offline.png') }}?"
         const image_detail = "{{ asset('images/default/map_detail.png') }}?"
@@ -146,9 +147,7 @@
 
         function draw_marker_map(data) {
             markers.forEach(marker => marker.remove());
-            odp_markers.forEach(marker => marker.remove());
             markers = [];
-            odp_markers = [];
             data.forEach(element => {
                 try {
                     if (element.lat != null && element.long != null) {
@@ -186,22 +185,32 @@
                     console.log(error);
                 }
 
-                try {
-                    if (element.odp.lat != null && element.odp.long != null) {
-                        var mark = L.marker([element.odp.lat, element.odp.long], {
+            });
+        }
+
+        function draw_odp(data) {
+            try {
+                odp_markers.forEach(marker => marker.remove());
+                odp_markers = [];
+                data.forEach(element => {
+                    if (element.lat != null && element.long != null) {
+                        var mark = L.marker([element.lat, element.long], {
                             icon: customIcon
                         }).addTo(map2).bindPopup(
-                            `ODP ${element.odp.name}
-                            <br>Max Port : ${element.odp.max_port}
+                            `ODP ${element.name}
+                            <br>Max Port : ${element.max_port}
+                            <br>Use : ${element.customers_count}
+                            <br>Remain : ${element.max_port-element.customers_count}
                             <br>Desc : ${element.desc || ''}
+                            <br>Line Color : <span class="" style="background-color:${element.line_color}">${element.line_color}</span>
                         `
                         );
                         odp_markers.push(mark);
                     }
-                } catch (error) {
-                    console.log(error);
-                }
-            });
+                })
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         function refresh_map() {
@@ -229,6 +238,12 @@
         function get_data() {
             $.get(url_index_api).done(function(result) {
                 draw_marker_map(result.data || [])
+            }).fail(function(xhr) {
+                console.log(xhr);
+            })
+
+            $.get(url_index_api_odp).done(function(result) {
+                draw_odp(result.data || [])
             }).fail(function(xhr) {
                 console.log(xhr);
             })
