@@ -175,10 +175,10 @@
         })
         const url_index = "{{ route('mikapi.customers.index') }}"
         const url_index_api = "{{ route('api.mikapi.customers.index') }}"
-        const image_online = "{{ asset('images/default/map_online.png') }}"
-        const image_offline = "{{ asset('images/default/map_offline.png') }}"
-        const image_detail = "{{ asset('images/default/map_detail.png') }}"
-        const image_odp = "{{ asset('images/default/odp.png') }}"
+        const image_online = "{{ asset('images/default/map_online.png') }}?"
+        const image_offline = "{{ asset('images/default/map_offline.png') }}?"
+        const image_detail = "{{ asset('images/default/map_detail.png') }}?"
+        const image_odp = "{{ asset('images/default/odp.png') }}?"
         const url_index_odp = "{{ route('api.mikapi.odps.index') }}" + param_router
         const url_index_ppp = "{{ route('api.mikapi.ppp.secrets.index') }}" + param_router
 
