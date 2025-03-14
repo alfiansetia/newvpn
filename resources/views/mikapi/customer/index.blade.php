@@ -177,7 +177,8 @@
         const url_index_api = "{{ route('api.mikapi.customers.index') }}"
         const image_online = "{{ asset('images/default/map_online.png') }}"
         const image_offline = "{{ asset('images/default/map_offline.png') }}"
-        const image_odp = "{{ asset('images/default/odp.webp') }}"
+        const image_detail = "{{ asset('images/default/map_detail.png') }}"
+        const image_odp = "{{ asset('images/default/odp.png') }}"
         const url_index_odp = "{{ route('api.mikapi.odps.index') }}" + param_router
         const url_index_ppp = "{{ route('api.mikapi.ppp.secrets.index') }}" + param_router
 
@@ -236,13 +237,19 @@
         var odp_markers = [];
         var online_icon = L.icon({
             iconUrl: image_online,
-            iconSize: [42, 42], // [width, height]
+            iconSize: [32, 32], // [width, height]
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
 
         var offline_icon = L.icon({
             iconUrl: image_offline,
-            iconSize: [42, 42], // [width, height]
+            iconSize: [32, 32], // [width, height]
+            iconAnchor: [16, 32], // [horizontal center, bottom]
+        });
+
+        var detail_icon = L.icon({
+            iconUrl: image_detail,
+            iconSize: [46, 46], // [width, height]
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
 
@@ -272,8 +279,9 @@
             data.forEach(element => {
                 try {
                     if (element.lat != null && element.long != null) {
+                        let mark_icon = element.status == 'active' ? online_icon : offline_icon
                         var mark = L.marker([element.lat, element.long], {
-                            icon: element.status == 'active' ? online_icon : offline_icon
+                            icon: mark_icon
                         }).addTo(map2).bindPopup(
                             `Name : ${element.name}
                             <br>ID : ${element.number_id}
@@ -288,6 +296,12 @@
                             <br>Secret Password : ${element.secret_password || '-'}
                         `
                         );
+                        mark.on('click', function() {
+                            this.setIcon(detail_icon);
+                        });
+                        mark.on('popupclose', function() {
+                            this.setIcon(mark_icon);
+                        });
                         markers.push(mark);
                         map2.setView([element.lat, element.long], 9);
                     }

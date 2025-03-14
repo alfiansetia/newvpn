@@ -127,7 +127,7 @@
         })
         const url_index = "{{ route('mikapi.odps.index') }}"
         const url_index_api = "{{ route('api.mikapi.odps.index') }}"
-        const image_odp = "{{ asset('images/default/odp.webp') }}"
+        const image_odp = "{{ asset('images/default/odp.png') }}"
         var id = 0
         var perpage = 50
         var state_action = 'add'

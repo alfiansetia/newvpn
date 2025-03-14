@@ -55,7 +55,8 @@
             <div class="widget-content widget-content-area br-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5><i class="fas fa-map-marked-alt me-1"></i>Map Data Customer</h5>
+                        <h5><i class="fas fa-map-marked-alt me-1"></i>Map Data Customer <button type="button"
+                                class="btn btn-sm btn-secondary" id="refresh_map">Refresh</button></h5>
                     </div>
                     <div class="card-body">
                         <div id="map2" style="width: 100%; height: 500px;"></div>
@@ -86,12 +87,17 @@
                 get_data()
             })
 
+            $('#refresh_map').click(function() {
+                get_data()
+            })
+
         })
         const url_index = "{{ route('mikapi.maps.index') }}"
         const url_index_api = "{{ route('api.mikapi.maps.index') }}" + param_router
         const image_online = "{{ asset('images/default/map_online.png') }}"
         const image_offline = "{{ asset('images/default/map_offline.png') }}"
-        const image_odp = "{{ asset('images/default/odp.webp') }}"
+        const image_detail = "{{ asset('images/default/map_detail.png') }}"
+        const image_odp = "{{ asset('images/default/odp.png') }}"
 
         var id = 0
         var perpage = 50
@@ -104,13 +110,19 @@
         var odp_markers = [];
         var online_icon = L.icon({
             iconUrl: image_online,
-            iconSize: [42, 42], // [width, height]
+            iconSize: [32, 32], // [width, height]
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
 
         var offline_icon = L.icon({
             iconUrl: image_offline,
-            iconSize: [42, 42], // [width, height]
+            iconSize: [32, 32], // [width, height]
+            iconAnchor: [16, 32], // [horizontal center, bottom]
+        });
+
+        var detail_icon = L.icon({
+            iconUrl: image_detail,
+            iconSize: [46, 46], // [width, height]
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
 
@@ -140,8 +152,9 @@
             data.forEach(element => {
                 try {
                     if (element.lat != null && element.long != null) {
+                        let mark_icon = element.router_active ? online_icon : offline_icon
                         var mark = L.marker([element.lat, element.long], {
-                            icon: element.router_active ? online_icon : offline_icon
+                            icon: mark_icon
                         }).addTo(map2).bindPopup(
                             `Name : ${element.name}
                             <br>ID : ${element.number_id}
@@ -154,8 +167,16 @@
                             <br>MAC Router : ${element.mac || '-'}
                             <br>Secret Username : ${element.secret_username || '-'}
                             <br>Secret Password : ${element.secret_password || '-'}
+                            <br>Router Status : <span class="badge badge-${element.router_active ? 'success' : 'danger'}">${element.router_active ? 'Online' : 'Offline'}</span>
+                            <br>Router Uptime : ${element.router_uptime}
                         `
                         );
+                        mark.on('click', function() {
+                            this.setIcon(detail_icon);
+                        });
+                        mark.on('popupclose', function() {
+                            this.setIcon(mark_icon);
+                        });
                         markers.push(mark);
                         map2.setView([element.lat, element.long], 11);
                         drawLine([element.odp.lat, element.odp.long], [element.lat, element.long])

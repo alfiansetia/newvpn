@@ -26,17 +26,28 @@ class MapsController extends Controller
                 'user_id'   => $user_id,
                 'router_id' => $router_id
             ])->get();
-        foreach ($data as $customer) {
-            $isActive = collect($active_ppp)->contains(function ($ppp) use ($customer) {
-                if (empty($ppp['name']) && empty($ppp['remote-address'])) {
-                    return false;
-                }
-                return ($ppp['name'] === $customer->secret_username) ||
-                    (($ppp['remote-address'] ?? '') === $customer->ip);
-            });
-            $customer->router_active = $isActive;
-            $new_data[] = $customer;
+
+        if (empty($active_ppp)) {
+            foreach ($data as $customer) {
+                $customer->router_active = false;
+                $customer->router_uptime = '0s';
+                $new_data[] = $customer;
+            }
+        } else {
+            foreach ($data as $customer) {
+                $matchedPpp = collect($active_ppp)->first(function ($ppp) use ($customer) {
+                    if (empty($ppp['name']) && empty($ppp['address'])) {
+                        return false;
+                    }
+                    return ($ppp['name'] === $customer->secret_username) ||
+                        (($ppp['address'] ?? '') === $customer->ip);
+                });
+                $customer->router_active = !is_null($matchedPpp);
+                $customer->router_uptime = dtm_new($matchedPpp['uptime'] ?? '0s');
+                $new_data[] = $customer;
+            }
         }
-        return CustomerResource::collection($new_data)->additional(['xx' => $active_ppp]);
+
+        return CustomerResource::collection($new_data);
     }
 }
