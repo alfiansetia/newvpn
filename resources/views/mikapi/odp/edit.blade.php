@@ -42,6 +42,17 @@
                             <span class="error invalid-feedback err_long"></span>
                         </div>
                         <div class="form-group mb-2">
+                            <label class="control-label" for="edit_line_color"><i class="fas fa-palette me-1 bs-tooltip"
+                                    title="Line Color"></i>Line Color :</label>
+                            <div class="input-group">
+                                <input type="color" name="line_color" class="form-control maxlength"
+                                    id="edit_line_color" placeholder="Please Enter Line Color" minlength="5"
+                                    maxlength="50" onchange="color_edit(this.value)" required>
+                                <span id="color_edit" class="badge" style="background-color: #ff0000">#ff0000</span>
+                            </div>
+                            <span class="error invalid-feedback err_line_color" style="display: hide;"></span>
+                        </div>
+                        <div class="form-group mb-2">
                             <label class="control-label" for="edit_desc"><i class="fas fa-comment me-1 bs-tooltip"
                                     title="Description"></i>Description :</label>
                             <textarea name="desc" class="form-control maxlength" id="edit_desc" placeholder="Please Enter Description"

@@ -52,11 +52,12 @@ class OdpController extends Controller
                 'required',
                 Rule::exists('routers', 'id')->where('user_id', $user_id),
             ],
-            'name'      => 'required|min:3|max:30',
-            'max_port'  => 'required|integer|min:1|max:50',
-            'lat'       => 'nullable|max:50',
-            'long'      => 'nullable|max:50',
-            'desc'      => 'nullable|max:50',
+            'name'          => 'required|min:3|max:30',
+            'max_port'      => 'required|integer|min:1|max:50',
+            'lat'           => 'nullable|max:50',
+            'long'          => 'nullable|max:50',
+            'desc'          => 'nullable|max:50',
+            'line_color'    => 'required|hex_color',
         ]);
         $odp = Odp::create([
             'user_id'       => $user_id,
@@ -66,6 +67,7 @@ class OdpController extends Controller
             'lat'           => $request->lat,
             'long'          => $request->long,
             'desc'          => $request->desc,
+            'line_color'    => $request->line_color,
         ]);
         return $this->send_response('Odp Created!');
     }
@@ -82,11 +84,12 @@ class OdpController extends Controller
                 'required',
                 Rule::exists('routers', 'id')->where('user_id', $user_id),
             ],
-            'name'      => 'required|min:3|max:30',
-            'max_port'  => 'required|integer|min:1|max:50',
-            'lat'       => 'nullable|max:50',
-            'long'      => 'nullable|max:50',
-            'desc'      => 'nullable|max:50',
+            'name'          => 'required|min:3|max:30',
+            'max_port'      => 'required|integer|min:1|max:50',
+            'lat'           => 'nullable|max:50',
+            'long'          => 'nullable|max:50',
+            'desc'          => 'nullable|max:50',
+            'line_color'    => 'required|hex_color',
         ]);
         $odp->update([
             'user_id'       => $user_id,
@@ -96,6 +99,7 @@ class OdpController extends Controller
             'lat'           => $request->lat,
             'long'          => $request->long,
             'desc'          => $request->desc,
+            'line_color'    => $request->line_color,
         ]);
         return $this->send_response('Odp Updated!');
     }

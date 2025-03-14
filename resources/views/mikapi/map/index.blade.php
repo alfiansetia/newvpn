@@ -179,7 +179,8 @@
                         });
                         markers.push(mark);
                         map2.setView([element.lat, element.long], 13);
-                        drawLine([element.odp.lat, element.odp.long], [element.lat, element.long])
+                        drawLine([element.odp.lat, element.odp.long], [element.lat, element.long], element.odp
+                            .line_color)
                     }
                 } catch (error) {
                     console.log(error);
@@ -218,10 +219,10 @@
             }
         }
 
-        function drawLine(from, to) {
+        function drawLine(from, to, color = "red") {
             L.polyline([from, to], {
-                color: 'red',
-                weight: 3
+                color: color,
+                weight: 2
             }).addTo(map2);
         }
 

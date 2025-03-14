@@ -414,6 +414,8 @@
                     $('#edit_lat').val(lat);
                     $('#edit_long').val(long);
                     $('#edit_desc').val(result.data.desc);
+                    $('#edit_line_color').val(result.data.line_color);
+                    color_edit(result.data.line_color)
                     if (lat != null && long != null) {
                         set_map(lat, long)
                     } else {
@@ -433,6 +435,16 @@
                     handleResponse(xhr)
                 }
             });
+        }
+
+        function color_add(value) {
+            $('#color').text(value)
+            $('#color').css('background-color', value)
+        }
+
+        function color_edit(value) {
+            $('#color_edit').text(value)
+            $('#color_edit').css('background-color', value)
         }
 
         // });
