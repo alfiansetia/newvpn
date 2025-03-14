@@ -178,7 +178,7 @@
                             this.setIcon(mark_icon);
                         });
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 11);
+                        map2.setView([element.lat, element.long], 13);
                         drawLine([element.odp.lat, element.odp.long], [element.lat, element.long])
                     }
                 } catch (error) {

@@ -154,6 +154,7 @@
             var latitude = e.latlng.lat;
             var longitude = e.latlng.lng;
             marker.setLatLng([latitude, longitude]);
+            map.setView([lat, long], 16);
             // console.log(`lat : ${latitude}, Log : ${longitude}`);
             fill_input(latitude, longitude)
         });
