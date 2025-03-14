@@ -40,12 +40,13 @@ class CustomerController extends Controller
         if (!$customer) {
             return $this->send_response_not_found();
         }
-        $customers_count = Customer::query()->filter([
-            'odp_id' => $customer->odp_id,
-            'user_id' => auth()->id()
-        ])->count();
-        $data = new CustomerResource($customer->loadCount(['odp'])->load(['user', 'odp', 'package.router']));
-        return  $data->additional(['data' => ['odp' => ['customers_count' => $customers_count]]]);
+        // $customers_count = Customer::query()->filter([
+        //     'odp_id' => $customer->odp_id,
+        //     'user_id' => auth()->id()
+        // ])->count();
+        return new CustomerResource($customer->loadCount(['odp'])->load(['user', 'odp', 'package.router']));
+        // $data = new CustomerResource($customer->loadCount(['odp'])->load(['user', 'odp', 'package.router']));
+        // return  $data->additional(['data' => ['odp' => ['customers_count' => $customers_count]]]);
     }
 
     public function store(Request $request)
