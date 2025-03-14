@@ -347,6 +347,13 @@
             }, {
                 title: "Name",
                 data: 'name',
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        return `<i class="fas fa-circle me-1" style="color:${row.line_color}"></i>${data}`
+                    } else {
+                        return data
+                    }
+                }
             }, {
                 title: "Max Port",
                 data: 'max_port',
