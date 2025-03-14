@@ -94,10 +94,10 @@
         })
         const url_index = "{{ route('mikapi.maps.index') }}"
         const url_index_api = "{{ route('api.mikapi.maps.index') }}" + param_router
-        const image_online = "{{ asset('images/default/map_online.png') }}"
-        const image_offline = "{{ asset('images/default/map_offline.png') }}"
-        const image_detail = "{{ asset('images/default/map_detail.png') }}"
-        const image_odp = "{{ asset('images/default/odp.png') }}"
+        const image_online = "{{ asset('images/default/map_online.png') }}?"
+        const image_offline = "{{ asset('images/default/map_offline.png') }}?"
+        const image_detail = "{{ asset('images/default/map_detail.png') }}?"
+        const image_odp = "{{ asset('images/default/odp.png') }}?"
 
         var id = 0
         var perpage = 50
