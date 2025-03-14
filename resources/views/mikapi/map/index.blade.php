@@ -55,7 +55,7 @@
             <div class="widget-content widget-content-area br-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5><i class="fas fa-map-marked-alt me-1"></i>Map Data Customer <button type="button"
+                        <h5><i class="fas fa-map-marked-alt me-1"></i>Map <button type="button"
                                 class="btn btn-sm btn-secondary" id="refresh_map">Refresh</button></h5>
                     </div>
                     <div class="card-body">
