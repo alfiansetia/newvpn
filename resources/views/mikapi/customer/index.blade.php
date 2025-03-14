@@ -651,6 +651,9 @@
             }, {
                 title: "Remote Address",
                 data: 'remote-address',
+            }, {
+                title: "Caller Id (MAC)",
+                data: 'caller-id',
             }, ],
             drawCallback: function(settings) {
                 feather.replace();
