@@ -197,7 +197,7 @@
             markers = [];
             data.forEach(element => {
                 try {
-                    if (element.lat != null && element.long != null) {
+                    if (element.valid_location) {
                         var mark = L.marker([element.lat, element.long], {
                             icon: customIcon
                         }).addTo(map2).bindPopup(

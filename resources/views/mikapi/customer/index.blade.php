@@ -279,7 +279,7 @@
             odp_markers = [];
             data.forEach(element => {
                 try {
-                    if (element.lat != null && element.long != null) {
+                    if (element.valid_location) {
                         let mark_icon = element.status == 'active' ? online_icon : offline_icon
                         var mark = L.marker([element.lat, element.long], {
                             icon: mark_icon

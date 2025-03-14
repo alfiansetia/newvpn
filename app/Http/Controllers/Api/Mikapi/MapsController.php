@@ -46,7 +46,7 @@ class MapsController extends Controller
                         || (!empty($ppp['caller-id']) && ($ppp['caller-id']) === $customer->mac);
                 });
                 $customer->router_active = !is_null($matchedPpp);
-                $customer->router_uptime = dtm_new($matchedPpp['uptime'] ?? '0s');
+                $customer->router_uptime = $matchedPpp['uptime'] ?? '0s';
                 $new_data[] = $customer;
             }
         }

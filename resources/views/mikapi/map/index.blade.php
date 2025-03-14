@@ -150,7 +150,7 @@
             markers = [];
             data.forEach(element => {
                 try {
-                    if (element.lat != null && element.long != null) {
+                    if (element.valid_location) {
                         let mark_icon = element.router_active ? online_icon : offline_icon
                         var mark = L.marker([element.lat, element.long], {
                             icon: mark_icon
@@ -193,7 +193,7 @@
                 odp_markers.forEach(marker => marker.remove());
                 odp_markers = [];
                 data.forEach(element => {
-                    if (element.lat != null && element.long != null) {
+                    if (element.valid_location) {
                         var mark = L.marker([element.lat, element.long], {
                             icon: customIcon
                         }).addTo(map2).bindPopup(
