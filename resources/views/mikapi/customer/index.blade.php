@@ -747,10 +747,12 @@
                 $('#secret_username').val(data.name)
                 $('#secret_password').val(data.password)
                 $('#ip').val(data['remote-address'])
+                $('#mac').val(data['caller-id'])
             } else {
                 $('#edit_secret_username').val(data.name)
                 $('#edit_secret_password').val(data.password)
                 $('#edit_ip').val(data['remote-address'])
+                $('#edit_mac').val(data['caller-id'])
             }
         }
 

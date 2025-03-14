@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Mikapi;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mikapi\CustomerResource;
+use App\Http\Resources\Mikapi\PPP\ActiveResource;
 use App\Models\Mikapi\Customer;
 use App\Services\Mikapi\PPP\ActiveServices;
 use Illuminate\Http\Request;
@@ -34,13 +35,15 @@ class MapsController extends Controller
                 $new_data[] = $customer;
             }
         } else {
+            $new_active = ActiveResource::collection($active_ppp)->toArray($request);
             foreach ($data as $customer) {
-                $matchedPpp = collect($active_ppp)->first(function ($ppp) use ($customer) {
+                $matchedPpp = collect($new_active)->first(function ($ppp) use ($customer) {
                     if (empty($ppp['name']) && empty($ppp['address'])) {
                         return false;
                     }
-                    return ($ppp['name'] === $customer->secret_username) ||
-                        (($ppp['address'] ?? '') === $customer->ip);
+                    return (!empty($ppp['name']) && $ppp['name'] === $customer->secret_username) ||
+                        (!empty($ppp['address']) && ($ppp['address']) === $customer->ip)
+                        || (!empty($ppp['caller-id']) && ($ppp['caller-id']) === $customer->mac);
                 });
                 $customer->router_active = !is_null($matchedPpp);
                 $customer->router_uptime = dtm_new($matchedPpp['uptime'] ?? '0s');
