@@ -173,7 +173,7 @@
             })
 
         })
-        const url_index = "{{ route('customers.index') }}"
+        const url_index = "{{ route('mikapi.customers.index') }}"
         const url_index_api = "{{ route('api.mikapi.customers.index') }}"
         const image_online = "{{ asset('images/default/map_online.png') }}"
         const image_offline = "{{ asset('images/default/map_offline.png') }}"
@@ -211,6 +211,13 @@
             fill_input(latitude, longitude)
         });
 
+        map.on('click', function(e) {
+            var latitude = e.latlng.lat;
+            var longitude = e.latlng.lng;
+            marker.setLatLng([latitude, longitude]);
+            fill_input(latitude, longitude);
+        });
+
         marker.on('dragend', function(event) {
             var marker = event.target;
             var position = marker.getLatLng();
@@ -219,6 +226,7 @@
             fill_input(latitude, longitude)
             // console.log(`lat : ${latitude}, Log : ${longitude}`);
         });
+
 
         $('#modalmap').on('shown.bs.modal', function() {
             map.invalidateSize(); // Refresh the map to fill the modal
@@ -244,7 +252,7 @@
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
 
-        var map2 = L.map('map2').setView([default_lat, default_long], 12);
+        var map2 = L.map('map2').setView([default_lat, default_long], 8);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map2);
@@ -281,24 +289,7 @@
                         `
                         );
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 8);
-                        drawLine([element.odp.lat, element.odp.long], [element.lat, element.long])
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-
-                try {
-                    if (element.odp.lat != null && element.odp.long != null) {
-                        var mark = L.marker([element.odp.lat, element.odp.long], {
-                            icon: customIcon
-                        }).addTo(map2).bindPopup(
-                            `ODP ${element.odp.name}
-                            <br>Max Port : ${element.odp.max_port}
-                            <br>Desc : ${element.desc || ''}
-                        `
-                        );
-                        odp_markers.push(mark);
+                        map2.setView([element.lat, element.long], 9);
                     }
                 } catch (error) {
                     console.log(error);
@@ -315,7 +306,7 @@
         function set_map(lat, long) {
             try {
                 marker.setLatLng([lat, long]);
-                map.setView([lat, long], 15);
+                map.setView([lat, long], 10);
             } catch (error) {
                 console.log(error);
             }

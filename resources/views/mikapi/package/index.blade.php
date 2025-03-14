@@ -72,7 +72,7 @@
             })
 
         })
-        const url_index = "{{ route('packages.index') }}"
+        const url_index = "{{ route('mikapi.packages.index') }}"
         const url_index_api = "{{ route('api.mikapi.packages.index') }}"
         const url_index_profile = "{{ route('api.mikapi.ppp.profiles.index') }}" + param_router
 

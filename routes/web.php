@@ -12,6 +12,7 @@ use App\Http\Controllers\Mikapi\DashboardController;
 use App\Http\Controllers\Mikapi\DHCPController;
 use App\Http\Controllers\Mikapi\HotspotController;
 use App\Http\Controllers\Mikapi\LogController;
+use App\Http\Controllers\Mikapi\MapsController;
 use App\Http\Controllers\Mikapi\MonitorController;
 use App\Http\Controllers\Mikapi\OdpController;
 use App\Http\Controllers\Mikapi\PackageController;
@@ -156,9 +157,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('tools/phpinfo', [ToolController::class, 'php_info'])->name('tool.phpinfo');
         // });
 
-        Route::get('mikapi/odps', [OdpController::class, 'index'])->name('odps.index');
-        Route::get('mikapi/customers', [CustomerController::class, 'index'])->name('customers.index');
-        Route::get('mikapi/packages', [PackageController::class, 'index'])->name('packages.index');
+        Route::get('mikapi/odps', [OdpController::class, 'index'])->name('mikapi.odps.index');
+        Route::get('mikapi/customers', [CustomerController::class, 'index'])->name('mikapi.customers.index');
+        Route::get('mikapi/packages', [PackageController::class, 'index'])->name('mikapi.packages.index');
+        Route::get('mikapi/maps', [MapsController::class, 'index'])->name('mikapi.maps.index');
     });
 });
 

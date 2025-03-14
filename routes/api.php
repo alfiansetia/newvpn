@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Mikapi\Hotspot\ServerProfileController as HotspotSe
 use App\Http\Controllers\Api\Mikapi\Hotspot\UserController as HotspotUserController;
 use App\Http\Controllers\Api\Mikapi\InterfaceController;
 use App\Http\Controllers\Api\Mikapi\LogController;
+use App\Http\Controllers\Api\Mikapi\MapsController;
 use App\Http\Controllers\Api\Mikapi\OdpController;
 use App\Http\Controllers\Api\Mikapi\PackageController as MikapiPackageController;
 use App\Http\Controllers\Api\Mikapi\PoolController;
@@ -282,5 +283,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::delete('mikapi/customers', [CustomerController::class, 'destroy'])->name('api.mikapi.customers.destroy');
         Route::apiResource('mikapi/customers', CustomerController::class)->names('api.mikapi.customers');
+        Route::apiResource('mikapi/maps', MapsController::class)->names('api.mikapi.maps');
     });
 });

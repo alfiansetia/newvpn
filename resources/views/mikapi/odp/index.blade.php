@@ -125,7 +125,7 @@
             })
 
         })
-        const url_index = "{{ route('odps.index') }}"
+        const url_index = "{{ route('mikapi.odps.index') }}"
         const url_index_api = "{{ route('api.mikapi.odps.index') }}"
         const image_odp = "{{ asset('images/default/odp.webp') }}"
         var id = 0
@@ -134,7 +134,7 @@
 
         var default_lat = '-6.195168442930952';
         var default_long = '106.81594848632814';
-        var map = L.map('map').setView([default_lat, default_long], 12);
+        var map = L.map('map').setView([default_lat, default_long], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -208,7 +208,7 @@
                             `
                         );
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 8);
+                        map2.setView([element.lat, element.long], 9);
                     }
                 } catch (error) {
                     console.log(error);
