@@ -171,7 +171,7 @@
 
         setInterval(() => {
             feather.replace();
-        }, 5000);
+        }, 1000);
 
         function unblock() {
             $('button').prop('disabled', false);
