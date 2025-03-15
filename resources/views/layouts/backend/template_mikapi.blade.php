@@ -173,6 +173,10 @@
     <script>
         feather.replace();
 
+        setInterval(() => {
+            feather.replace();
+        }, 5000);
+
         function unblock() {
             $('button').prop('disabled', false);
             $.unblockUI();
