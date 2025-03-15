@@ -11,8 +11,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BankController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('role:admin')->except('paginate');

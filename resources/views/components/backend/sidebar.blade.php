@@ -154,6 +154,17 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="menu {{ $title == 'Data Transaction' ? 'active' : '' }}">
+                    <a href="{{ route('transactions.index') }}"
+                        aria-expanded="{{ $title == 'Data Transaction' ? 'true' : 'false' }}"
+                        class="dropdown-toggle">
+                        <div class="">
+                            <i data-feather="trending-up"></i>
+                            <span>Transaction</span>
+                        </div>
+                    </a>
+                </li>
             @endif
 
             <li class="menu {{ $title == 'Data Invoice' || $title == 'Data Topup' ? 'active' : '' }}">

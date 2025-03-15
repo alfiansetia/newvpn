@@ -123,12 +123,14 @@ class TopupController extends Controller
             $user_balance = $user->balance;
             if ($topstatus == 'pending' && $reqstatus == 'done') {
                 $user->plus_balance($amount, 'Topup ' . $topup->number);
+                $topup->transaction_in();
             }
             if ($topstatus == 'done' && $reqstatus == 'cancel') {
                 if ($user_balance < $amount) {
                     return $this->send_response_unauthorize('Balance user not enough!');
                 }
                 $user->min_balance($amount, 'Cancel topup ' . $topup->number);
+                $topup->transaction_out();
             }
             $topup->update([
                 'status' => $reqstatus,

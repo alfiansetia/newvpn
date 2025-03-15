@@ -55,4 +55,26 @@ class Topup extends Model
             return url('images/default/invoice.png');
         }
     }
+
+    public function transaction_in()
+    {
+        Transaction::create([
+            'date'      => date('Y-m-d'),
+            'amount'    => $this->amount,
+            'type'      => 'in',
+            'desc'      => 'Success Topup ' . $this->number . ' ' . $this->desc
+        ]);
+        return true;
+    }
+
+    public function transaction_out()
+    {
+        Transaction::create([
+            'date'      => date('Y-m-d'),
+            'amount'    => $this->amount,
+            'type'      => 'out',
+            'desc'      => 'Cancel Topup ' . $this->number . ' ' . $this->desc
+        ]);
+        return true;
+    }
 }

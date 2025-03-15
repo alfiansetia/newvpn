@@ -42,6 +42,7 @@ use App\Http\Controllers\Api\ServerController;
 use App\Http\Controllers\Api\TemporaryIpController;
 use App\Http\Controllers\Api\TopupController;
 use App\Http\Controllers\Api\TopupUserController;
+use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoucherTemplateController;
 use App\Http\Controllers\Api\VpnController;
@@ -83,6 +84,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('bank-paginate', [BankController::class, 'paginate'])->name('api.banks.paginate');
         Route::delete('banks', [BankController::class, 'destroyBatch'])->name('api.banks.destroy.batch');
         Route::apiResource('banks', BankController::class)->names('api.banks');
+
+        Route::delete('transactions', [TransactionController::class, 'destroyBatch'])->name('api.transactions.destroy.batch');
+        Route::apiResource('transactions', TransactionController::class)->names('api.transactions');
 
         Route::delete('temporaryips', [TemporaryIpController::class, 'destroyBatch'])->name('api.temporaryips.destroy.batch');
         Route::apiResource('temporaryips', TemporaryIpController::class)->names('api.temporaryips');

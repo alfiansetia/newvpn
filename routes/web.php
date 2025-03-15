@@ -29,6 +29,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TemporaryIpController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\TopupController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherTemplateController;
 use App\Http\Controllers\VpnController;
@@ -135,6 +136,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
         Route::resource('template', VoucherTemplateController::class)->except(['create']);
+
+        Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
         // Company
         Route::get('setting/company/general', [CompanyController::class, 'general'])->name('setting.company.general');
