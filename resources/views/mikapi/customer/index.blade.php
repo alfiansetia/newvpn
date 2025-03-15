@@ -128,7 +128,6 @@
 
         </div>
 
-
         @include('mikapi.customer.add')
         @include('mikapi.customer.edit')
         @include('mikapi.customer.modal')
@@ -481,6 +480,7 @@
             document.getElementById('package').tomselect.clear();
             document.getElementById('odp').tomselect.clear()
             f1.setDate("{{ date('Y-m-d') }}")
+            $('#number').val(generateCustomCode())
         })
 
         var table = $('#tableData').DataTable({
@@ -511,6 +511,7 @@
                     'title': 'Add New Data'
                 },
                 action: function(e, dt, node, config) {
+                    gen_number_add()
                     show_card_add()
                     input_focus('name')
                     refresh_map()
@@ -623,6 +624,15 @@
                     'title': 'Change Page Length'
                 },
                 className: 'btn btn-sm btn-info bs-tooltip'
+            }, {
+                text: '<i class="fas fa-sync"></i> Refresh Data',
+                className: 'btn btn-primary bs-tooltip',
+                attr: {
+                    'title': 'Refresh Data'
+                },
+                action: function(e, dt, node, config) {
+                    refresh_ppp()
+                },
             }, ],
             dom: dom,
             stripeClasses: [],
@@ -654,6 +664,10 @@
             }, {
                 title: "Caller Id (MAC)",
                 data: 'caller-id',
+            }, {
+                title: "Status",
+                data: 'online',
+                visible: false
             }, ],
             drawCallback: function(settings) {
                 feather.replace();
@@ -683,6 +697,7 @@
                     let lat = result.data.lat
                     let long = result.data.long
                     $('#edit_reset').val(result.data.id);
+                    $('#edit_number').val(result.data.number_id);
                     $('#edit_name').val(result.data.name);
                     $('#edit_status').val(result.data.status).change();
                     $('#edit_phone').val(result.data.phone);
@@ -735,14 +750,39 @@
         $('#select_user_add').click(function() {
             state_action = 'add'
             $('#modalppp').modal('show')
-            table_ppp.ajax.reload()
+            // table_ppp.ajax.reload()
         })
 
         $('#select_user_edit').click(function() {
             state_action = 'edit'
             $('#modalppp').modal('show')
-            table_ppp.ajax.reload()
+            // table_ppp.ajax.reload()
         })
+
+        function refresh_ppp() {
+            table_ppp.ajax.reload()
+        }
+
+        $('input[name="filter_ppp"]').on('change', function() {
+            let val = $(this).val()
+            filter_ppp(val)
+        });
+
+        $('#modalppp').on('shown.bs.modal', function() {
+            $('input[name="filter_ppp"]').prop('checked', false)
+            filter_ppp('all')
+        });
+
+        function filter_ppp(type) {
+            if (type == 'offline') {
+                table_ppp.column(5).search(false).draw();
+            } else if (type == 'online') {
+                table_ppp.column(5).search(true).draw();
+            } else {
+                table_ppp.column(5).search('').draw();
+                table_ppp.search('').draw();
+            }
+        }
 
         function set_data(data) {
             console.log(state_action);
@@ -764,6 +804,22 @@
             set_data(data)
             $('#modalppp').modal('hide')
         });
+
+        function gen_number_edit() {
+            $('#edit_number').val(generateCustomCode())
+        }
+
+        function gen_number_add() {
+            $('#number').val(generateCustomCode())
+        }
+
+        function generateCustomCode() {
+            let now = new Date();
+            let year = now.getFullYear().toString().slice(-2); // Ambil 2 digit terakhir tahun
+            let month = ('0' + (now.getMonth() + 1)).slice(-2); // Format bulan 2 digit
+            let randomNum = Math.floor(10000 + Math.random() * 90000); // 5 digit angka acak
+            return `${year}${month}${randomNum}`;
+        }
 
         // });
     </script>

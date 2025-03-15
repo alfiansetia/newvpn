@@ -70,7 +70,7 @@
                     class="dropdown-toggle">
                     <div class="">
                         <i data-feather="database"></i>
-                        <span>Master Data</span>
+                        <span>Mapping Data</span>
                     </div>
                     <div>
                         <i data-feather="chevron-right"></i>

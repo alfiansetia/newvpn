@@ -166,7 +166,7 @@
                             <br>MAC Router : ${element.mac || '-'}
                             <br>Secret Username : ${element.secret_username || '-'}
                             <br>Secret Password : ${element.secret_password || '-'}
-                            <br>Router Status : <span class="badge badge-${element.router_active ? 'success' : 'danger'}">${element.router_active ? 'Online' : 'Offline'}</span>
+                            <br>Router Status : <span class="badge-${element.router_active ? 'success' : 'danger'}">${element.router_active ? 'Online' : 'Offline'}</span>
                             <br>Router Uptime : ${element.router_uptime}
                         `
                         );

@@ -496,3 +496,8 @@ function valid_latlong($lat, $long)
     $long = floatval($long);
     return ($lat >= -90 && $lat <= 90) && ($long >= -180 && $long <= 180);
 }
+
+function generateRandomNumber($length = 5)
+{
+    return (int) substr(str_shuffle('0123456789'), 0, $length);
+}

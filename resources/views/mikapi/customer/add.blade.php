@@ -10,6 +10,17 @@
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="router" value="{{ request()->query('router') }}">
+                        <div class="form-group col-md-12 mb-2">
+                            <label class="control-label" for="number"><i class="fas fa-id-card-alt me-1 bs-tooltip"
+                                    title="Account Number"></i>Account Number :</label>
+                            <div class="input-group">
+                                <input type="text" name="number" class="form-control maxlength" id="number"
+                                    placeholder="Please Enter Account Number" minlength="3" maxlength="30" required>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="gen_number_add()">Generate</button>
+                            </div>
+                            <span class="error invalid-feedback err_number" style="display: hide;"></span>
+                        </div>
                         <div class="form-group col-md-6 mb-2">
                             <label class="control-label" for="name"><i class="fas fa-user me-1 bs-tooltip"
                                     title="Name"></i>Name :</label>

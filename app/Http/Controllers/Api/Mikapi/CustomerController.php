@@ -9,8 +9,6 @@ use App\Models\Mikapi\Odp;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
-use Illuminate\Support\Number;
 
 class CustomerController extends Controller
 {
@@ -18,7 +16,7 @@ class CustomerController extends Controller
     public function paginate(Request $request)
     {
         $limit = $this->get_limit($request);
-        $filters = $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
+        $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
         $filters['user_id'] = auth()->id();
         $data = Customer::query()->with(['package', 'odp'])->paginate($limit)->withQueryString();
         return CustomerResource::collection($data);
@@ -26,7 +24,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
+        $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
         $filters['user_id'] = auth()->id();
         $query = Customer::query()->with(['package', 'odp'])->filter($filters);
         return DataTables::eloquent($query)->setTransformer(function ($item) {
@@ -40,22 +38,16 @@ class CustomerController extends Controller
         if (!$customer) {
             return $this->send_response_not_found();
         }
-        // $customers_count = Customer::query()->filter([
-        //     'odp_id' => $customer->odp_id,
-        //     'user_id' => auth()->id()
-        // ])->count();
         return new CustomerResource($customer->loadCount(['odp'])->load(['user', 'odp', 'package.router']));
-        // $data = new CustomerResource($customer->loadCount(['odp'])->load(['user', 'odp', 'package.router']));
-        // return  $data->additional(['data' => ['odp' => ['customers_count' => $customers_count]]]);
     }
 
     public function store(Request $request)
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $customer_count = $user->odps()->count();
-        if ($customer_count >= 200) {
-            return $this->send_response_unauthorize('Data Customer Limit 200!');
+        $customer_count = $user->customers()->count();
+        if ($customer_count >= 100) {
+            return $this->send_response_unauthorize('Data Customer Limit 100!');
         }
         $this->validate($request, [
             'router' => [
@@ -69,6 +61,11 @@ class CustomerController extends Controller
             'odp' => [
                 'required',
                 Rule::exists('odps', 'id')->where('user_id', $user_id)->where('router_id', $request->router),
+            ],
+            'number' => [
+                'required',
+                'digits_between:3,30',
+                Rule::unique('customers', 'number_id')->where('user_id', $user_id),
             ],
             'name'              => 'required|min:3|max:30',
             'phone'             => 'required|min_digits:8|max_digits:15|numeric',
@@ -90,10 +87,8 @@ class CustomerController extends Controller
         if ($odp->customers_count >= $odp->max_port) {
             return $this->send_response_unauthorize('ODP ' . $odp->name . ' PORT FULL!');
         }
-
-        $number_id = Str::random(10);
         $customer = Customer::create([
-            'number_id'         => $number_id,
+            'number_id'         => $request->number,
             'user_id'           => $user_id,
             'package_id'        => $request->package,
             'odp_id'            => $request->odp,
@@ -135,6 +130,11 @@ class CustomerController extends Controller
                 'required',
                 Rule::exists('odps', 'id')->where('user_id', $user_id)->where('router_id', $request->router),
             ],
+            'number' => [
+                'required',
+                'digits_between:3,30',
+                Rule::unique('customers', 'number_id')->where('user_id', $user_id)->ignore($id),
+            ],
             'name'              => 'required|min:3|max:30',
             'phone'             => 'required|min_digits:8|max_digits:15|numeric',
             'email'             => 'required|email:rfc,dns|min:1|max:50',
@@ -163,6 +163,7 @@ class CustomerController extends Controller
         }
 
         $customer->update([
+            'number_id'         => $request->number,
             'user_id'           => $user_id,
             'package_id'        => $request->package,
             'odp_id'            => $request->odp,
