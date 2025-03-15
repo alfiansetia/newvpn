@@ -86,7 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailNewLogin($ip, $userAgent)
     {
-        $this->notify(new NewLoginNotification($ip, $userAgent));
+        $this->notify(new NewLoginNotification($this, $ip, $userAgent));
     }
 
     public function scopeFilter($query, array $filters)
