@@ -61,15 +61,18 @@ class TopupUserController extends Controller
         DB::beginTransaction();
         try {
             $topup_user = Topup::create($param);
-            $data = TripayServices::create($topup_user);
-            $topup_user->update([
-                'link'              => $data['checkout_url'],
-                'callback_status'   => $data['status'],
-                'cost'              => $data['total_fee'],
-                'reference'         => $data['reference'],
-                'qris_image'        => $data['qr_url'],
-                'expired_at'        => Carbon::createFromTimestamp($data['expired_time'])->format('Y-m-d H:i:s'),
-            ]);
+            $topup_user->load(['bank', 'user']);
+            if ($request->type == 'auto') {
+                $data = TripayServices::create($topup_user);
+                $topup_user->update([
+                    'link'              => $data['checkout_url'],
+                    'callback_status'   => $data['status'],
+                    'cost'              => $data['total_fee'],
+                    'reference'         => $data['reference'],
+                    'qris_image'        => $data['qr_url'],
+                    'expired_at'        => Carbon::createFromTimestamp($data['expired_time'])->format('Y-m-d H:i:s'),
+                ]);
+            }
             $topup_user->send_notif();
             DB::commit();
             return $this->send_response('Success Insert Data');
