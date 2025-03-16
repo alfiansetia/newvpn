@@ -45,7 +45,7 @@
                                         title="Option Bank"></i>Bank
                                     :</label>
                                 <select name="bank" id="bank" class="form-control-lg tomse-bank"
-                                    style="width: 100%;">
+                                    style="width: 100%;" disabled>
                                 </select>
                                 <span class="error invalid-feedback err_bank" style="display: hide;"></span>
                             </div>
@@ -239,7 +239,15 @@
                         {
                             id: 20000,
                             title: 'Rp. 20.000',
-                        }, ,
+                        },
+                        {
+                            id: 30000,
+                            title: 'Rp. 30.000',
+                        },
+                        {
+                            id: 40000,
+                            title: 'Rp. 40.000',
+                        },
                         {
                             id: 50000,
                             title: 'Rp. 50.000',
@@ -275,11 +283,13 @@
             let type = $(this).val()
             if (type == 'manual') {
                 $('#bank').prop('required', true)
-                $('#bank').prop('disabled', false)
+                document.getElementById('bank').tomselect.enable()
+                // $('#bank').prop('disabled', false)
                 $('#bank_container').show()
             } else {
                 $('#bank').prop('required', false)
-                $('#bank').prop('disabled', true)
+                document.getElementById('bank').tomselect.disable()
+                // $('#bank').prop('disabled', true)
                 $('#bank_container').hide()
             }
 

@@ -48,7 +48,7 @@ class TopupController extends Controller
         $this->validate($request, [
             'user'      => 'required|exists:users,id',
             'type'      => 'required|in:manual,auto',
-            'bank'      => 'required|exists:banks,id',
+            'bank'      => 'required_if:type,manual|exists:banks,id',
             'amount'    => 'required|integer|gt:0|lte:500000',
             'desc'      => 'nullable|max:200',
         ]);

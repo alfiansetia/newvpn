@@ -43,7 +43,7 @@ class TopupUserController extends Controller
         }
         $this->validate($request, [
             'type'      => 'required|in:manual,auto',
-            'bank'      => 'nullable:required_if:type,manual|exists:banks,id',
+            'bank'      => 'required_if:type,manual|exists:banks,id',
             'amount'    => 'required|integer|gt:0|lte:500000',
         ]);
         $date = date('Y-m-d');
