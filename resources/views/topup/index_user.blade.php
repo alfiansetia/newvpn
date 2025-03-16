@@ -32,11 +32,20 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group mb-2">
+                                <label for="type"><i class="fas fa-exchange-alt me-1 bs-tooltip"
+                                        title="Payment Type"></i>Payment Type :</label>
+                                <select name="type" id="type" class="form-select" style="width: 100%;" required>
+                                    <option value="auto">Auto (QRIS)</option>
+                                    <option value="manual">Manual Bank Transfer</option>
+                                </select>
+                                <span class="error invalid-feedback err_type" style="display: hide;"></span>
+                            </div>
+                            <div class="form-group mb-2" id="bank_container" style="display: none">
                                 <label for="bank"><i class="fas fa-university me-1 bs-tooltip"
                                         title="Option Bank"></i>Bank
                                     :</label>
                                 <select name="bank" id="bank" class="form-control-lg tomse-bank"
-                                    style="width: 100%;" required>
+                                    style="width: 100%;">
                                 </select>
                                 <span class="error invalid-feedback err_bank" style="display: hide;"></span>
                             </div>
@@ -262,6 +271,20 @@
             document.getElementById('amount').tomselect.clear()
         })
 
+        $('#type').change(function() {
+            let type = $(this).val()
+            if (type == 'manual') {
+                $('#bank').prop('required', true)
+                $('#bank').prop('disabled', false)
+                $('#bank_container').show()
+            } else {
+                $('#bank').prop('required', false)
+                $('#bank').prop('disabled', true)
+                $('#bank_container').hide()
+            }
+
+        })
+
 
         var table = $('#tableData').DataTable({
             processing: true,
@@ -289,8 +312,8 @@
                 className: 'btn btn-primary',
                 action: function(e, dt, node, config) {
                     $('#card_add').show()
-                    document.getElementById('bank').tomselect.focus()
-                    document.getElementById('bank').tomselect.open()
+                    document.getElementById('amount').tomselect.focus()
+                    document.getElementById('amount').tomselect.open()
                 },
             }, ],
             dom: dom,
@@ -310,6 +333,17 @@
             }, {
                 title: "Amount",
                 data: 'amount',
+                className: "text-start",
+                render: function(data, type, row, meta) {
+                    if (type == 'display') {
+                        return hrg(data)
+                    } else {
+                        return data
+                    }
+                }
+            }, {
+                title: "Cost",
+                data: 'cost',
                 className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {

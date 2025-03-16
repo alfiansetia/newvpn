@@ -42,6 +42,14 @@ class TopupResurce extends JsonResource
             'updated_at'    => $this->updated_at,
             'message'       => "Please Transfer $amount_parse To : $bank_name $bank_acc_number ($bank_acc_name)..",
             'confirm_url'   => "https://api.whatsapp.com/send?phone=6282324129752&text=Halo, Saya dengan email $email ingin konfirmasi Topup Saldo sebesar RP. $amount_parse melalui $bank_name $bank_acc_name ($bank_acc_number), ID TRX : $number.",
+            'type'          => $this->type,
+            'link'          => $this->link,
+            'callback_status'   => $this->callback_status,
+            'cost'          => $this->cost,
+            'reference'     => $this->reference,
+            'paid_at'       => $this->paid_at,
+            'expired_at'    => $this->expired_at,
+            'qris_image'    => $this->qris_image,
         ];
     }
 }

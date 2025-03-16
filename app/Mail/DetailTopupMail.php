@@ -32,11 +32,11 @@ class DetailTopupMail extends Mailable
     {
         $status = $this->topup->status;
         $number = $this->topup->number;
-        $subject = "Informasi Menunggu Pembayaran untuk Topup Saldo No $number";
+        $subject = "Information Payment Topup Account, Ref No $number";
         if ($status == 'cancel') {
-            $subject = "Informasi Pembatalan Pembayaran untuk Topup Saldo No $number";
+            $subject = "Topup Account Canceled, Ref No $number";
         } elseif ($status == 'done') {
-            $subject = "Informasi Berhasil Topup Saldo No $number";
+            $subject = "Topup Account Success, Ref No $number";
         }
         return new Envelope(
             subject: $subject,
@@ -71,7 +71,7 @@ class DetailTopupMail extends Mailable
         return $this->from($from, $company->name)
             ->with([
                 'company'   => $company,
-                'topup'       => $topup
+                'topup'     => $topup
             ]);
     }
 }

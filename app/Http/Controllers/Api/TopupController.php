@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
 use App\Models\Topup;
+use App\Services\TripayServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,7 @@ class TopupController extends Controller
     {
         $this->validate($request, [
             'user'      => 'required|exists:users,id',
+            'type'      => 'required|in:manual,auto',
             'bank'      => 'required|exists:banks,id',
             'amount'    => 'required|integer|gt:0|lte:500000',
             'desc'      => 'nullable|max:200',
@@ -54,17 +56,35 @@ class TopupController extends Controller
         $date_parse = Carbon::parse($date);
         $count = Topup::whereDate('date', $date_parse)->count() ?? 0;
         $number = 'INV' . date('ymd', strtotime($date)) . str_pad(($count + 1), 3, 0, STR_PAD_LEFT);
-        $topup = Topup::create([
-            'number'    => $number,
-            'date'      => date('Y-m-d H:i:s'),
-            'user_id'   => $request->user,
-            'bank_id'   => $request->bank,
-            'amount'    => $request->amount,
-            'desc'      => $request->desc,
-        ]);
-        $topup->load(['bank', 'user']);
-        $topup->send_notif();
-        return $this->send_response('Success Insert Data');
+        DB::beginTransaction();
+        try {
+            $topup = Topup::create([
+                'number'    => $number,
+                'date'      => date('Y-m-d H:i:s'),
+                'user_id'   => $request->user,
+                'type'      => $request->type,
+                'bank_id'   => $request->bank,
+                'amount'    => $request->amount,
+                'desc'      => $request->desc,
+            ]);
+            $topup->load(['bank', 'user']);
+            $data = TripayServices::create($topup);
+            $topup->update([
+                'link'              => $data['checkout_url'],
+                'callback_status'   => $data['status'],
+                'cost'              => $data['total_fee'],
+                'reference'         => $data['reference'],
+                'qris_image'        => $data['qr_url'],
+                'expired_at'        => Carbon::createFromTimestamp($data['expired_time'])->format('Y-m-d H:i:s'),
+            ]);
+            $topup->send_notif();
+            DB::commit();
+            return $this->send_response('Success Insert Data');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
     }
 
 
@@ -73,7 +93,6 @@ class TopupController extends Controller
      */
     public function update(Request $request, Topup $topup)
     {
-
         if ($topup->status == 'pending') {
             $this->validate($request, [
                 'desc'  => 'nullable|max:200',
@@ -84,12 +103,14 @@ class TopupController extends Controller
         } else {
             $this->validate($request, [
                 'user'      => 'required|exists:users,id',
-                'bank'      => 'required|exists:banks,id',
+                'type'      => 'required|in:manual,auto',
+                'bank'      => 'required_if:type,manual|exists:banks,id',
                 'amount'    => 'required|integer|gt:0|lte:500000',
                 'desc'      => 'nullable|max:200',
             ]);
             $param  = [
                 'user_id'   => $request->user,
+                'type'      => $request->type,
                 'bank_id'   => $request->bank,
                 'amount'    => $request->amount,
                 'desc'      => $request->desc,
@@ -133,7 +154,8 @@ class TopupController extends Controller
                 $topup->transaction_out();
             }
             $topup->update([
-                'status' => $reqstatus,
+                'status'    => $reqstatus,
+                'paid_at'   => date('Y-m-d H:i:s'),
             ]);
             $topup->send_notif();
             DB::commit();

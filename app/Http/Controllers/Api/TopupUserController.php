@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TopupResurce;
 use App\Models\Topup;
+use App\Services\TripayServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class TopupUserController extends Controller
@@ -40,7 +42,8 @@ class TopupUserController extends Controller
             return $this->send_response_unauthorize($current . ' Pending Topup already exists!');
         }
         $this->validate($request, [
-            'bank'      => 'required|exists:banks,id',
+            'type'      => 'required|in:manual,auto',
+            'bank'      => 'nullable:required_if:type,manual|exists:banks,id',
             'amount'    => 'required|integer|gt:0|lte:500000',
         ]);
         $date = date('Y-m-d');
@@ -52,11 +55,29 @@ class TopupUserController extends Controller
             'date'      => date('Y-m-d H:i:s'),
             'user_id'   => $user->id,
             'bank_id'   => $request->bank,
+            'type'      => $request->type,
             'amount'    => $request->amount,
         ];
-        $topup_user = Topup::create($param);
-        $topup_user->send_notif();
-        return $this->send_response('Success Insert Data');
+        DB::beginTransaction();
+        try {
+            $topup_user = Topup::create($param);
+            $data = TripayServices::create($topup_user);
+            $topup_user->update([
+                'link'              => $data['checkout_url'],
+                'callback_status'   => $data['status'],
+                'cost'              => $data['total_fee'],
+                'reference'         => $data['reference'],
+                'qris_image'        => $data['qr_url'],
+                'expired_at'        => Carbon::createFromTimestamp($data['expired_time'])->format('Y-m-d H:i:s'),
+            ]);
+            $topup_user->send_notif();
+            DB::commit();
+            return $this->send_response('Success Insert Data');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return $this->send_error('Error : ' . $th->getMessage());
+        }
     }
 
     /**

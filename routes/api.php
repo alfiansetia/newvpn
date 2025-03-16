@@ -43,11 +43,13 @@ use App\Http\Controllers\Api\TemporaryIpController;
 use App\Http\Controllers\Api\TopupController;
 use App\Http\Controllers\Api\TopupUserController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\TripayController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoucherTemplateController;
 use App\Http\Controllers\Api\VpnController;
 use App\Http\Controllers\Api\VpnUserController;
 use App\Http\Controllers\Api\WhatsappTokenController;
+use App\Services\TripayServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -289,4 +291,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResource('mikapi/customers', CustomerController::class)->names('api.mikapi.customers');
         Route::apiResource('mikapi/maps', MapsController::class)->names('api.mikapi.maps');
     });
+});
+
+Route::post('callback-payment',  [TripayController::class, 'callback']);
+Route::get('callback-payment',  function () {
+    return response()->json([]);
 });
