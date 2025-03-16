@@ -79,7 +79,7 @@ class TopupUserController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return $this->send_error('Error : ' . $th->getMessage());
+            return $this->send_error('Error : Cannot Create Payment!');
         }
     }
 

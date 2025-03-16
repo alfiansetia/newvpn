@@ -11,6 +11,7 @@ final class TripayServices
 {
     protected static $base_url;
     protected static $token;
+    protected static $channel = 'QRIS';
 
     public function __construct()
     {
@@ -76,18 +77,18 @@ final class TripayServices
         $req =  Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->post("$base_url/transaction/create", [
-            'method' => 'QRISC',
-            'merchant_ref' => $ref,
-            'amount' => $amount,
+            'method'        => self::$channel,
+            'merchant_ref'  => $ref,
+            'amount'        => $amount,
             'customer_name' => $user->name,
             'customer_email' => $user->email,
-            'signature' => self::get_signature($ref, $amount),
-            'order_items' => [
+            'signature'     => self::get_signature($ref, $amount),
+            'order_items'   => [
                 [
-                    'name' => 'Payment Topup ' . $ref,
-                    'price' => $amount,
-                    'quantity' => 1,
-                    'subtotal' => $amount,
+                    'name'      => 'Payment Topup ' . $ref,
+                    'price'     => $amount,
+                    'quantity'  => 1,
+                    'subtotal'  => $amount,
                 ]
             ],
         ]);
