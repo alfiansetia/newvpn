@@ -79,23 +79,43 @@
                     <div class="row">
                         <div class="form-group col-md-12 mb-2">
                             <label class="control-label" for="add_loc">Address List Local :</label>
-                            <textarea name="add_loc" id="add_loc" class="form-control"></textarea>
+                            <div class="input-group">
+                                <textarea name="add_loc" id="add_loc" class="form-control"></textarea>
+                                <button type="button" class="btn jsclipboard cbBasic" data-clipboard-action="copy"
+                                    data-clipboard-target="#add_loc"><i class="far fa-copy me-1"></i>Copy</button>
+                            </div>
                         </div>
                         <div class="form-group col-md-12 mb-2">
                             <label class="control-label" for="add_sp">Address List Speedtest :</label>
-                            <textarea name="add_sp" id="add_sp" class="form-control"></textarea>
+                            <div class="input-group">
+                                <textarea name="add_sp" id="add_sp" class="form-control"></textarea>
+                                <button type="button" class="btn jsclipboard cbBasic" data-clipboard-action="copy"
+                                    data-clipboard-target="#add_sp"><i class="far fa-copy me-1"></i>Copy</button>
+                            </div>
                         </div>
                         <div class="form-group col-md-12 mb-2">
                             <label class="control-label" for="nat">NAT :</label>
-                            <textarea name="nat" id="nat" class="form-control"></textarea>
+                            <div class="input-group">
+                                <textarea name="nat" id="nat" class="form-control"></textarea>
+                                <button type="button" class="btn jsclipboard cbBasic" data-clipboard-action="copy"
+                                    data-clipboard-target="#nat"><i class="far fa-copy me-1"></i>Copy</button>
+                            </div>
                         </div>
                         <div class="form-group col-md-12 mb-2">
                             <label class="control-label" for="mangle">Mangle :</label>
-                            <textarea name="mangle" id="mangle" class="form-control"></textarea>
+                            <div class="input-group">
+                                <textarea name="mangle" id="mangle" class="form-control"></textarea>
+                                <button type="button" class="btn jsclipboard cbBasic" data-clipboard-action="copy"
+                                    data-clipboard-target="#mangle"><i class="far fa-copy me-1"></i>Copy</button>
+                            </div>
                         </div>
                         <div class="form-group col-md-12 mb-2">
                             <label class="control-label" for="route">Route :</label>
-                            <textarea name="route" id="route" class="form-control"></textarea>
+                            <div class="input-group">
+                                <textarea name="route" id="route" class="form-control"></textarea>
+                                <button type="button" class="btn jsclipboard cbBasic" data-clipboard-action="copy"
+                                    data-clipboard-target="#route"><i class="far fa-copy me-1"></i>Copy</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,11 +131,23 @@
 @endsection
 
 @push('jslib')
+    <script src="{{ cdn('backend/src/plugins/src/clipboard/clipboard.min.js') }}"></script>
 @endpush
 
 @push('js')
     <script>
         var LOCAL = 1
+
+        new ClipboardJS('.jsclipboard');
+
+        var clipboardBasic = document.querySelector('.cbBasic')
+        var tooltip = new bootstrap.Tooltip(clipboardBasic)
+
+        clipboardBasic.addEventListener('shown.bs.tooltip', function() {
+            setTimeout(() => {
+                tooltip.hide()
+            }, 1000);
+        })
 
         function add_local(value = "") {
             let html = `
@@ -220,18 +252,25 @@
                 domains.forEach(domain => {
                     add_sp += `add address="${domain}" list="speedtest" \n`;
                 });
-                let mangle =
+                let mangle = ''
+
+                if (ver == 'v7') {
+                    mangle += `/routing table add disabled="no" fib name="speedtest"; \n`
+                }
+                mangle +=
                     `/ip firewall mangle add action="mark-routing" chain="prerouting" comment="MANGLE SPEEDTEST VPN" dst-address-list="speedtest" new-routing-mark="speedtest" passthrough="no" src-address-list="private-lokal";`
                 let nat =
                     `/ip firewall nat add action="masquerade" chain="srcnat" comment="NAT SPEEDTEST VPN";`
                 let gateway = $('#gateway').val()
                 let route = ''
-                if (ver == 'v7') {
-                    route += `/routing table add disabled="no" fib name="speedtest"; \n`
-                }
                 route += `/ip route add check-gateway="ping" disabled="no" distance="1" `
                 route += `dst-address="0.0.0.0/0" gateway="${gateway}" `
-                route += `pref-src="" routing-table="speedtest" scope="30" `
+                if (ver == 'v7') {
+                    route += `routing-table="speedtest" `
+                } else {
+                    route += `routing-mark="speedtest" `
+                }
+                route += `pref-src=""  scope="30" `
                 route += `suppress-hw-offload="no" target-scope="10";`
 
                 $('#add_loc').val(add_loc)

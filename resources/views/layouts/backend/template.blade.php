@@ -136,6 +136,15 @@
             }
         }
 
+
+        document.addEventListener('shown.bs.tooltip', function(event) {
+            setTimeout(() => {
+                let tooltipElement = event.target;
+                let tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
+                tooltipInstance?.hide();
+            }, 1000);
+        });
+
         // setInterval(() => {
         //     document.querySelectorAll('.bs-tooltip').forEach(tooltip => {
         //         bootstrap.Tooltip.getInstance(tooltip)?.dispose();

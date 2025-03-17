@@ -139,11 +139,13 @@
             }
         }
 
-        // setInterval(() => {
-        //     document.querySelectorAll('.bs-tooltip').forEach(tooltip => {
-        //         bootstrap.Tooltip.getInstance(tooltip)?.dispose();
-        //     });
-        // }, 5000);
+        document.addEventListener('shown.bs.tooltip', function(event) {
+            setTimeout(() => {
+                let tooltipElement = event.target;
+                let tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
+                tooltipInstance?.hide();
+            }, 1000);
+        });
 
         function hrg(x) {
             return parseInt(x).toLocaleString('id-ID')

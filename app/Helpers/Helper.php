@@ -371,13 +371,13 @@ function salam(): string
     $hour = date('H');
 
     if ($hour >= 5 && $hour < 12) {
-        return 'Selamat Pagi ';
+        return 'Good morning!';
     } elseif ($hour >= 12 && $hour < 15) {
-        return 'Selamat Siang ';
+        return 'Good afternoon!';
     } elseif ($hour >= 15 && $hour < 18) {
-        return 'Selamat Sore ';
+        return 'Good evening!';
     } else {
-        return 'Selamat Malam ';
+        return 'Good night!';
     }
 }
 
