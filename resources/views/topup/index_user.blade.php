@@ -448,6 +448,7 @@
                             `Scan This QR For Payment until <b>${result.data.expired_at}</b>!
                             <br/><img src="${result.data.qris_image}" style="width:250px;height:250px" alt="Qris Image">
                             <br/>Total Payment : <b>${hrg(result.data.total)}</b>
+                            <br/>Checkout Link : <b><a href="${result.data.link}" target="_blank">${result.data.link}</a></b>
                             `
                         );
                     }
