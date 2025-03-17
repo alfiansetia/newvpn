@@ -55,9 +55,9 @@
                             <div class="form-group mb-2">
                                 <label class="control-label" for="edit_password"><i class="fas fa-lock me-1 bs-tooltip"
                                         title="Password User"></i>Password :</label>
-                                <input type="password" name="edit_password" class="form-control maxlength"
-                                    id="edit_password" placeholder="Please Enter Password" minlength="0"
-                                    maxlength="100" autocomplete="current-password">
+                                <input type="password" name="password" class="form-control maxlength" id="edit_password"
+                                    placeholder="Please Enter Password" minlength="0" maxlength="100"
+                                    autocomplete="current-password">
                                 <span class="error invalid-feedback err_password" style="display: hide;"></span>
                                 <small id="sh-text1" class="form-text text-muted">Leave blank if not change
                                     password.</small>
