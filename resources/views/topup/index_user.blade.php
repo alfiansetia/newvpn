@@ -105,6 +105,16 @@
                                 disabled>
                         </div>
                         <div class="form-group mb-2">
+                            <label for="edit_type">Payment Type :</label>
+                            <select name="type" id="edit_type" class="form-select" style="width: 100%;" disabled>
+                                <option value="auto">Auto (QRIS)</option>
+                                <option value="manual">Manual Bank Transfer</option>
+                            </select>
+                            <span class="error invalid-feedback err_type" style="display: hide;"></span>
+                        </div>
+                        <div class="form-group mb-2 text-center" id="qris_container">
+                        </div>
+                        <div class="form-group mb-2">
                             <label class="control-label" for="edit_date">Date Topup :</label>
                             <input type="text" id="edit_date" class="form-control" placeholder="No Date" disabled>
                         </div>
@@ -116,6 +126,10 @@
                             <label class="control-label" for="edit_amount">Amount :</label>
                             <input type="text" id="edit_amount" class="form-control" placeholder="No Amount"
                                 disabled>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="control-label" for="edit_cost">Cost :</label>
+                            <input type="text" id="edit_cost" class="form-control" placeholder="No Cost" disabled>
                         </div>
                         <div class="form-group mb-2">
                             <label class="control-label" for="edit_status">Status :</label>
@@ -284,12 +298,10 @@
             if (type == 'manual') {
                 $('#bank').prop('required', true)
                 document.getElementById('bank').tomselect.enable()
-                // $('#bank').prop('disabled', false)
                 $('#bank_container').show()
             } else {
                 $('#bank').prop('required', false)
                 document.getElementById('bank').tomselect.disable()
-                // $('#bank').prop('disabled', true)
                 $('#bank_container').hide()
             }
 
@@ -400,7 +412,6 @@
                     $('#edit_amount').val(result.data.amount);
                     $('#edit_desc').val(result.data.desc);
                     $('#titleEdit2').html(`<b>${result.data.number}</b> (${result.data.status})`);
-
                     $('#edit_number').val(result.data.number)
                     $('#edit_date').val(result.data.date)
                     if (result.data.bank != null) {
@@ -414,11 +425,8 @@
                     $('#edit_status').val(result.data.status)
                     $('#edit_desc').val(result.data.desc)
                     $('#edit_warning').html(result.data.message)
-                    if (result.data.status == 'pending') {
-                        $('#edit_alert').show();
-                    } else {
-                        $('#edit_alert').hide();
-                    }
+                    $('#edit_type').val(result.data.type).change()
+                    $('#edit_cost').val(result.data.cost)
 
                     $('#btn_pay').attr('href', result.data.confirm_url)
                     let element = ['edit_delete', 'btn_pay'];
@@ -428,6 +436,20 @@
 
                     if (result.data.status == 'done') {
                         $('#btn_cancel').prop('disabled', false);
+                    }
+                    if (result.data.status == 'pending' && result.data.type == 'manual') {
+                        $('#edit_alert').show();
+                    } else {
+                        $('#edit_alert').hide();
+                    }
+                    $('#qris_container').html('')
+                    if (result.data.status == 'pending' && result.data.type == 'auto') {
+                        $('#qris_container').html(
+                            `Scan This QR For Payment until <b>${result.data.expired_at}</b>!
+                            <br/><img src="${result.data.qris_image}" style="width:250px;height:250px" alt="Qris Image">
+                            <br/>Total Payment : <b>${hrg(result.data.total)}</b>
+                            `
+                        );
                     }
                     if (show) {
                         show_card_edit()

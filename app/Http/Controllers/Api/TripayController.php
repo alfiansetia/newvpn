@@ -69,12 +69,14 @@ class TripayController extends Controller
                         'status'            => 'cancel',
                         'callback_status'   => $status,
                     ]);
+                    $topup->send_notif();
                     break;
                 case 'FAILED':
                     $topup->update([
                         'status'            => 'cancel',
                         'callback_status'   => $status,
                     ]);
+                    $topup->send_notif();
                     break;
                 default:
                     return response()->json([

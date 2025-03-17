@@ -50,6 +50,7 @@ class TopupResurce extends JsonResource
             'paid_at'       => $this->paid_at,
             'expired_at'    => $this->expired_at,
             'qris_image'    => $this->qris_image,
+            'total'         => $this->amount + $this->cost,
         ];
     }
 }
