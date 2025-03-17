@@ -9,6 +9,7 @@ use App\Services\TripayServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class TopupUserController extends Controller
@@ -79,6 +80,7 @@ class TopupUserController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
+            Log::info($th->getMessage());
             return $this->send_error('Error : Cannot Create Payment!');
         }
     }
