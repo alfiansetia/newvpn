@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\Mikapi\System\ScriptController;
 use App\Http\Controllers\Api\Mikapi\System\SystemController;
 use App\Http\Controllers\Api\Mikapi\System\UserActiveController;
 use App\Http\Controllers\Api\Mikapi\System\UserController as SystemUserController;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OnetapController;
 use App\Http\Controllers\Api\PortController;
 use App\Http\Controllers\Api\ProfileController;
@@ -89,6 +90,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         Route::delete('transactions', [TransactionController::class, 'destroyBatch'])->name('api.transactions.destroy.batch');
         Route::apiResource('transactions', TransactionController::class)->names('api.transactions');
+
+        Route::delete('news', [NewsController::class, 'destroyBatch'])->name('api.news.destroy.batch');
+        Route::apiResource('news', NewsController::class)->names('api.news');
 
         Route::delete('temporaryips', [TemporaryIpController::class, 'destroyBatch'])->name('api.temporaryips.destroy.batch');
         Route::apiResource('temporaryips', TemporaryIpController::class)->names('api.temporaryips');

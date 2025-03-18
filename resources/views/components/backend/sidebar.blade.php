@@ -189,9 +189,9 @@
 
             @if ($user->is_admin())
                 <li
-                    class="menu {{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' ? 'active' : '' }}">
+                    class="menu {{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' || $title == 'Data News' ? 'active' : '' }}">
                     <a href="#invoice" data-bs-toggle="collapse"
-                        aria-expanded="{{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' ? 'true' : 'false' }}"
+                        aria-expanded="{{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' || $title == 'Data News' ? 'true' : 'false' }}"
                         class="dropdown-toggle">
                         <div class="">
                             <i data-feather="database"></i>
@@ -201,7 +201,7 @@
                             <i data-feather="chevron-right"></i>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled {{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' ? 'show' : '' }}"
+                    <ul class="collapse submenu list-unstyled {{ $title == 'Data User' || $title == 'Data Bank' || $title == 'Data Temporary IP' || $title == 'Data Voucher Template' || $title == 'Data News' ? 'show' : '' }}"
                         id="invoice" data-bs-parent="#accordionExample">
                         <li class="{{ $title == 'Data Bank' ? 'active' : '' }}">
                             <a href="{{ route('banks.index') }}"> Bank </a>
@@ -214,6 +214,9 @@
                         </li>
                         <li class="{{ $title == 'Data Voucher Template' ? 'active' : '' }}">
                             <a href="{{ route('template.index') }}"> Voucher Template </a>
+                        </li>
+                        <li class="{{ $title == 'Data News' ? 'active' : '' }}">
+                            <a href="{{ route('news.index') }}"> News </a>
                         </li>
                     </ul>
                 </li>

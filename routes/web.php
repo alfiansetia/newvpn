@@ -20,6 +20,7 @@ use App\Http\Controllers\Mikapi\PPPController;
 use App\Http\Controllers\Mikapi\ReportController;
 use App\Http\Controllers\Mikapi\SystemController;
 use App\Http\Controllers\Mikapi\VoucherTemplateController as MikapiVoucherTemplateController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\ProfileController;
@@ -136,6 +137,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::delete('template', [VoucherTemplateController::class, 'destroyBatch'])->name('template.destroy.batch');
         Route::resource('template', VoucherTemplateController::class)->except(['create']);
+
+        Route::resource('news', NewsController::class);
 
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
