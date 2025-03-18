@@ -249,7 +249,7 @@
                 className: "text-start",
                 render: function(data, type, row, meta) {
                     if (type == 'display') {
-                        return `<span class="${row.type == 'in' ? 'text-success' : 'text-danger'}">${row.type == 'in' ? '+' : '-'}</span> Rp. ${hrg(data)}`
+                        return `<span class="${row.type == 'in' ? 'text-success' : 'text-danger'} bs-tooltip" title="${row.type == 'in' ? 'IN' : 'OUT'}">${row.type == 'in' ? '+' : '-'}</span> Rp. ${hrg(data)}`
                     } else {
                         return data
                     }
