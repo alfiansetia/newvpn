@@ -79,7 +79,7 @@
             },
             createdRow: function(row, data, dataIndex) {
                 if (data.disabled == true) {
-                    $('td', row).css('background-color', 'rgb(218, 212, 212)');
+                    $('td', row).addClass('table-active');
                 }
             },
             columnDefs: [{

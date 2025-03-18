@@ -140,11 +140,14 @@
         }
 
         document.addEventListener('shown.bs.tooltip', function(event) {
-            setTimeout(() => {
-                let tooltipElement = event.target;
-                let tooltipInstance = bootstrap.Tooltip.getInstance(tooltipElement);
-                tooltipInstance?.hide();
-            }, 1000);
+            let elements = $('.bs-tooltip-auto')
+            elements.each(function(index, element) {
+                let id = $(element).attr('id');
+                let isLast = index === elements.length - 1;
+                if (!isLast) {
+                    $(element).remove()
+                }
+            });
         });
 
         function hrg(x) {

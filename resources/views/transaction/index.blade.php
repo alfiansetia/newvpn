@@ -18,9 +18,10 @@
     <link href="{{ cdn('backend/src/assets/css/dark/scrollspyNav.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ cdn('backend/src/assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css">
 
+    <link href="{{ cdn('backend/src/assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn('backend/src/assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ cdn('backend/src/plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ cdn('backend/src/plugins/src/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ cdn('backend/src/plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ cdn('backend/src/plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css">
@@ -55,6 +56,55 @@
 @section('content')
     <div class="row" id="cancel-row">
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing" id="card_table">
+            <div class="row widget-statistic mb-2">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-engagement">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Total Income" id="filter_income" style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="download"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_income">Loading...</p>
+                                    <h5 class="">Total Income</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-referral">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Total Outcome" id="filter_outcome"
+                                style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="upload"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_outcome">Loading...</p>
+                                    <h5 class="">Total Outcome</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
+                    <div class="widget widget-one_hybrid widget-followers">
+                        <div class="widget-heading">
+                            <div class="w-title bs-tooltip" title="Show All Data" id="filter_diff" style="cursor: pointer">
+                                <div class="w-icon">
+                                    <i data-feather="trending-up"></i>
+                                </div>
+                                <div class="">
+                                    <p class="w-value" id="data_diff">Loading...</p>
+                                    <h5 class="">Total Diff</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="widget-content widget-content-area br-8">
                 <form action="" id="formSelected">
                     <table id="tableData" class="table dt-table-hover table-hover" style="width:100%; cursor: pointer;">
@@ -208,6 +258,10 @@
                 title: "Desc",
                 data: 'desc',
                 className: "text-start",
+            }, {
+                title: "Type",
+                data: 'type',
+                visible: false,
             }],
             headerCallback: function(e, a, t, n, s) {
                 e.getElementsByTagName("th")[0].innerHTML = `
@@ -257,6 +311,29 @@
                 }
             });
         }
+
+        function filterTable(type) {
+            if (type == 'in') {
+                table.column(4).search('in').draw();
+            } else if (type === 'out') {
+                table.column(4).search('out').draw();
+            } else {
+                table.column(4).search('').draw();
+                table.search('').draw();
+            }
+        }
+
+        $('#filter_income').on('click', function() {
+            filterTable('in');
+        });
+
+        $('#filter_outcome').on('click', function() {
+            filterTable('out');
+        });
+
+        $('#filter_diff').on('click', function() {
+            filterTable('all');
+        });
 
         // });
     </script>
