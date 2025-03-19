@@ -35,6 +35,15 @@
     <script src="{{ cdn('backend/src/assets/js/dashboard/dash_2.js') }}"></script>
 
     <script>
+        const url_index_summary = "{{ route('api.transactions.summary') }}"
+
+        get_data()
+
+        setInterval(() => {
+            get_data()
+        }, 10000);
+
+
         var options = {
             chart: {
                 type: 'donut',
@@ -147,5 +156,13 @@
         const ps = new PerfectScrollbar(document.querySelector('.mt-container'));
 
         chart.render();
+
+        function get_data() {
+            $.get(url_index_summary).done(function(result) {
+                $('#data_income').text(hrg(result.data.income))
+                $('#data_outcome').text(hrg(result.data.outcome))
+                $('#data_diff').text(hrg(result.data.diff))
+            })
+        }
     </script>
 @endpush

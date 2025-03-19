@@ -43,8 +43,8 @@
             <div class="row widget-statistic">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-followers">
-                        <div class="widget-heading">
-                            <div class="w-title bs-tooltip" title="Filter All Secret" id="filter_all"
+                        <div class="widget-heading mb-0">
+                            <div class="w-title bs-tooltip mb-0" title="Filter All Secret" id="filter_all"
                                 style="cursor: pointer">
                                 <div class="w-icon">
                                     <i data-feather="key"></i>
@@ -59,8 +59,8 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-engagement">
-                        <div class="widget-heading">
-                            <div class="w-title bs-tooltip" title="Filter Online" id="filter_online"
+                        <div class="widget-heading mb-0">
+                            <div class="w-title bs-tooltip mb-0" title="Filter Online" id="filter_online"
                                 style="cursor: pointer">
                                 <div class="w-icon">
                                     <i data-feather="link-2"></i>
@@ -75,8 +75,8 @@
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                     <div class="widget widget-one_hybrid widget-referral">
-                        <div class="widget-heading">
-                            <div class="w-title bs-tooltip" title="Filter Offline" id="filter_offline"
+                        <div class="widget-heading mb-0">
+                            <div class="w-title bs-tooltip mb-0" title="Filter Offline" id="filter_offline"
                                 style="cursor: pointer">
                                 <div class="w-icon">
                                     <i data-feather="link"></i>
