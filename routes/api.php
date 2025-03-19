@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('banks', [BankController::class, 'destroyBatch'])->name('api.banks.destroy.batch');
         Route::apiResource('banks', BankController::class)->names('api.banks');
 
+        Route::get('transaction-summary', [TransactionController::class, 'summary'])->name('api.transactions.summary');
         Route::delete('transactions', [TransactionController::class, 'destroyBatch'])->name('api.transactions.destroy.batch');
         Route::apiResource('transactions', TransactionController::class)->names('api.transactions');
 

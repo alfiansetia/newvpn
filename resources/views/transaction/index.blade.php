@@ -151,8 +151,15 @@
 
         const url_index = "{{ route('transactions.index') }}"
         const url_index_api = "{{ route('api.transactions.index') }}"
+        const url_index_summary = "{{ route('api.transactions.summary') }}"
         var id = 0
         var perpage = 50
+
+        get_data()
+
+        setInterval(() => {
+            get_data()
+        }, 10000);
 
         var f1 = flatpickr(document.getElementById('date'), {
             defaultDate: "today",
@@ -334,6 +341,14 @@
         $('#filter_diff').on('click', function() {
             filterTable('all');
         });
+
+        function get_data() {
+            $.get(url_index_summary).done(function(result) {
+                $('#data_income').text(hrg(result.data.income))
+                $('#data_outcome').text(hrg(result.data.outcome))
+                $('#data_diff').text(hrg(result.data.diff))
+            })
+        }
 
         // });
     </script>

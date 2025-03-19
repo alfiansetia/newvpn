@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransactionController extends Controller
@@ -88,5 +89,21 @@ class TransactionController extends Controller
         $deleted = Transaction::whereIn('id', $ids)->delete();
         $message = 'Success Delete : ' . $deleted . ' & Fail : ' . (count($request->id) - $deleted);
         return $this->send_response($message);
+    }
+
+    public function summary(Request $request)
+    {
+        $totals = DB::table('transactions')
+            ->selectRaw("type, SUM(amount) as total")
+            ->whereIn('type', ['in', 'out'])
+            ->groupBy('type')
+            ->pluck('total', 'type');
+        $in =  (int) $totals['in'] ?? 0;
+        $out = (int) $totals['out'] ?? 0;
+        return $this->send_response('', [
+            'income'    => $in,
+            'outcome'   => $out,
+            'diff'      => $in - $out
+        ]);
     }
 }

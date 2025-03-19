@@ -44,7 +44,7 @@
                                 <label class="control-label" for="desc"><i class="fas fa-comment me-1 bs-tooltip"
                                         title="Description"></i>Description :</label>
                                 <textarea name="desc" class="form-control maxlength" id="desc" placeholder="Please Enter Description"
-                                    minlength="0" maxlength="200"></textarea>
+                                    minlength="0" maxlength="200" required></textarea>
                                 <span class="error invalid-feedback err_desc" style="display: hide;"></span>
                             </div>
                         </div>
