@@ -50,12 +50,29 @@
                                             autocomplete="current-password" placeholder="Input Your Password" required>
                                         <span class="input-group-text bs-tooltip" title="Show/Hide" id="toggle-password"
                                             onclick="pw();"><i data-feather="eye-off"></i></span>
+
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="captcha">CAPTCHA</label>
+                                    </div>
+                                    {!! htmlFormSnippet() !!}
+                                    @error('g-recaptcha-response')
+                                        <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4"
+                                            role="alert">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"><i data-feather="x"></i></button>
+                                            <strong>Error!</strong> {{ $message }}</button>
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">

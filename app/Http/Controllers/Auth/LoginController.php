@@ -40,6 +40,18 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response' => ['required', 'recaptcha']
+        ], [
+            'g-recaptcha-response.required' => 'Captcha Required!',
+            'g-recaptcha-response.recaptcha' => 'Captcha Invalid!'
+        ]);
+    }
+
     function authenticated(Request $request, $user)
     {
         $currentIP = $request->header('CF-Connecting-IP') ?? $request->getClientIp();

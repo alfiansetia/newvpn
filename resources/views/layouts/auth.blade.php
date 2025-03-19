@@ -49,6 +49,9 @@
 
     <link href="{{ cdn('backend/src/assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ cdn('backend/src/assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ cdn('backend/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ cdn('backend/src/assets/css/dark/elements/alert.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     @stack('csslib')
     @stack('css')
