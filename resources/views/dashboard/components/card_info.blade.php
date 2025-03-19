@@ -102,7 +102,7 @@
             <div class="col-xl-4 col-lg-4 col-md-4 col-12 layout-spacing">
                 <div class="widget widget-one_hybrid widget-followers">
                     <div class="widget-heading mb-0">
-                        <div class="w-title bs-tooltip mb-0" title="Show All Data" id="filter_diff"
+                        <div class="w-title bs-tooltip mb-0" title="Total Diff" id="filter_diff"
                             style="cursor: pointer">
                             <div class="w-icon">
                                 <i data-feather="trending-up"></i>
