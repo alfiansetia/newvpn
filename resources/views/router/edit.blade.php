@@ -82,8 +82,8 @@
                             <span class="error invalid-feedback err_url_logo" style="display: hide;"></span>
                         </div>
                         <div class="form-group col-md-6 mb-2">
-                            <label class="control-label" for="edit_currency"><i class="fas fa-link me-1 bs-tooltip"
-                                    title="Currency"></i>Currency :</label>
+                            <label class="control-label" for="edit_currency"><i
+                                    class="fas fa-dollar-sign me-1 bs-tooltip" title="Currency"></i>Currency :</label>
                             <input type="text" name="currency" class="form-control maxlength" id="edit_currency"
                                 placeholder="Please Enter Currency" minlength="0" maxlength="5">
                             <span class="error invalid-feedback err_currency" style="display: hide;"></span>
