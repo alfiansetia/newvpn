@@ -305,6 +305,7 @@
             odp_markers.forEach(marker => marker.remove());
             markers = [];
             odp_markers = [];
+            var bounds = []
             data.forEach(element => {
                 try {
                     if (element.valid_location) {
@@ -332,12 +333,16 @@
                             this.setIcon(mark_icon);
                         });
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 13);
+                        bounds.push([element.lat, element.long]);
+                        // map2.setView([element.lat, element.long], 13);
                     }
                 } catch (error) {
                     console.log(error);
                 }
             });
+            if (bounds.lenght > 0) {
+                map2.fitBounds(bounds);
+            }
         }
 
         function refresh_map() {

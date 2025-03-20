@@ -231,6 +231,7 @@
         function draw_marker_map(data) {
             markers.forEach(marker => marker.remove());
             markers = [];
+            var bounds = []
             data.forEach(element => {
                 try {
                     if (element.valid_location) {
@@ -246,12 +247,16 @@
                             `
                         );
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 9);
+                        bounds.push([element.lat, element.long]);
+                        // map2.setView([element.lat, element.long], 9);
                     }
                 } catch (error) {
                     console.log(error);
                 }
             });
+            if (bounds.lenght > 0) {
+                map2.fitBounds(bounds);
+            }
         }
 
         function refresh_map() {

@@ -172,6 +172,7 @@
         function draw_marker_map(data) {
             markers.forEach(marker => marker.remove());
             markers = [];
+            var bounds = []
             data.forEach(element => {
                 try {
                     if (element.valid_location) {
@@ -201,15 +202,18 @@
                             this.setIcon(mark_icon);
                         });
                         markers.push(mark);
-                        map2.setView([element.lat, element.long], 13);
+                        bounds.push([element.lat, element.long]);
+                        // map2.setView([element.lat, element.long], 13);
                         drawLine([element.odp.lat, element.odp.long], [element.lat, element.long], element.odp
                             .line_color)
                     }
                 } catch (error) {
                     console.log(error);
                 }
-
             });
+            if (bounds.lenght > 0) {
+                map2.fitBounds(bounds);
+            }
         }
 
         function draw_odp(data) {
