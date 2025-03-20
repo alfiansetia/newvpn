@@ -148,6 +148,12 @@
             iconLoading: 'fa fa-spinner fa-spin',
         }).addTo(map2);
 
+        map2.on('locationfound', function(e) {
+            var latitude = e.latlng.lat;
+            var longitude = e.latlng.lng;
+            map2.setView([latitude, longitude], 8);
+        });
+
         L.control
             .fullscreen({
                 position: 'topleft',
