@@ -153,34 +153,6 @@
         function hrg(x) {
             return parseInt(x).toLocaleString('id-ID')
         }
-    </script>
-    @stack('jslib')
-    @stack('js')
-
-    @if (session()->has('success'))
-        <script>
-            Swal.fire(
-                'Success',
-                "{{ session('success') }}",
-                'success'
-            )
-        </script>
-    @elseif(session()->has('error'))
-        <script>
-            Swal.fire(
-                'Failed!',
-                "{{ session('error') }}",
-                'error'
-            )
-        </script>
-    @endif
-
-    <script>
-        feather.replace();
-
-        setInterval(() => {
-            feather.replace();
-        }, 1000);
 
         function unblock() {
             $('button').prop('disabled', false);
@@ -239,12 +211,34 @@
             block()
             window.location.href = url;
         }
-        $(document).ready(function() {
-            // console.clear();
-            $('.bs-tooltip').on("mouseleave", function() {
-                $(this).tooltip("hide");
-            })
-        })
+    </script>
+    @stack('jslib')
+    @stack('js')
+
+    @if (session()->has('success'))
+        <script>
+            Swal.fire(
+                'Success',
+                "{{ session('success') }}",
+                'success'
+            )
+        </script>
+    @elseif(session()->has('error'))
+        <script>
+            Swal.fire(
+                'Failed!',
+                "{{ session('error') }}",
+                'error'
+            )
+        </script>
+    @endif
+
+    <script>
+        feather.replace();
+
+        setInterval(() => {
+            feather.replace();
+        }, 1000);
     </script>
 </body>
 

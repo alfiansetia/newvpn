@@ -83,6 +83,8 @@
         var id = 0
         var perpage = 50
 
+        block()
+
         function parse_div(data) {
             $('#row_content').html('')
             if (data.length < 1) {
@@ -127,6 +129,7 @@
                 $('#row_content').append(html)
             });
             feather.replace();
+            unblock()
         }
 
         var table = $('#tableData').DataTable({

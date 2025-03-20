@@ -153,29 +153,6 @@
         //         bootstrap.Tooltip.getInstance(tooltip)?.dispose();
         //     });
         // }, 5000);
-    </script>
-    @stack('jslib')
-    @stack('js')
-
-    @if (session()->has('success'))
-        <script>
-            Swal.fire(
-                'Success',
-                "{{ session('success') }}",
-                'success'
-            )
-        </script>
-    @elseif(session()->has('error'))
-        <script>
-            Swal.fire(
-                'Failed!',
-                "{{ session('error') }}",
-                'error'
-            )
-        </script>
-    @endif
-
-    <script>
         function hrg(x) {
             return parseInt(x).toLocaleString('id-ID')
         }
@@ -249,6 +226,27 @@
             $(this).tooltip("hide");
         })
     </script>
+    @stack('jslib')
+    @stack('js')
+
+    @if (session()->has('success'))
+        <script>
+            Swal.fire(
+                'Success',
+                "{{ session('success') }}",
+                'success'
+            )
+        </script>
+    @elseif(session()->has('error'))
+        <script>
+            Swal.fire(
+                'Failed!',
+                "{{ session('error') }}",
+                'error'
+            )
+        </script>
+    @endif
+
 </body>
 
 </html>

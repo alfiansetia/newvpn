@@ -88,14 +88,11 @@
         var perpage = 50
 
         // get_data()
+        block()
 
         function add_data() {
             show_card_add()
             input_focus('name')
-        }
-
-        function reload_data() {
-            table.ajax.reload()
         }
 
         function img_valid(image_url = "") {
@@ -157,6 +154,7 @@
                 $('#row_content').append(html)
             });
             feather.replace();
+            unblock()
         }
 
         function get_data() {
@@ -390,6 +388,10 @@
                     handleResponse(xhr)
                 }
             });
+        }
+
+        function reload_data() {
+            table.ajax.reload()
         }
 
         // $('#edit_delete').after(
