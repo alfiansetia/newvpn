@@ -169,7 +169,10 @@
             var latitude = e.latlng.lat;
             var longitude = e.latlng.lng;
             marker.setLatLng([latitude, longitude]);
-            map.setView([latitude, longitude], 8);
+            // map.setView([latitude, longitude], 8);
+            map.fitBounds([
+                [latitude, longitude]
+            ]);
             // console.log(`lat : ${latitude}, Log : ${longitude}`);
             fill_input(latitude, longitude)
         });
@@ -260,7 +263,10 @@
         function set_map(lat, long) {
             try {
                 marker.setLatLng([lat, long]);
-                map.setView([lat, long], 15);
+                // map.setView([lat, long], 15);
+                map.fitBounds([
+                    [lat, long]
+                ]);
             } catch (error) {
                 console.log(error);
             }

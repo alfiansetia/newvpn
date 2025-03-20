@@ -151,7 +151,10 @@
         map2.on('locationfound', function(e) {
             var latitude = e.latlng.lat;
             var longitude = e.latlng.lng;
-            map2.setView([latitude, longitude], 8);
+            map2.fitBounds([
+                [latitude, longitude]
+            ]);
+            // map2.setView([latitude, longitude], 8);
         });
 
         L.control
@@ -243,7 +246,10 @@
         function set_map(lat, long) {
             try {
                 marker.setLatLng([lat, long]);
-                map.setView([lat, long], 10);
+                map.fitBounds([
+                    [lat, long]
+                ]);
+                // map.setView([lat, long], 10);
             } catch (error) {
                 console.log(error);
             }
