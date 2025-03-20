@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('router.exists');
+    }
+
     public function get(Request $request)
     {
         try {

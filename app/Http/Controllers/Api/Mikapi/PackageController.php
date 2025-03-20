@@ -11,10 +11,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PackageController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('router.exists');
+    }
+
     public function paginate(Request $request)
     {
         $limit = $this->get_limit($request);
-        $filters = $filters = $request->only(['name', 'router_id']);
+        $filters = $filters = $request->only(['name', 'router_id', 'router']);
         $filters['user_id'] = auth()->id();
         $data = Package::query()->withCount('customers')->paginate($limit)->withQueryString();
         return PackageResource::collection($data);
@@ -22,7 +27,7 @@ class PackageController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $filters = $request->only(['name', 'router_id']);
+        $filters = $filters = $request->only(['name', 'router_id', 'router']);
         $filters['user_id'] = auth()->id();
         $query = Package::query()->withCount(['customers'])->filter($filters);
         return DataTables::eloquent($query)->setTransformer(function ($item) {

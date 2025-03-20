@@ -12,11 +12,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
-    // 
+    public function __construct(Request $request)
+    {
+        $this->middleware('router.exists');
+    }
+
     public function paginate(Request $request)
     {
         $limit = $this->get_limit($request);
-        $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
+        $filters = $request->only(['name', 'router_id', 'router', 'package_id', 'number_id', 'phone', 'email']);
+        $filters['user_id'] = auth()->id();
         $filters['user_id'] = auth()->id();
         $data = Customer::query()->with(['package', 'odp'])->paginate($limit)->withQueryString();
         return CustomerResource::collection($data);
@@ -24,7 +29,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['name', 'router_id', 'package_id', 'number_id', 'phone', 'email']);
+        $filters = $request->only(['name', 'router_id', 'router', 'package_id', 'number_id', 'phone', 'email']);
         $filters['user_id'] = auth()->id();
         $query = Customer::query()->with(['package', 'odp'])->filter($filters);
         return DataTables::eloquent($query)->setTransformer(function ($item) {

@@ -131,6 +131,7 @@
         })
         const url_index = "{{ route('mikapi.odps.index') }}"
         const url_index_api = "{{ route('api.mikapi.odps.index') }}"
+        const url_index_api_router = url_index_api + param_router
         const image_odp = "{{ asset('images/default/odp.png') }}"
         var id = 0
         var perpage = 50
@@ -203,7 +204,6 @@
             iconSize: [42, 42], // [width, height]
             iconAnchor: [16, 32], // [horizontal center, bottom]
         });
-
 
         var map2 = L.map('map2').setView([default_lat, default_long], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -322,14 +322,16 @@
             min: 0,
         });
 
-        $('#reset').click(function() {})
+        $('#reset').click(function() {
+            color_add('#000000')
+        })
 
         var table = $('#tableData').DataTable({
             processing: true,
             serverSide: false,
             rowId: 'id',
             ajax: {
-                url: url_index_api,
+                url: url_index_api_router,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
                     $('#tableData_processing').hide();
@@ -368,7 +370,7 @@
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {
-                        delete_batch(url_index_api);
+                        delete_batch(url_index_api_router);
                     }
                 }]
             }],
@@ -448,7 +450,7 @@
         multiCheck(table);
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
-            id = table.row(this).id()
+            id = table.row(this).id() + param_router
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });

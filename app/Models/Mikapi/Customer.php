@@ -32,6 +32,9 @@ class Customer extends Model
         if (isset($filters['router_id'])) {
             $query->whereRelation('package.router', 'id',  $filters['router_id']);
         }
+        if (isset($filters['router'])) {
+            $query->whereRelation('package.router', 'id',  $filters['router']);
+        }
         if (isset($filters['name'])) {
             $query->where('name', 'like',  '%' . $filters['name'] . '%');
         }

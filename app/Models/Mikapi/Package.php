@@ -28,6 +28,9 @@ class Package extends Model
         if (isset($filters['router_id'])) {
             $query->where('router_id',  $filters['router_id']);
         }
+        if (isset($filters['router'])) {
+            $query->where('router_id',  $filters['router']);
+        }
         if (isset($filters['name'])) {
             $query->where('name', 'like',  '%' . $filters['name'] . '%');
         }

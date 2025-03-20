@@ -48,7 +48,7 @@
                                 <input type="color" name="line_color" class="form-control maxlength" id="line_color"
                                     placeholder="Please Enter Line Color" minlength="5" maxlength="50"
                                     onchange="color_add(this.value)" required>
-                                <span id="color" class="badge" style="background-color: #ff0000">#ff0000</span>
+                                <span id="color" class="badge" style="background-color: #000000">#ff0000</span>
                             </div>
                             <span class="error invalid-feedback err_line_color" style="display: hide;"></span>
                         </div>

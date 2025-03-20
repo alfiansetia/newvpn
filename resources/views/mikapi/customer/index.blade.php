@@ -178,6 +178,7 @@
         })
         const url_index = "{{ route('mikapi.customers.index') }}"
         const url_index_api = "{{ route('api.mikapi.customers.index') }}"
+        const url_index_api_router = url_index_api + param_router
         const image_online = "{{ asset('images/default/map_online.png') }}?"
         const image_offline = "{{ asset('images/default/map_offline.png') }}?"
         const image_detail = "{{ asset('images/default/map_detail.png') }}?"
@@ -493,7 +494,6 @@
             });
         });
 
-
         $('.maxlength').maxlength({
             alwaysShow: true,
             placement: "top",
@@ -525,7 +525,7 @@
             serverSide: false,
             rowId: 'id',
             ajax: {
-                url: url_index_api,
+                url: url_index_api_router,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
                     $('#tableData_processing').hide();
@@ -565,7 +565,7 @@
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {
-                        delete_batch(url_index_api);
+                        delete_batch(url_index_api_router);
                     }
                 }]
             }],
@@ -723,7 +723,7 @@
         multiCheck(table);
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
-            id = table.row(this).id()
+            id = table.row(this).id() + param_router
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });

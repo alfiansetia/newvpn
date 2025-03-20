@@ -74,6 +74,7 @@
         })
         const url_index = "{{ route('mikapi.packages.index') }}"
         const url_index_api = "{{ route('api.mikapi.packages.index') }}"
+        const url_index_api_router = url_index_api + param_router
         const url_index_profile = "{{ route('api.mikapi.ppp.profiles.index') }}" + param_router
 
         var id = 0
@@ -103,7 +104,7 @@
             serverSide: false,
             rowId: 'id',
             ajax: {
-                url: url_index_api,
+                url: url_index_api_router,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
                     $('#tableData_processing').hide();
@@ -141,7 +142,7 @@
                 buttons: [{
                     text: 'Delete Selected Data',
                     action: function(e, dt, node, config) {
-                        delete_batch(url_index_api);
+                        delete_batch(url_index_api_router);
                     }
                 }]
             }],
@@ -288,7 +289,7 @@
         multiCheck(table);
 
         $('#tableData tbody').on('click', 'tr td:not(:first-child)', function() {
-            id = table.row(this).id()
+            id = table.row(this).id() + param_router
             $('#formEdit').attr('action', url_index_api + "/" + id)
             edit(true)
         });

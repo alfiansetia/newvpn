@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class MapsController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('router.exists');
+    }
+
     public function index(Request $request)
     {
         $user = auth()->user();
