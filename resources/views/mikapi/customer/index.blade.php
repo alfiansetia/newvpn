@@ -33,12 +33,15 @@
 
     <link href="{{ cdn('backend/src/plugins/leaflet-locatecontrol/dist/L.Control.Locate.min.css') }}" rel="stylesheet"
         type="text/css">
+    <link href="{{ cdn('backend/src/plugins/leaflet.fullscreen/Control.FullScreen.css') }}" rel="stylesheet"
+        type="text/css">
 
     <link href="{{ cdn('backend/src/plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ cdn('backend/src/plugins/src/noUiSlider/nouislider.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ cdn('backend/src/plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet"
         type="text/css">
     <link href="{{ cdn('backend/src/plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css">
+
     <style>
         .flatpickr-calendar {
             z-index: 1056 !important;
@@ -156,6 +159,7 @@
     <script src="{{ cdn('backend/src/plugins/src/leaflet/eu-countries.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/src/leaflet/leaflet.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/leaflet-locatecontrol/dist/L.Control.Locate.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/leaflet.fullscreen/Control.FullScreen.js') }}"></script>
 @endpush
 
 
@@ -198,6 +202,17 @@
             icon: 'fa fa-location-arrow',
             iconLoading: 'fa fa-spinner fa-spin',
         }).addTo(map);
+        L.control
+            .fullscreen({
+                position: 'topleft',
+                title: 'Show me the fullscreen !',
+                titleCancel: 'Exit fullscreen mode',
+                content: null,
+                forceSeparateButton: true,
+                forcePseudoFullscreen: true,
+                fullscreenElement: false
+            })
+            .addTo(map);
 
         var marker = L.marker([default_lat, default_long], {
             draggable: 'true'
@@ -270,6 +285,17 @@
             icon: 'fa fa-location-arrow',
             iconLoading: 'fa fa-spinner fa-spin',
         }).addTo(map2);
+        L.control
+            .fullscreen({
+                position: 'topleft',
+                title: 'Show me the fullscreen !',
+                titleCancel: 'Exit fullscreen mode',
+                content: null,
+                forceSeparateButton: true,
+                forcePseudoFullscreen: true,
+                fullscreenElement: false
+            })
+            .addTo(map2);
 
         function draw_marker_map(data) {
             markers.forEach(marker => marker.remove());
@@ -491,6 +517,8 @@
                 url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
+                    $('#tableData_processing').hide();
+                    $('.dt-empty').text('Empty Data!');
                 },
             },
             columnDefs: [{
@@ -611,6 +639,8 @@
                 url: url_index_ppp,
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
+                    $('#table_processing').hide();
+                    $('.dt-empty').text('Empty Data!');
                 },
             },
             columnDefs: [{
@@ -750,13 +780,11 @@
         $('#select_user_add').click(function() {
             state_action = 'add'
             $('#modalppp').modal('show')
-            // table_ppp.ajax.reload()
         })
 
         $('#select_user_edit').click(function() {
             state_action = 'edit'
             $('#modalppp').modal('show')
-            // table_ppp.ajax.reload()
         })
 
         function refresh_ppp() {

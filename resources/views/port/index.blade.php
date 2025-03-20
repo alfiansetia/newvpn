@@ -134,6 +134,8 @@
                 url: url_index_api,
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponseCode(jqXHR)
+                    $('#tableData_processing').hide();
+                    $('.dt-empty').text('Empty Data!');
                 },
             },
             columnDefs: [{

@@ -15,6 +15,8 @@
 
     <link href="{{ cdn('backend/src/plugins/leaflet-locatecontrol/dist/L.Control.Locate.min.css') }}" rel="stylesheet"
         type="text/css">
+    <link href="{{ cdn('backend/src/plugins/leaflet.fullscreen/Control.FullScreen.css') }}" rel="stylesheet"
+        type="text/css">
     <style>
         .info {
             padding: 6px 8px;
@@ -74,6 +76,7 @@
     <script src="{{ cdn('backend/src/plugins/src/leaflet/eu-countries.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/src/leaflet/leaflet.js') }}"></script>
     <script src="{{ cdn('backend/src/plugins/leaflet-locatecontrol/dist/L.Control.Locate.min.js') }}"></script>
+    <script src="{{ asset('backend/src/plugins/leaflet.fullscreen/Control.FullScreen.js') }}"></script>
 @endpush
 
 
@@ -144,6 +147,18 @@
             icon: 'fa fa-location-arrow',
             iconLoading: 'fa fa-spinner fa-spin',
         }).addTo(map2);
+
+        L.control
+            .fullscreen({
+                position: 'topleft',
+                title: 'Show me the fullscreen !',
+                titleCancel: 'Exit fullscreen mode',
+                content: null,
+                forceSeparateButton: true,
+                forcePseudoFullscreen: true,
+                fullscreenElement: false
+            })
+            .addTo(map2);
 
         function draw_marker_map(data) {
             markers.forEach(marker => marker.remove());

@@ -182,6 +182,8 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     handleResponse(jqXHR)
+                    $('#tableData_processing').hide();
+                    $('.dt-empty').text('Empty Data!');
                 },
             },
             createdRow: function(row, data, dataIndex) {
