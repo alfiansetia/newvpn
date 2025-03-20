@@ -174,6 +174,13 @@
             fill_input(latitude, longitude)
         });
 
+        map.on('click', function(e) {
+            var latitude = e.latlng.lat;
+            var longitude = e.latlng.lng;
+            marker.setLatLng([latitude, longitude]);
+            fill_input(latitude, longitude);
+        });
+
         marker.on('dragend', function(event) {
             var marker = event.target;
             var position = marker.getLatLng();
