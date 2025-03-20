@@ -248,7 +248,7 @@
                         );
                         markers.push(mark);
                         // bounds.push([element.lat, element.long]);
-                        map2.setView([element.lat, element.long], 9);
+                        map2.setView([element.lat, element.long], 13);
                     }
                 } catch (error) {
                     console.log(error);
