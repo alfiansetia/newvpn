@@ -203,7 +203,7 @@
                         });
                         markers.push(mark);
                         bounds.push([element.lat, element.long]);
-                        // map2.setView([element.lat, element.long], 13);
+                        map2.setView([element.lat, element.long], 13);
                         drawLine([element.odp.lat, element.odp.long], [element.lat, element.long], element.odp
                             .line_color)
                     }
@@ -211,9 +211,9 @@
                     console.log(error);
                 }
             });
-            if (bounds.lenght > 0) {
-                map2.fitBounds(bounds);
-            }
+            // if (bounds.lenght > 0) {
+            //     map2.fitBounds(bounds);
+            // }
         }
 
         function draw_odp(data) {
