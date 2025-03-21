@@ -50,6 +50,30 @@ function formatBytes($size, $decimals = 0)
     return round($size, $decimals) . ' ' . $unit[$i];
 }
 
+function formatBytesKMG($size)
+{
+    if ($size < 1000) {
+        return ['value' => $size, 'type' => 'B'];
+    }
+
+    $units = [
+        'G' => 1000000000,
+        'M' => 100000,
+        'K' => 1000,
+    ];
+
+    foreach ($units as $unit => $divisor) {
+        if ($size >= $divisor) {
+            return [
+                'value' => (int) ($size / $divisor),
+                'type'  => $unit
+            ];
+        }
+    }
+
+    return ['value' => 0, 'type' => 'B'];
+}
+
 function formatInterval($dtm)
 {
     $val_convert = $dtm;

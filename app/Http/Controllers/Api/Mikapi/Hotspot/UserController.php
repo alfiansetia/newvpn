@@ -94,10 +94,14 @@ class UserController extends Controller
             'data_day'      => 'nullable|integer|between:0,365',
             'time_limit'    => 'required|date_format:H:i:s',
             'data_limit'    => 'required|integer|gte:0',
-            'data_type'     => 'nullable|in:K,M,G',
+            'data_type'     => 'nullable|in:K,M,G,B',
             'comment'       => 'nullable|max:100',
             'is_active'     => 'nullable|in:on',
         ]);
+        $type = ($request->data_type ?? 'K');
+        if ($type == 'B') {
+            $type = '';
+        }
         $param = [
             'server'             => $request->input('server'),
             'profile'            => $request->input('profile'),
@@ -106,7 +110,7 @@ class UserController extends Controller
             'address'            => $request->input('ip_address') ?? '0.0.0.0',
             'mac-address'        => $request->input('mac') ?? '00:00:00:00:00:00',
             'limit-uptime'       => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
-            'limit-bytes-total'  => $request->data_limit . ($request->data_type ?? 'K'),
+            'limit-bytes-total'  => $request->data_limit . $type,
             'comment'            => $request->input('comment'),
             'disabled'           => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
@@ -130,10 +134,14 @@ class UserController extends Controller
             'data_day'      => 'required|integer|between:0,365',
             'time_limit'    => 'required|date_format:H:i:s',
             'data_limit'    => 'required|integer|gte:0',
-            'data_type'     => 'required|in:K,M,G',
+            'data_type'     => 'required|in:K,M,G,B',
             'comment'       => 'nullable|max:100',
             'is_active'     => 'nullable|in:on',
         ]);
+        $type = ($request->data_type ?? 'K');
+        if ($type == 'B') {
+            $type = '';
+        }
         $param = [
             // '.id'                => $id,
             'server'             => $request->input('server') ?? 'all',
@@ -143,7 +151,7 @@ class UserController extends Controller
             'address'            => $request->input('ip_address') ?? '0.0.0.0',
             'mac-address'        => $request->input('mac') ?? '00:00:00:00:00:00',
             'limit-uptime'       => ($request->data_day ?? 0) . 'd ' . $request->time_limit,
-            'limit-bytes-total'  => $request->data_limit . $request->data_type,
+            'limit-bytes-total'  => $request->data_limit . $type,
             'comment'            => 'vc-' . $request->input('comment'),
             'disabled'           => $request->input('is_active') == 'on' ? 'no' : 'yes',
         ];
@@ -207,7 +215,7 @@ class UserController extends Controller
             'data_day'      => 'nullable|integer|between:0,365',
             'time_limit'    => 'required|date_format:H:i:s',
             'data_limit'    => 'required|integer|gte:0',
-            'data_type'     => 'nullable|in:K,M,G',
+            'data_type'     => 'nullable|in:K,M,G,B',
             'comment'       => 'nullable|max:100|alpha_num',
         ]);
 

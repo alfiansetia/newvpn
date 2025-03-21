@@ -285,7 +285,11 @@ class UserServices extends RouterApiServices
         $server = $request->input('server');
         $profile = $request->input('profile');
         $limit_uptime = ($request->data_day ?? 0) . 'd ' . $request->time_limit;
-        $limit_byte_total = $request->data_limit . $request->data_type;
+        $type = ($request->data_type ?? 'K');
+        if ($type == 'B') {
+            $type = '';
+        }
+        $limit_byte_total = $request->data_limit . $type;
         $char = $request->character;
         $user_mode = $request->user_mode;
         $comment =  $user_mode . "-" . rand(100, 999) . "-" . date("m.d.y") . "-" . $request->comment;

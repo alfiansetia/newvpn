@@ -586,21 +586,23 @@
                     $('#edit_data_day').val(result.data.limit_parse_array.day);
                     f2.setDate(result.data.limit_parse_array.time);
                     let limit = result.data['limit-bytes-total'];
-                    if (limit > 0 && limit < 1000000) {
-                        $('#edit_data_limit').val(limit / 1000);
-                        $('#edit_data_type').val('K').change();
-                    } else if (limit >= 1000000 && limit < 1000000000) {
-                        let mb = limit / 1000000;
-                        $('#edit_data_limit').val(mb);
-                        $('#edit_data_type').val('M').change();
-                    } else if (limit >= 1000000000) {
-                        let gb = limit / 1000000000;
-                        $('#edit_data_limit').val(gb);
-                        $('#edit_data_type').val('G').change();
-                    } else {
-                        $('#edit_data_limit').val(0);
-                        $('#edit_data_type').val('K').change();
-                    }
+                    $('#edit_data_limit').val(result.data.limit_byte_total_kmg.value);
+                    $('#edit_data_type').val(result.data.limit_byte_total_kmg.type).change();
+                    // if (limit > 0 && limit < 1000000) {
+                    //     $('#edit_data_limit').val(limit / 1000);
+                    //     $('#edit_data_type').val('K').change();
+                    // } else if (limit >= 1000000 && limit < 1000000000) {
+                    //     let mb = limit / 1000000;
+                    //     $('#edit_data_limit').val(mb);
+                    //     $('#edit_data_type').val('M').change();
+                    // } else if (limit >= 1000000000) {
+                    //     let gb = limit / 1000000000;
+                    //     $('#edit_data_limit').val(gb);
+                    //     $('#edit_data_type').val('G').change();
+                    // } else {
+                    //     $('#edit_data_limit').val(0);
+                    //     $('#edit_data_type').val('K').change();
+                    // }
                     let tom_server = document.getElementById('edit_server').tomselect
                     let tom_profile = document.getElementById('edit_profile').tomselect
                     if (result.data.default) {

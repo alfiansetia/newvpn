@@ -150,6 +150,7 @@
                                         <option value="">KB</option>
                                         <option value="M">MB</option>
                                         <option value="G">GB</option>
+                                        <option value="B">Bytes</option>
                                     </select>
                                     <span class="error invalid-feedback err_data_type" style="display: hide;"></span>
                                 </div>
